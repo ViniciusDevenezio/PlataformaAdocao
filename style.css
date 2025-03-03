@@ -1,0 +1,5 @@
+body {
+    background-image: url('images/backgroundpattern.jpg');
+    background-repeat: repeat; /* Repete o padrão */
+    background-size: auto; /* Mantém o tamanho original */
+}
