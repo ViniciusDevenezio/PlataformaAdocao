@@ -1,0 +1,10 @@
+* { 
+    font-family: 'Roboto';
+}
+
+body {
+    background-image: url('/img/backgroundpattern.jpg');
+    background-repeat: repeat; /* Faz o padrão se repetir em todas as direções */
+    background-size: auto; /* Deixa o tamanho original da imagem */
+    background-position: top left; /* Começa a repetição no canto superior esquerdo */
+}
