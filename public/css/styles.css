@@ -1,5 +1,5 @@
 * { 
-    font-family: 'Roboto';
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -7,4 +7,213 @@ body {
     background-repeat: repeat; /* Faz o padrão se repetir em todas as direções */
     background-size: auto; /* Deixa o tamanho original da imagem */
     background-position: top left; /* Começa a repetição no canto superior esquerdo */
+    font-family: 'Poppins', sans-serif;
+    
 }
+
+/* Navbar personalizada */
+.custom-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    background-color: rgb(243, 243, 243); /* Cor de fundo do menu */
+    box-shadow: 6px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra embaixo do menu */
+    padding: 0px 25px;
+    z-index: 1000;
+}
+
+/* Links padrão do menu */
+.custom-navbar .nav-link {
+    color: #333; /* Cor padrão dos links */
+    font-weight: 500;
+    padding: px 15px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.logo-navbar {
+    height: 60px; /* Ajuste a altura conforme necessário */
+    width: auto; /* Mantém a proporção da imagem */
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Aumenta o espaço entre os itens */
+}
+
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+
+}
+/* Definição da animação */
+@keyframes bounce {
+    0% {
+        bottom: -100%; 
+    }
+    50% {
+        bottom: -50%; 
+    }
+    80% {
+        bottom: -2%; 
+    }
+    90% {
+        bottom: -4px; 
+    }
+    94% {
+        bottom: -3px; 
+    }
+    96% {
+        bottom: -2px; 
+    }
+
+    99% {
+        bottom: -1px; 
+    }
+    100% {
+
+        bottom: 0; 
+    }
+}
+
+
+#btn-login {
+    background-color: white; /* Fundo branco inicial */
+    color: #0887F2; /* Texto azul */
+    border: 2px solid #0887F2; /* Borda azul */
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s;
+    z-index: 1; /* Garante que o texto fique acima do ::after */
+}
+
+/* Pseudo-elemento para o efeito de fundo do Login */
+#btn-login::after {
+    content: '';
+    position: absolute;
+    bottom: -100%; /* Começa fora do botão, na parte inferior */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0887F2; /* Cor do fundo azul */
+    z-index: -1; /* Coloca o efeito atrás do texto */
+    transition: bottom 0.4s ease-in-out; /* Transição suave */
+}
+
+/* Efeito hover do Login */
+#btn-login:hover {
+    color: white; /* Texto muda para branco */
+}
+
+/* Aplicação da animação ao Login */
+#btn-login:hover::after {
+    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
+    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
+}
+
+/* Estilo do botão Seja um parceiro */
+#btn-parceiro {
+    background-color: white; /* Fundo branco inicial */
+    color: #0887F2; /* Texto azul */
+    border: 2px solid #0887F2; /* Borda azul */
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s;
+    z-index: 1; /* Garante que o texto fique acima do ::after */
+}
+
+/* Pseudo-elemento para o efeito de fundo do Seja um parceiro */
+#btn-parceiro::after {
+    content: '';
+    position: absolute;
+    bottom: -100%; /* Começa fora do botão, na parte inferior */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0887F2; /* Cor do fundo azul */
+    z-index: -1; /* Coloca o efeito atrás do texto */
+    transition: bottom 0.4s ease-in-out; /* Transição suave */
+}
+
+/* Efeito hover do Seja um parceiro */
+#btn-parceiro:hover {
+    color: white; /* Texto muda para branco */
+}
+
+/* Aplicação da animação ao Seja um parceiro */
+#btn-parceiro:hover::after {
+    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
+    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
+}
+/* Botão Quero Adotar */
+.custom-navbar .btn-adotar {
+    background-color: #ffb01d;
+    color: #ffffff; /* Azul semelhante ao da imagem */
+    border: 2px solid #ffb01d;
+    padding: 10px 20px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-left: 10px;  
+    font-size: 14px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .navbar-nav {
+        width: 100%;
+        text-align: center;
+    }
+    .navbar-nav .nav-item {
+        margin-bottom: 10px;
+    }
+}
+
+/* css do carrossel */
+
+.carousel-inner .carousel-item img {
+    margin-top:5%;
+    width: 100%;            /* As imagens ocupam toda a largura do container */
+    height: 550px;          /* Define a altura fixa para as imagens (ajuste conforme necessário) */
+    object-fit: cover;      /* Garante que a imagem preencha o espaço sem distorcer a proporção */
+  }
+  
+  .carousel-indicators {
+    position: absolute;
+    bottom: 10px; /* Ajuste conforme necessário */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* Espaçamento entre os indicadores */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .carousel-indicators li {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+  }
+  
+  .carousel-indicators .active {
+    background-color: white;
+  }
+
