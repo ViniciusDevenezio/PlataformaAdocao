@@ -1,10 +1,12 @@
-<?php $__env->startSection('head'); ?>
+@extends ('layouts.main')
 
-<?php $__env->stopSection(); ?>
+@section('head')
 
-<?php $__env->startSection('menu'); ?>
+@endsection
 
-<?php $__env->stopSection(); ?>
+@section('menu')
+
+@endsection
 
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <ol class="carousel-indicators">
@@ -43,5 +45,3 @@
     });
   });
 </script>
-
-<?php echo $__env->make('layouts.main', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\CésarDuarte\Desktop\Teste\PlataformaAdocao\resources\views/home.blade.php ENDPATH**/ ?>
