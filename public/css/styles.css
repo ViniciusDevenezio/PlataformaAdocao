@@ -221,7 +221,7 @@ body {
 
   /* cadastro */
 
-  .container {
+  .containercad {
       background: white;
       padding: 20px;
       border-radius: 10px;
@@ -233,31 +233,48 @@ body {
   }
 
 
-  h2 {
+  .h2cad {
       text-align: center;
       color: #333;
   }
 
-  form {
+  .formcad {
       display: flex;
       flex-direction: column;
       align-items: center; /* Centraliza os inputs corretamente */
   }
 
-  label {
+  .labelcad {
       width: 100%;
       text-align: left;
       margin-bottom: 5px;
   }
 
-  input, select, textarea {
+  .inputcad{
       width: 100%;
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
   }
-  button {
+
+  .selectcad{
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .textareacad{
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .buttoncad {
       width: 100%;
       padding: 10px;
       background: #74B9FF;
@@ -268,7 +285,7 @@ body {
       border-radius: 5px;
       cursor: pointer;
   }
-  button:hover {
+  .buttoncad:hover::after {
       background: #0887F2;
   }
 

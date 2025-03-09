@@ -1,12 +1,10 @@
-@extends ('layouts.main')
+<?php $__env->startSection('head'); ?>
 
-@section('head')
+<?php $__env->stopSection(); ?>
 
-@endsection
+<?php $__env->startSection('menu'); ?>
 
-@section('menu')
-
-@endsection
+<?php $__env->stopSection(); ?>
 
     <div class="container">
         <br>
@@ -42,3 +40,5 @@
             <button class="buttoncad" type="submit">Cadastrar</button>
         </form>
     </div>
+
+<?php echo $__env->make('layouts.main', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\CésarDuarte\Documents\GitHub\PlataformaAdocao\resources\views/cadastro.blade.php ENDPATH**/ ?>
