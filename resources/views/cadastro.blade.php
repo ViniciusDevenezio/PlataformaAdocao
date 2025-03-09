@@ -8,7 +8,9 @@
 
 @section('content')
 <div class="container">
-    <h2 class="h2cad" style="color: black; font-size: 24px; display: block;">Cadastro de Animais</h2>
+    <br>
+    <br>
+    <h2 class="h2cad" style="font-size: 24px; display: block;">Cadastro de Animais</h2>
     <form class="formcad" action="#" method="POST">
         <label class="labelcad" for="nome">Nome do Animal:</label>
         <input class="inputcad" type="text" id="nome" name="nome" required>

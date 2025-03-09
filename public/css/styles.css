@@ -234,12 +234,12 @@ body {
 }
 
 .h2cad {
-    color: #333; /* Tom neutro para boa legibilidade */
+    color: #f8f2f2; /* Tom neutro para boa legibilidade */
     font-size: 30px; /* Levemente maior para mais destaque */
     text-align: center;
     font-weight: bold;
     margin: 20px auto; /* Centraliza e adiciona espaçamento */
-    background: linear-gradient(90deg, #ffeb3b, #ffd700); /* Gradiente suave para um visual mais sofisticado */
+    background: linear-gradient(90deg, #ffb01d, #ffb01d); /* Gradiente suave para um visual mais sofisticado */
     padding: 12px 24px; /* Melhor espaçamento interno */
     border-radius: 10px; /* Cantos mais arredondados para um design mais moderno */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais marcante */
