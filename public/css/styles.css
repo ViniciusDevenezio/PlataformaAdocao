@@ -219,75 +219,141 @@ body {
 
 
 
-  /* cadastro */
+  /* cadastro de animais */
 
   .containercad {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      box-sizing: border-box;
-      text-align: left;
-  }
-
-
-  .h2cad {
-      text-align: center;
-      color: #333;
-  }
-
-  .formcad {
-      display: flex;
-      flex-direction: column;
-      align-items: center; /* Centraliza os inputs corretamente */
-  }
-
-  .labelcad {
-      width: 100%;
-      text-align: left;
-      margin-bottom: 5px;
-  }
-
-  .inputcad{
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-  }
-
-  .selectcad{
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px; /* Ajustado para melhor responsividade */
     box-sizing: border-box;
-  }
+    text-align: left;
+    margin: 80px auto 20px;
+}
 
-  .textareacad{
+.h2cad {
+    color: #333; /* Tom neutro para boa legibilidade */
+    font-size: 30px; /* Levemente maior para mais destaque */
+    text-align: center;
+    font-weight: bold;
+    margin: 20px auto; /* Centraliza e adiciona espaçamento */
+    background: linear-gradient(90deg, #ffeb3b, #ffd700); /* Gradiente suave para um visual mais sofisticado */
+    padding: 12px 24px; /* Melhor espaçamento interno */
+    border-radius: 10px; /* Cantos mais arredondados para um design mais moderno */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais marcante */
+    display: inline-block; /* Adapta-se ao tamanho do conteúdo */
+    visibility: visible;
+    position: relative;
+    z-index: 10;
+    text-transform: uppercase; /* Deixa o texto em caixa alta para mais impacto */
+    letter-spacing: 1px; /* Melhora a leitura */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Efeito de hover para mais interação */
+.h2cad:hover {
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
+}
+
+
+
+
+.formcad {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento uniforme entre os elementos */
+}
+
+.labelcad {
+    font-weight: bold;
+    color: #555;
+    font-size: 14px;
+}
+
+.inputcad, .selectcad, .textareacad {
     width: 100%;
-    padding: 8px;
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     box-sizing: border-box;
-  }
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
 
-  .buttoncad {
-      width: 100%;
-      padding: 10px;
-      background: #74B9FF;
-      border: none;
-      color: white;
-      font-size: 16px;
-      margin-top: 15px;
-      border-radius: 5px;
-      cursor: pointer;
-  }
-  .buttoncad:hover::after {
-      background: #0887F2;
-  }
+.inputcad:focus, .selectcad:focus, .textareacad:focus {
+    border-color: #74B9FF;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(116, 185, 255, 0.8);
+}
+
+.textareacad {
+    resize: none;
+    height: 100px;
+}
+
+.buttoncad {
+    width: 100%;
+    padding: 14px;
+    background: #74B9FF;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.buttoncad:hover {
+    background: #0887F2;
+}
+
+@media (max-width: 600px) {
+    .containercad {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .inputcad, .selectcad, .textareacad {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .buttoncad {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
 
 
  /* cadastro */
+
+ /* Usuario*/
+
+ .login-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 50px 20px;
+    margin-top: 100px; /* Adiciona espaço entre a navbar e os cards */
+}
+
+.card {
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-orange {
+    background-color: #f4a261;
+    color: white;
+    border: none;
+}
+
+.btn-orange:hover {
+    background-color: #e76f51;
+}

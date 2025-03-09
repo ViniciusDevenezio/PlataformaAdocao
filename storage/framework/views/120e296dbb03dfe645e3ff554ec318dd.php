@@ -1,12 +1,10 @@
-@extends ('layouts.main')
+<?php $__env->startSection('head'); ?>
 
-@section('head')
+<?php $__env->stopSection(); ?>
 
-@endsection
+<?php $__env->startSection('menu'); ?>
 
-@section('menu')
-
-@endsection
+<?php $__env->stopSection(); ?>
 
 <div class="login-container text-center">
     <h2>Boas-vindas</h2>
@@ -34,3 +32,5 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<?php echo $__env->make('layouts.main', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\CésarDuarte\Documents\GitHub\PlataformaAdocao\resources\views/login.blade.php ENDPATH**/ ?>
