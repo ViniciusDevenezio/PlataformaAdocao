@@ -25,7 +25,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="{{ route(name: 'home') }}">
     <img src="/img/logo2.png" alt="Logo" class="logo-navbar">
 </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="{{ route(name: 'home') }}">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Cachorros</a>
@@ -46,7 +46,7 @@
 
         <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-                <a class="nav-link btn-menu" id="btn-login" href="#">Entrar</a>
+                <a class="nav-link btn-menu" id="btn-login" href="{{ route('login') }}">Entrar</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link btn-menu" id="btn-parceiro" href="#">Seja um parceiro</a>

@@ -1,4 +1,4 @@
-* {
+* { 
     font-family: 'Poppins', sans-serif;
 }
 
@@ -8,8 +8,9 @@ body {
     background-size: auto; /* Deixa o tamanho original da imagem */
     background-position: top left; /* Começa a repetição no canto superior esquerdo */
     font-family: 'Poppins', sans-serif;
-
+    
 }
+
 
 /* Navbar personalizada */
 .custom-navbar {
@@ -53,30 +54,30 @@ body {
 /* Definição da animação */
 @keyframes bounce {
     0% {
-        bottom: -100%;
+        bottom: -100%; 
     }
     50% {
-        bottom: -50%;
+        bottom: -50%; 
     }
     80% {
-        bottom: -2%;
+        bottom: -2%; 
     }
     90% {
-        bottom: -4px;
+        bottom: -4px; 
     }
     94% {
-        bottom: -3px;
+        bottom: -3px; 
     }
     96% {
-        bottom: -2px;
+        bottom: -2px; 
     }
 
     99% {
-        bottom: -1px;
+        bottom: -1px; 
     }
     100% {
 
-        bottom: 0;
+        bottom: 0; 
     }
 }
 
@@ -169,7 +170,7 @@ body {
     padding: 10px 20px 10px;
     border-radius: 8px;
     font-weight: 500;
-    margin-left: 10px;
+    margin-left: 10px;  
     font-size: 14px;
 }
 
@@ -192,7 +193,7 @@ body {
     height: 550px;          /* Define a altura fixa para as imagens (ajuste conforme necessário) */
     object-fit: cover;      /* Garante que a imagem preencha o espaço sem distorcer a proporção */
   }
-
+  
   .carousel-indicators {
     position: absolute;
     bottom: 10px; /* Ajuste conforme necessário */
@@ -205,72 +206,212 @@ body {
     padding: 0;
     margin: 0;
   }
-
+  
   .carousel-indicators li {
     width: 10px;
     height: 10px;
     background-color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
   }
-
+  
   .carousel-indicators .active {
     background-color: white;
   }
 
 
+    /* Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login ||  */
+    .login-container {
+        max-width: 66vw;
+        margin: auto;
+        padding: 5vh 5vw;
+        margin-top: -14rem; /* Ajusta a posição para sobrepor o fundo roxo */
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        align-items: stretch;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .card {
+        flex: 1;
+        min-width: 20rem;
+        padding: 2rem;
+        border-radius: 0.625rem;
+        box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Garante espaçamento entre os elementos */
+        align-items: center;
+        text-align: center;
+        height: auto; /* Permite altura dinâmica */
+        border:none;
+    }
 
-  /* cadastro */
+    .card.p-4 *,
+    card.p-4 *::before,
+    .card.p-4 *::after {
+    transition: none !important;
+    animation: none !important;
+    }
 
-  .container {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      box-sizing: border-box;
-      text-align: left;
-  }
+    
+    .card:first-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%; /* Garante altura total */
+    }
+    
+    .card:last-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%; /* Faz os dois cards terem a mesma altura */
+    }
+    
+    .btn-orange {
+        background-color: #f4a261;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s;
+        width: 100%;
+    }
+    
+    .btn-orange:hover {
+        background-color: #e76f51;
+        color: white;
+    }
+    
+    .btn-outline-primary {
+        border: 0.125rem solid #007bff;
+        color: #007bff;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s;
+        width: 100%;
+        margin-top: auto; /* Empurra o botão para a parte inferior */
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    .btn-adotante {
+        margin-top: auto; /* Empurra o botão para a parte inferior */
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 0.0625rem solid #ccc;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+        font-size: 1rem;
+        transition: all 0.3s ease-in-out;
+        margin-bottom: 1rem;
+    }
+    
+    .form-control:focus {
+        border-color: #74B9FF;
+        outline: none;
+        box-shadow: 0 0 0.3125rem rgba(116, 185, 255, 0.8);
+    }
+    
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-align: left;
+        width: 100%;
+    }
+    
+    .welcome-banner {
+        background-color: #c2b5c5; /* Cor de fundo roxa clara */
+        padding: 7rem 0.25vw; /* Reduz a altura para evitar espaços excessivos */
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        margin-top: 4rem;
+    }
+    
+    .welcome-banner h1 {
+        font-size: 2.5rem; /* Ajusta o tamanho do texto */
+        color: #523f5f; /* Cor do texto parecida com a da imagem */
+        margin: 0;
+        margin-bottom: 4rem;
+    }
+
+    /*CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || */
 
 
-  h2 {
-      text-align: center;
-      color: #333;
-  }
+    #cadastro-container {
+    max-width: 800px;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: 0rem;
+    min-height: 400px;
+    
 
-  form {
-      display: flex;
-      flex-direction: column;
-      align-items: center; /* Centraliza os inputs corretamente */
-  }
+}
 
-  label {
-      width: 100%;
-      text-align: left;
-      margin-bottom: 5px;
-  }
+#cadastro-titulo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
 
-  input, select, textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-  }
-  button {
-      width: 100%;
-      padding: 10px;
-      background: #74B9FF;
-      border: none;
-      color: white;
-      font-size: 16px;
-      margin-top: 15px;
-      border-radius: 5px;
-      cursor: pointer;
-  }
-  button:hover {
-      background: #0887F2;
-  }
+#cadastro-progress .progress-bar {
+    background-color: #ffa366;
+    font-weight: bold;
+}
+
+form label {
+    font-weight: bold;
+    color: #666;
+}
+
+form input.form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    background-color: #fff;
+}
+
+#cadastro-celular label {
+    color: #ff5733;
+}
+
+#cadastro-botao .btn-custom {
+    background-color: #ffb01d;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+}
+
+.row {
+    margin-bottom: 15px; /* Adiciona um espaçamento entre as linhas */
+}
+
+.form-control {
+    width: 100%; /* Garante que os inputs fiquem dentro da largura da coluna */
+}
 
 
- /* cadastro */
