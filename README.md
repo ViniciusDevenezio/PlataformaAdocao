@@ -18,13 +18,13 @@ Além disso, a plataforma oferece **ferramentas de automação** para facilitar 
 
 - **Laravel** — Framework PHP para desenvolvimento web  
 - **MySQL** — Banco de dados relacional  
-- **Blade** — Motor de templates do Laravel  
-- **Bootstrap** — Framework CSS para estilização responsiva  
-- **OpenAI API** — Recomendação inteligente de pets via IA  
+- **Blade** — Ferramenta do Laravel para gerar páginas HTML de forma dinâmica.
+- **Bootstrap** — Framework CSS para estilização agil e responsiva 
+- **OpenAI API** — Match inteligente de pets via IA  
 - **Facebook Graph API** — Automação da divulgação nas redes sociais  
 - **Composer** — Gerenciador de dependências PHP  
-- **XAMPP** — Ambiente de desenvolvimento local (Apache + MySQL + PHP)  
-
+- **XAMPP** — Ambiente de desenvolvimento local (Apache + MySQL + PHP)
+- 
 ---
 
 ## ⚙️ Funcionalidades Principais
