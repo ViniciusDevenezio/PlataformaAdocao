@@ -1,5 +1,25 @@
-<h1 align="center">TCC plataforma de adoção inteligente e automação</h1>
-Projeto sendo desenvolvido como trabalho de conclusão de curso em nossa formação de Sistemas de informação pela FHO - 2025
+<h1 align="center">Plataforma de Adoção Inteligente com Automação</h1> <p align="center"><strong>Projeto de Trabalho de Conclusão de Curso (TCC) - Sistemas de Informação - FHO | 2025</strong></p>
+📘 Sobre o Projeto
+Este projeto tem como finalidade otimizar o processo de adoção de animais em Organizações Não Governamentais (ONGs) por meio de uma plataforma web intuitiva, gratuita e acessível.
 
-<h2> Sobre o projeto </h2>
-Este projeto tem como objetivo facilitar o processo de adoção de animais em ONGs por meio de uma plataforma web intuitiva e gratuita. Com o uso de inteligência artificial, a plataforma oferece recomendações personalizadas para conectar adotantes aos pets ideais, aumentando a taxa de adoções bem-sucedidas, alem de ferramentas de divulgação automatizadas para as ongs.
+Utilizando recursos de inteligência artificial, o sistema fornece recomendações personalizadas, conectando adotantes aos pets mais compatíveis com seu perfil, contribuindo para adoções mais conscientes e duradouras.
+
+Além disso, a plataforma oferece ferramentas de automação para facilitar a divulgação dos animais em redes sociais, ampliando o alcance das ONGs e aumentando as chances de adoção.
+
+🛠️ Tecnologias Utilizadas
+Laravel — Framework PHP para desenvolvimento web
+
+MySQL — Banco de dados relacional
+
+Blade — Motor de templates do Laravel
+
+Bootstrap — Framework CSS para estilização responsiva
+
+OpenAI API — Recomendação inteligente de pets via IA
+
+Facebook Graph API — Automação da divulgação nas redes sociais
+
+Composer — Gerenciador de dependências PHP
+
+XAMPP — Ambiente de desenvolvimento local (Apache + MySQL + PHP)
+
