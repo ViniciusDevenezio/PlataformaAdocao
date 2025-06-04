@@ -4,7 +4,7 @@
 
 ---
 
-## 📘 Sobre o Projeto
+## 💡 Sobre o Projeto
 
 Este projeto tem como finalidade otimizar o processo de adoção de animais em Organizações Não Governamentais (ONGs) por meio de uma plataforma web intuitiva, gratuita e acessível.
 
