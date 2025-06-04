@@ -64,7 +64,7 @@ Além disso, a plataforma oferece **ferramentas de automação** para facilitar 
    composer install
    ```
 
-4. Configure o arquivo `.env` e configure com seu usuario e senha do banco de dados
+4. Configure o arquivo `.env` com seu usuario e senha do banco de dados
 
 5. Gere a chave da aplicação  
    ```bash
