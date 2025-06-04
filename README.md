@@ -30,10 +30,11 @@ Além disso, a plataforma oferece **ferramentas de automação** para facilitar 
 ## ⚙️ Funcionalidades Principais
 
 - Cadastro e gerenciamento de animais disponíveis para adoção  
-- Cadastro de adotantes com análise de perfil  
+- Cadastro de adotantes
+- Cadastro de ongs via Administração 
 - Sistema inteligente de recomendação de pets  
-- Automação de postagens de animais para adoção no Facebook  
-- Interface responsiva para acesso via desktop e mobile  
+- Automação de postagens de animais para adoção no Facebook (Graph API) 
+- Interface Web
 - Painel administrativo para as ONGs  
 
 ---
@@ -41,8 +42,8 @@ Além disso, a plataforma oferece **ferramentas de automação** para facilitar 
 ## 🚧 Em Desenvolvimento
 
 - Integração completa com a IA para sugerir pets ideais  
-- Agendamento de publicações automatizadas  
-- Dashboard com métricas de adoção e engajamento  
+- Animais para publicação com um click via Graph IA
+- Painel das ONGs
 
 ---
 
