@@ -1,4 +1,3 @@
-```markdown
 <h1 align="center">Plataforma de Adoção Inteligente com Automação</h1>
 
 <p align="center"><strong>Projeto de Trabalho de Conclusão de Curso (TCC) - Sistemas de Informação - FHO | 2025</strong></p>
