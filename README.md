@@ -63,14 +63,9 @@ Além disso, a plataforma oferece **ferramentas de automação** para facilitar 
    composer install
    ```
 
-4. Copie o arquivo `.env.example` para `.env`  
-   ```bash
-   cp .env.example .env
-   ```
+4. Configure o arquivo `.env` e configure com seu usuario e senha do banco de dados
 
-5. Configure as variáveis de ambiente no `.env`
-
-6. Gere a chave da aplicação  
+5. Gere a chave da aplicação  
    ```bash
    php artisan key:generate
    ```
@@ -79,6 +74,8 @@ Além disso, a plataforma oferece **ferramentas de automação** para facilitar 
    ```bash
    php artisan migrate
    ```
+
+7. Tenha certeza que a um servidor MYSQL phpmyadmin sendo executado na maquina com a porta corretamente  
 
 8. Inicie o servidor local  
    ```bash
@@ -89,6 +86,6 @@ Além disso, a plataforma oferece **ferramentas de automação** para facilitar 
 
 ## 👨‍💻 Autores
 
-- Vinicius Fernandes Devenezio — RA: 113063  
-- César Henrique Santos Duarte — RA: 113526  
+- Vinicius Fernandes Devenezio 
+- César Henrique Santos Duarte
 ```
