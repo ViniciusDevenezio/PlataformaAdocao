@@ -40,6 +40,10 @@ Route::get('/cadastroAnimal', function () {
     return view('cadastroAnimal');
 });
 
+Route::get('/painelAdotante', [AdotanteAuthController::class, 'painelAdotante'])
+    ->name('adotante.pets')
+    ->middleware('auth:adotante');
+
 Route::post('/tutor/store', [TutorController::class, 'store'])->name('tutor.store');
 
 // CRUD de adotantes
@@ -50,4 +54,5 @@ Route::get('/adotar', [PetController::class, 'adotar'])->name('adotar');
 
 Route::get('/pets', [PetController::class, 'index']);
 
+Route::post('/pets/{id}/reservar', [PetController::class, 'reservar'])->name('pets.reservar')->middleware('auth:adotante');
 

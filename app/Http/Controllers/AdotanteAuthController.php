@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Pet;
+
 
 class AdotanteAuthController extends Controller
 {
@@ -22,13 +24,13 @@ class AdotanteAuthController extends Controller
         // Tenta como Adotante
         if (Auth::guard('adotante')->attempt($credenciais)) {
             $request->session()->regenerate();
-            return redirect('/'); 
+            return redirect('/');
         }
 
         // Tenta como ONG
         if (Auth::guard('ong')->attempt($credenciais)) {
             $request->session()->regenerate();
-            return redirect('/'); 
+            return redirect('/');
         }
 
         return back()->withErrors([
@@ -36,19 +38,26 @@ class AdotanteAuthController extends Controller
         ])->onlyInput('email');
     }
 
+    public function painelAdotante()
+    {
+        $adotante = Auth::guard('adotante')->user();
+        $pets = Pet::where('adotante_id', $adotante->id)->get();
+        return view('painelAdotante', compact('pets'));
+    }
+
     public function logout(Request $request)
-{
-    if (Auth::guard('ong')->check()) {
-        Auth::guard('ong')->logout();
+    {
+        if (Auth::guard('ong')->check()) {
+            Auth::guard('ong')->logout();
+        }
+
+        if (Auth::guard('adotante')->check()) {
+            Auth::guard('adotante')->logout();
+        }
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'Logout realizado com sucesso.');
     }
-
-    if (Auth::guard('adotante')->check()) {
-        Auth::guard('adotante')->logout();
-    }
-
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-
-    return redirect()->route('login')->with('success', 'Logout realizado com sucesso.');
-}
 }

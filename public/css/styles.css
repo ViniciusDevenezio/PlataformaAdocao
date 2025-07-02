@@ -162,33 +162,6 @@ body {
     animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Estilo do botão Seja um parceiro */
 #btn-parceiro {
     background-color: white; /* Fundo branco inicial */
@@ -481,4 +454,7 @@ form input.form-control {
     width: 100%; /* Garante que os inputs fiquem dentro da largura da coluna */
 }
 
+#alertaAdocao{
+    margin-top:6rem;
+}
 
