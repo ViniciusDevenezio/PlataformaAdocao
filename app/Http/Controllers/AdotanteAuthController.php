@@ -9,21 +9,26 @@ class AdotanteAuthController extends Controller
 {
     public function login(Request $request)
     {
-        // Valida os campos vindos do form
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // Tentativa de login com os mesmos nomes usados no form
         $credenciais = [
             'email' => $request->email,
             'password' => $request->password
         ];
 
+        // Tenta como Adotante
         if (Auth::guard('adotante')->attempt($credenciais)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect('/'); 
+        }
+
+        // Tenta como ONG
+        if (Auth::guard('ong')->attempt($credenciais)) {
+            $request->session()->regenerate();
+            return redirect('/'); 
         }
 
         return back()->withErrors([
@@ -32,11 +37,18 @@ class AdotanteAuthController extends Controller
     }
 
     public function logout(Request $request)
-    {
-        Auth::guard('adotante')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login')->with('success', 'Logout realizado com sucesso.');
+{
+    if (Auth::guard('ong')->check()) {
+        Auth::guard('ong')->logout();
     }
+
+    if (Auth::guard('adotante')->check()) {
+        Auth::guard('adotante')->logout();
+    }
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('login')->with('success', 'Logout realizado com sucesso.');
+}
 }

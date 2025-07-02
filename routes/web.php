@@ -5,6 +5,8 @@ use App\Http\Controllers\TutorController;
 use App\Http\Controllers\AdotanteController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdotanteAuthController;
+use App\Http\Controllers\PetController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -42,4 +44,10 @@ Route::post('/tutor/store', [TutorController::class, 'store'])->name('tutor.stor
 
 // CRUD de adotantes
 Route::resource('adotantes', AdotanteController::class);
+
+Route::get('/adotar', [PetController::class, 'adotar'])->name('adotar');
+
+
+Route::get('/pets', [PetController::class, 'index']);
+
 

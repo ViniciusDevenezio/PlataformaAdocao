@@ -16,6 +16,10 @@ return [
             'driver' => 'session',
             'provider' => 'adotantes',
         ],
+        'ong' => [
+        'driver' => 'session',
+        'provider' => 'ongs',
+    ],
     ],
 
     'providers' => [
@@ -27,6 +31,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Adotante::class,
         ],
+        'ongs' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Ong::class,
+    ],
     ],
 
     'passwords' => [

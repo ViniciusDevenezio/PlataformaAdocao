@@ -122,6 +122,73 @@ body {
     animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
 }
 
+#btn-logout {
+    background-color: white; /* Fundo branco inicial */
+    color: #0887F2; /* Texto azul */
+    border: 2px solid #0887F2; /* Borda azul */
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s;
+    z-index: 1; /* Garante que o texto fique acima do ::after */
+}
+
+/* Pseudo-elemento para o efeito de fundo do Login */
+#btn-logout::after {
+    content: '';
+    position: absolute;
+    bottom: -100%; /* Começa fora do botão, na parte inferior */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0887F2; /* Cor do fundo azul */
+    z-index: -1; /* Coloca o efeito atrás do texto */
+    transition: bottom 0.4s ease-in-out; /* Transição suave */
+}
+
+/* Efeito hover do Login */
+#btn-logout:hover {
+    color: white; /* Texto muda para branco */
+}
+
+/* Aplicação da animação ao Login */
+#btn-logout:hover::after {
+    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
+    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Estilo do botão Seja um parceiro */
 #btn-parceiro {
     background-color: white; /* Fundo branco inicial */
