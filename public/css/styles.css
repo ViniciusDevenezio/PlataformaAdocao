@@ -357,3 +357,185 @@ body {
 .btn-orange:hover {
     background-color: #e76f51;
 }
+<<<<<<< Updated upstream
+=======
+
+.form-control {
+    width: 100%; /* Garante que os inputs fiquem dentro da largura da coluna */
+}
+
+/* FORMULÁRIO DE CADASTRO DE PETS */
+#form-pet-container {
+    max-width: 500px;
+    background-color: #ffffff;
+    padding: 30px 40px;
+    margin: 80px auto; /* margem superior para não colar na navbar fixa */
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+#form-pet-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+#form-pet-container label {
+    display: block;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+#form-pet-container input[type="text"],
+#form-pet-container input[type="file"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+#form-pet-container button[type="submit"] {
+    background-color: #0887F2;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#form-pet-container button[type="submit"]:hover {
+    background-color: #066cc3;
+}
+
+.pet-list-container {
+    max-width: 900px;
+    margin: 100px auto 40px;
+    padding: 0 20px;
+}
+
+.alert-success {
+    color: #2d6a4f;
+    background-color: #d8f3dc;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn-cadastrar-pet {
+    background-color: #ffb01d;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.3s;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.btn-cadastrar-pet:hover {
+    background-color: #e89c14;
+}
+
+.pet-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.pet-card h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.pet-foto {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.pet-card a,
+.pet-card form button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pet-card a.edit-link {
+    background-color: #0887F2;
+    color: white;
+}
+
+.pet-card form button.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.pet-card a:hover,
+.pet-card form button:hover {
+    opacity: 0.85;
+}
+
+/* botão de atualização */
+.btn-update{
+    background:#2d6a4f;            /* verde suave */
+    color:#fff;
+    border:none;
+    padding:12px;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:500;
+    width:100%;
+    cursor:pointer;
+    transition:background .3s ease;
+}
+.btn-update:hover{background:#22543d;}
+
+#form-pet-container select,
+#form-pet-container textarea,
+#form-pet-container input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fff;
+    box-sizing: border-box;
+    appearance: none; /* remove estilo nativo */
+    background-image: url("data:image/svg+xml,%3Csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23666' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 10px;
+}
+
+#form-pet-container select:focus,
+#form-pet-container textarea:focus,
+#form-pet-container input[type="number"]:focus {
+    outline: none;
+    border-color: #0887F2;
+    box-shadow: 0 0 0 3px rgba(8, 135, 242, 0.2);
+}
+>>>>>>> Stashed changes
