@@ -56,7 +56,9 @@
                                 {{ $pet->descricao ?? "Conheça este pet adorável, dócil e brincalhão, perfeito para qualquer lar. Está pronto para encontrar uma nova família." }}
                             </p>
                             <div class="text-center">
-                                <a href="{{ route('pet.mostrar', ['slug' => $pet->slug]) }}" class="btn btn-primary w-100"> Quero Adotar</a>
+                                <button class="btn btn-primary w-100 " data-bs-toggle="modal"
+                                    data-bs-target="#modalOng{{ $pet->id }}">Quero Adotar
+                                </button>
                             </div>
                         </div>
                     </div>

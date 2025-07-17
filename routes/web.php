@@ -6,17 +6,22 @@ use App\Http\Controllers\AdotanteController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdotanteAuthController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\OngPainelController;
+
 
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-// Página de login
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
 // Envio do login - Apenas um controller (AdotanteAuthController, se for o principal)
 Route::post('/login', [AdotanteAuthController::class, 'login'])->name('adotante.login');
+
+// Controle de login se estiver logado
+Route::get('/login', [LoginController::class, 'showLoginForm'])
+    ->name('login')
+    ->middleware('bloquear_se_logado');
 
 // Logout
 Route::post('/logout', [AdotanteAuthController::class, 'logout'])->name('logout');
@@ -55,4 +60,22 @@ Route::get('/adotar', [PetController::class, 'adotar'])->name('adotar');
 Route::get('/pets', [PetController::class, 'index']);
 
 Route::post('/pets/{id}/reservar', [PetController::class, 'reservar'])->name('pets.reservar')->middleware('auth:adotante');
+// mostrar info completa do pet
+Route::get('/pet/{slug}', [PetController::class, 'mostrar'])->name('pet.mostrar');
 
+
+// Painel da ong // Painel da Ong 
+
+
+Route::middleware(['auth:ong'])->group(function () {
+    Route::view('/painel-ong', 'painelOng')->name('painel.ong');
+
+    Route::get('/painel-ong/pets', [OngPainelController::class, 'listarPets'])->name('ong.pets');
+    Route::get('/painel-ong/pets/novo', [OngPainelController::class, 'formPet'])->name('ong.pets.novo');
+    Route::post('/painel-ong/pets', [OngPainelController::class, 'salvarPet'])->name('ong.pets.salvar');
+    Route::get('/painel-ong/pets/{id}/editar', [OngPainelController::class, 'editarPet'])->name('ong.pets.editar');
+    Route::put('/painel-ong/pets/{id}', [OngPainelController::class, 'atualizarPet'])->name('ong.pets.atualizar');
+    Route::delete('/painel-ong/pets/{id}', [OngPainelController::class, 'excluirPet'])->name('ong.pets.excluir');
+
+    Route::get('/painel-ong/interesses', [OngPainelController::class, 'interesses'])->name('ong.interesses');
+});

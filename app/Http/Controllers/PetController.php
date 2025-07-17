@@ -10,7 +10,7 @@ class PetController extends Controller
 {
     public function adotar()
     {
-        $pets = Pet::all();
+        $pets = Pet::with('ong')->get();
         return view('adotar', compact('pets')); // sem 'pets.' antes
     }
 
@@ -20,7 +20,8 @@ class PetController extends Controller
         return view('pets.show', compact('pet'));
     }
 
-    public function reservar($id){
+    public function reservar($id)
+    {
         $pet = Pet::findOrFail($id);
 
         // Verifica se está disponível
@@ -41,6 +42,12 @@ class PetController extends Controller
         $pet->save();
 
         return redirect()->back()->with('success', 'Pet reservado com sucesso. Aguardando aprovação da ONG.');
+    }
+
+    public function mostrar($slug)
+    {
+        $pet = \App\Models\Pet::where('slug', $slug)->firstOrFail();
+        return view('pets.mostrar', compact('pet'));
     }
 
 }

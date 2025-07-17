@@ -1,50 +1,93 @@
 @extends ('layouts.main')
 
 @section('head')
-
 @endsection
 
 @section('menu')
-
 @endsection
 
 
-@section('content')
-<div class="container-fluid">
-    <div class="row">
-        {{-- MENU LATERAL --}}
-        <div class="col-md-3">
-            <div class="list-group">
-                <a href="{{ route('home') }}" class="list-group-item list-group-item-action">🏠 Início</a>
-                <a href="{{ route('adotante.pets') }}" class="list-group-item list-group-item-action active">🐾 Meus Pets</a>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button class="list-group-item list-group-item-action text-start text-danger" type="submit">🚪 Sair</button>
-                </form>
-            </div>
-        </div>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .sidebar {
+      height: 100vh;
+      background-color: #343a40;
+      color: white;
+      padding-top: 1rem;
+      min-width: 250px;
+    }
+    .sidebar a {
+      color: #adb5bd;
+      text-decoration: none;
+    }
+    .sidebar a:hover,
+    .sidebar .active {
+      background-color: #0d6efd;
+      color: white !important;
+    }
+    .sidebar .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .sidebar .logo img {
+      width: 120px;
+    }
+  </style>
+</head>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="p-4 flex-grow-1">
+      <h2>Pets Reservados</h2>
 
-        {{-- CONTEÚDO PRINCIPAL --}}
-        <div class="col-md-9">
-            <h2>🐶 Pets Reservados</h2>
-            <div class="row">
-                @forelse($pets as $pet)
-                    <div class="col-md-6 mb-3">
-                        <div class="card">
-                            <img src="{{ asset('images/' . $pet->imagem_url) }}" class="card-img-top" alt="{{ $pet->nome }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $pet->nome }}</h5>
-                                <p><strong>Status:</strong> {{ ucfirst(str_replace('_', ' ', $pet->status)) }}</p>
-                                <p><strong>Raça:</strong> {{ $pet->raca }}</p>
-                                <p><strong>Localização:</strong> {{ $pet->localizacao }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <p>Você ainda não reservou nenhum pet.</p>
-                @endforelse
-            </div>
-        </div>
+      <div class="table-responsive mt-4">
+        <table class="table table-bordered table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Imagem</th>
+              <th>Nome</th>
+              <th>Raça</th>
+              <th>Localização</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Exemplo de pet reservado -->
+            <tr>
+              <td><img src="/images/pet1.jpg" alt="Pet 1" width="100" /></td>
+              <td>Bolinha</td>
+              <td>Vira-lata</td>
+              <td>São Paulo - SP</td>
+              <td>Reservado</td>
+              <td><button class="btn btn-primary btn-sm">Entrar em contato com a ONG</button></td>
+            </tr>
+
+            <!-- Exemplo de pet pendente -->
+            <tr>
+              <td><img src="/images/pet2.jpg" alt="Pet 2" width="100" /></td>
+              <td>Mel</td>
+              <td>Poodle</td>
+              <td>Campinas - SP</td>
+              <td>Pendente</td>
+              <td><span class="badge bg-warning text-dark">Pendente</span></td>
+            </tr>
+
+            <!-- Exemplo de pet adotado -->
+            <tr>
+              <td><img src="/images/pet3.jpg" alt="Pet 3" width="100" /></td>
+              <td>Rex</td>
+              <td>Golden Retriever</td>
+              <td>Ribeirão Preto - SP</td>
+              <td>Adotado</td>
+              <td><span class="badge bg-success">Adotado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-</div>
-@endsection
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
