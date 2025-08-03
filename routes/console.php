@@ -10,5 +10,5 @@ Artisan::command('inspire', function () {
 //rota para receber os dados do formulario
 use App\Http\Controllers\TutorController;
 
-Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store');
+
 

@@ -71,11 +71,15 @@ Route::middleware(['auth:ong'])->group(function () {
     Route::view('/painel-ong', 'painelOng')->name('painel.ong');
 
     Route::get('/painel-ong/pets', [OngPainelController::class, 'listarPets'])->name('ong.pets');
-    Route::get('/painel-ong/pets/novo', [OngPainelController::class, 'formPet'])->name('ong.pets.novo');
+    Route::get('/painel-ong/pets/novo', [OngPainelController::class, 'cadastrarPet'])->name('ong.pets.novo');
     Route::post('/painel-ong/pets', [OngPainelController::class, 'salvarPet'])->name('ong.pets.salvar');
+    Route::put('/painel/ong/pets/{id}/status', [OngPainelController::class, 'atualizarStatusPet'])->name('ong.pets.atualizar.status');
     Route::get('/painel-ong/pets/{id}/editar', [OngPainelController::class, 'editarPet'])->name('ong.pets.editar');
     Route::put('/painel-ong/pets/{id}', [OngPainelController::class, 'atualizarPet'])->name('ong.pets.atualizar');
     Route::delete('/painel-ong/pets/{id}', [OngPainelController::class, 'excluirPet'])->name('ong.pets.excluir');
 
     Route::get('/painel-ong/interesses', [OngPainelController::class, 'interesses'])->name('ong.interesses');
 });
+Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store');
+//rota para enviar os dados dos pets para editar
+// routes/web.php
