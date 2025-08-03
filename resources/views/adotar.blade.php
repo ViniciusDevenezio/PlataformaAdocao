@@ -12,7 +12,7 @@
     @php
         $mudaStatus = [
             'disponivel' => 'Disponível',
-            'reservado' => 'Reservado',
+            'reservado' => 'Pet reservado',
             'aguardando_aprovacao' => 'Aguardando aprovação'
         ];
     @endphp
@@ -42,21 +42,29 @@
                     $mensagemUrl = urlencode($mensagem);
                     $numeroOng = preg_replace('/\D/', '', $pet->ong->telefone);
                 @endphp
-
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm ">
-                        <img src="{{ asset('images/' . $pet->imagem_url) }}" class="card-img-top" alt="{{ $pet->nome }}">
-                        <div class="card-body text-start">
-                            <h6 class="fw-bold">{{ $pet->nome ?? 'Sem nome ainda' }}</h6>
-                            <p class="text-muted mb-1">
-                                {{ ucfirst($pet->porte) }} | {{ ucfirst($pet->genero) }} |
-                                {{ $pet->idade ?? 'Idade não informada' }}
-                            </p>
-                            <p class="mb-3">
-                                {{ $pet->descricao ?? "Conheça este pet adorável, dócil e brincalhão, perfeito para qualquer lar. Está pronto para encontrar uma nova família." }}
-                            </p>
-                            <div class="text-center">
-                                <a href="{{ route('pet.mostrar', ['slug' => $pet->slug]) }}" class="btn btn-primary w-100"> Quero Adotar</a>
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
+                            style="height: 15rem; object-fit: cover; width: 100%;" alt="{{ $pet->nome }}">
+
+                        <div class="card-body text-start d-flex flex-column">
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold">{{ $pet->nome ?? 'Sem nome ainda' }}</h6>
+                                <p class="text-muted mb-1">
+                                    {{ ucfirst($pet->porte) }} | {{ ucfirst($pet->genero) }} |
+                                    {{ $pet->idade ?? 'Idade não informada' }}
+                                </p>
+                                <p class="mb-3">
+                                    {{ $pet->descricao ?? "Conheça este pet adorável, dócil e brincalhão, perfeito para qualquer lar. Está pronto para encontrar uma nova família." }}
+                                </p>
+                            </div>
+
+                            <div class="text-center mt-auto">
+                                @if($pet->status === 'reservado')
+                                    <button class="btn btn-secondary w-100" disabled>Pet Reservado</button>
+                                @else
+                                    <a href="{{ route('pet.mostrar', ['slug' => $pet->slug]) }}" class="btn btn-primary w-100 py-2">Quero Adotar</a>
+                                @endif
                             </div>
                         </div>
                     </div>

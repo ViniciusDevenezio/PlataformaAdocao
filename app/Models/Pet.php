@@ -10,9 +10,9 @@ class Pet extends Model
     protected $fillable = [
         'ong_id',
         'nome', 'raca', 'mistura', 'misturado_com', 'temperamento',
-        'porte', 'genero', 'faixa_etaria', 'localizacao',
+        'porte', 'genero', 'faixa_etaria','idade', 'localizacao',
         'disponivel_ate', 'status', 'imagem_url', 'descricao',
-        'adotante_id', 'slug' // adicione isso se ainda não estiver
+        'adotante_id', 'slug' 
     ];
 
     protected $casts = [

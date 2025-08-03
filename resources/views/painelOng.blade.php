@@ -79,7 +79,7 @@
 
 @section('content')
 
-    {{-- SIDEBAR --}}
+    {{-- Sidebar Lateral --}}
     <div class="sidebar" id="sidebar-lateral-ong">
         <a href="{{ route('painel.ong') }}" class="{{ request()->routeIs('painel.ong') ? 'active-link' : '' }}">
             🏠 Início
@@ -95,7 +95,7 @@
         </form>
     </div>
 
-    {{-- CONTEÚDO PRINCIPAL --}}
+    {{-- Conteudo  --}}
     <div class="main-content mb-4">
         <h2 class="mb-5" id="titulo-painel">Painel da ONG - {{ auth('ong')->user()->nome }}</h2>
 

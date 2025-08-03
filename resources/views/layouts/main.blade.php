@@ -14,6 +14,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
     <!-- Seu CSS personalizado -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
@@ -74,14 +76,15 @@
                             </li>
                         </ul>
                     </li>
-                @elseif(Auth::guard('ong')->check())
+                @elseif(auth('ong')->check())
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="menuOng" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             ONG: {{ Auth::guard('ong')->user()->nome }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="menuOng">
-                            <li><a class="dropdown-item" href="#">Painel da ONG</a></li>
+                            <li><a class="dropdown-item" href="/painel-ong">Painel da ONG</a></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="dropdown-item m-0 p-0">
                                     @csrf

@@ -18,8 +18,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-
-    background-color: rgb(243, 243, 243); /* Cor de fundo do menu */
+    background-color: rgb(255, 255, 255); /* Cor de fundo do menu */
     box-shadow: 6px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra embaixo do menu */
     padding: 0px 25px;
     z-index: 1000;

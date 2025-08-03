@@ -101,17 +101,17 @@
                 <div class="row mt-3">
                     <div class="col-md-4">
                         <label for="bairro">Bairro</label>
-                        <input type="text" id="bairro" name="bairro" class="form-control" required>
+                        <input type="text" id="bairro" name="bairro" class="form-select py-2" required>
                     </div>
                     <div class="col-md-4">
                         <label for="estado">Estado</label>
-                        <select id="estado" name="estado" class="form-control" required>
+                        <select id="estado" name="estado" class="form-select py-2" required>
                             <option value="">Selecione um estado</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label for="cidade">Cidade</label>
-                        <select id="cidade" name="cidade" class="form-control" required>
+                        <select id="cidade" name="cidade" class="form-select py-2" required>
                             <option value="">Selecione uma cidade</option>
                         </select>
                     </div>
