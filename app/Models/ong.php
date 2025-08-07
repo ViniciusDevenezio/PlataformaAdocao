@@ -2,20 +2,42 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Ong extends Model
+class Ong extends Authenticatable
 {
-    
-    protected $table = 'ongs';
+    use Notifiable;
 
-    public $timestamps = false;
+    protected $table = 'ongs';
 
     protected $fillable = [
         'nome',
         'email',
-        'telefone',
         'senha',
+        'telefone',
+        'cnpj',
+        'cep',
         'endereco',
+        'numero',
+        'bairro',
+        'cidade',
+        'estado',
     ];
+
+    protected $hidden = ['senha', 'remember_token'];
+
+    /**
+     * Laravel precisa saber onde está a senha do usuário
+     */
+    public function getAuthPassword()
+    {
+        return $this->senha;
+    }
+
+    // Relacionamento com pets
+    public function pets()
+    {
+        return $this->hasMany(Pet::class);
+    }
 }

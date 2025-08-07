@@ -1,52 +1,85 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-<<<<<<< Updated upstream
-=======
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\AdotanteController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdotanteAuthController;
 use App\Http\Controllers\PetController;
-use App\Http\Controllers\AnimalController; // ← adicionado se ainda não tiver
->>>>>>> Stashed changes
+use App\Http\Controllers\OngPainelController;
 
-// Página inicial
+
+
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
-Route::get('/login', function () {
-    return view('login');
-});
 
+// Envio do login - Apenas um controller (AdotanteAuthController, se for o principal)
+Route::post('/login', [AdotanteAuthController::class, 'login'])->name('adotante.login');
+
+// Controle de login se estiver logado
+Route::get('/login', [LoginController::class, 'showLoginForm'])
+    ->name('login')
+    ->middleware('bloquear_se_logado');
+
+// Logout
+Route::post('/logout', [AdotanteAuthController::class, 'logout'])->name('logout');
+
+// Cadastro
 Route::get('/cadastro', function () {
     return view('cadastro');
-});
+})->name('cadastro');
 
+// Dashboard protegida
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard')->middleware('auth');
+
+// Outras páginas
 Route::get('/painel', function () {
     return view('painel');
 });
 
-<<<<<<< Updated upstream
-=======
 Route::get('/cadastroAnimal', function () {
     return view('cadastroAnimal');
 });
 
-// Cadastro de tutor
+Route::get('/painelAdotante', [AdotanteAuthController::class, 'painelAdotante'])
+    ->name('adotante.pets')
+    ->middleware('auth:adotante');
+
 Route::post('/tutor/store', [TutorController::class, 'store'])->name('tutor.store');
 
 // CRUD de adotantes
 Route::resource('adotantes', AdotanteController::class);
 
-// CRUD de pets
-Route::resource('pets', PetController::class);
+Route::get('/adotar', [PetController::class, 'adotar'])->name('adotar');
 
-// Evita conflito com a rota de resource acima
-Route::get('/pets', [PetController::class, 'index'])->name('index');
 
-// CRUD de animais (se estiver usando esse controller também)
-Route::resource('/pets', AnimalController::class);
+Route::get('/pets', [PetController::class, 'index']);
 
->>>>>>> Stashed changes
+Route::post('/pets/{id}/reservar', [PetController::class, 'reservar'])->name('pets.reservar')->middleware('auth:adotante');
+// mostrar info completa do pet
+Route::get('/pet/{slug}', [PetController::class, 'mostrar'])->name('pet.mostrar');
+
+
+// Painel da ong // Painel da Ong 
+
+
+Route::middleware(['auth:ong'])->group(function () {
+    Route::view('/painel-ong', 'painelOng')->name('painel.ong');
+
+    Route::get('/painel-ong/pets', [OngPainelController::class, 'listarPets'])->name('ong.pets');
+    Route::get('/painel-ong/pets/novo', [OngPainelController::class, 'cadastrarPet'])->name('ong.pets.novo');
+    Route::post('/painel-ong/pets', [OngPainelController::class, 'salvarPet'])->name('ong.pets.salvar');
+    Route::put('/painel/ong/pets/{id}/status', [OngPainelController::class, 'atualizarStatusPet'])->name('ong.pets.atualizar.status');
+    Route::get('/painel-ong/pets/{id}/editar', [OngPainelController::class, 'editarPet'])->name('ong.pets.editar');
+    Route::put('/painel-ong/pets/{id}', [OngPainelController::class, 'atualizarPet'])->name('ong.pets.atualizar');
+    Route::delete('/painel-ong/pets/{id}', [OngPainelController::class, 'excluirPet'])->name('ong.pets.excluir');
+
+    Route::get('/painel-ong/interesses', [OngPainelController::class, 'interesses'])->name('ong.interesses');
+});
+Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store');
+//rota para enviar os dados dos pets para editar
+// routes/web.php

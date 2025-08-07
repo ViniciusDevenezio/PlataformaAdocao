@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
+{
+    Schema::table('pets', function (Blueprint $table) {
+        $table->unsignedBigInteger('ong_id')->after('id');
+
+        $table->foreign('ong_id')->references('id')->on('ongs')->onDelete('cascade');
+    });
+}
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('pets', function (Blueprint $table) {
+            //
+        });
+    }
+};

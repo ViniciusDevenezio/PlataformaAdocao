@@ -1,81 +1,53 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Pet;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Pet;
+use Illuminate\Support\Facades\Auth;
+
 
 class PetController extends Controller
 {
-    public function index()
+    public function adotar()
     {
-        $pets = Pet::all();
-        return view('index', compact('pets'));
+        $pets = Pet::with('ong')->get();
+        return view('adotar', compact('pets')); // sem 'pets.' antes
     }
 
-    public function create()
+    public function show($id)
     {
-        return view('create');
+        $pet = Pet::findOrFail($id);
+        return view('pets.show', compact('pet'));
     }
 
-    public function store(Request $request)
+    public function reservar($id)
     {
-        // Validação dos dados do formulário
-        $data = $request->validate([
-            'nome' => 'required|string|max:100',
-            'raca' => 'required|string|max:100',
-            'foto' => 'nullable|image|max:2048' // até 2MB
-        ]);
+        $pet = Pet::findOrFail($id);
 
-        // Se tiver uma imagem, salva no storage
-        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            $data['foto'] = $request->file('foto')->store('pets', 'public');
+        // Verifica se está disponível
+        if ($pet->status !== 'disponivel') {
+            return redirect()->back()->with('error', 'Este pet não está disponível para reserva.');
         }
 
-        // Cria o registro no banco
-        Pet::create($data);
-
-        return redirect()->route('index')->with('success', 'Animal cadastrado com sucesso!');
-    }
-
-    public function edit(Pet $pet)
-    {
-        return view('edit', compact('pet'));
-    }
-
-    public function update(Request $request, Pet $pet)
-    {
-        $data = $request->validate([
-            'nome' => 'required|string|max:100',
-            'raca' => 'required|string|max:100',
-            'foto' => 'nullable|image|max:2048'
-        ]);
-
-        // Se enviar nova foto, deleta a antiga e salva a nova
-        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            if ($pet->foto) {
-                Storage::disk('public')->delete($pet->foto);
-            }
-
-            $data['foto'] = $request->file('foto')->store('pets', 'public');
+        // Verifica se o usuário está autenticado como adotante
+        if (!Auth::guard('adotante')->check()) {
+            return redirect()->route('login')->with('error', 'Você precisa estar logado como adotante para reservar um pet.');
         }
 
-        // Atualiza o banco
-        $pet->update($data);
+        $adotante = Auth::guard('adotante')->user();
 
-        return redirect()->route('index')->with('success', 'Animal atualizado!');
+        // Atualiza pet com o adotante e status
+        $pet->adotante_id = $adotante->id;
+        $pet->status = 'aguardando_aprovacao';
+        $pet->save();
+
+        return redirect()->back()->with('success', 'Pet reservado com sucesso. Aguardando aprovação da ONG.');
     }
 
-    public function destroy(Pet $pet)
+    public function mostrar($slug)
     {
-        // Remove a foto se houver
-        if ($pet->foto) {
-            Storage::disk('public')->delete($pet->foto);
-        }
-
-        $pet->delete();
-
-        return redirect()->route('index')->with('success', 'Animal removido!');
+        $pet = \App\Models\Pet::where('slug', $slug)->firstOrFail();
+        return view('pets.mostrar', compact('pet'));
     }
+
 }
