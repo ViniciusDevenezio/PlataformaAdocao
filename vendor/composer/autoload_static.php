@@ -645,6 +645,7 @@ class ComposerStaticInitc610ccac5c4ec009dac0f91507b8f5e1
     public static $classMap = array (
         'App\\Http\\Controllers\\AdotanteAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdotanteAuthController.php',
         'App\\Http\\Controllers\\AdotanteController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdotanteController.php',
+        'App\\Http\\Controllers\\AnimalController' => __DIR__ . '/../..' . '/app/Http/Controllers/AnimalController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',
         'App\\Http\\Controllers\\OngPainelController' => __DIR__ . '/../..' . '/app/Http/Controllers/OngPainelController.php',
@@ -652,7 +653,7 @@ class ComposerStaticInitc610ccac5c4ec009dac0f91507b8f5e1
         'App\\Http\\Controllers\\TutorController' => __DIR__ . '/../..' . '/app/Http/Controllers/TutorController.php',
         'App\\Http\\Middleware\\BlockLoggedUser' => __DIR__ . '/../..' . '/app/Http/Middleware/BlockLoggedUser.php',
         'App\\Models\\Adotante' => __DIR__ . '/../..' . '/app/Models/Adotante.php',
-        'App\\Models\\Ong' => __DIR__ . '/../..' . '/app/Models/Ong.php',
+        'App\\Models\\Animal' => __DIR__ . '/../..' . '/app/Models/Animal.php',
         'App\\Models\\Pet' => __DIR__ . '/../..' . '/app/Models/Pet.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

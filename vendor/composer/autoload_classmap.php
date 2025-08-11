@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Http\\Controllers\\AdotanteAuthController' => $baseDir . '/app/Http/Controllers/AdotanteAuthController.php',
     'App\\Http\\Controllers\\AdotanteController' => $baseDir . '/app/Http/Controllers/AdotanteController.php',
+    'App\\Http\\Controllers\\AnimalController' => $baseDir . '/app/Http/Controllers/AnimalController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\LoginController' => $baseDir . '/app/Http/Controllers/LoginController.php',
     'App\\Http\\Controllers\\OngPainelController' => $baseDir . '/app/Http/Controllers/OngPainelController.php',
@@ -15,7 +16,7 @@ return array(
     'App\\Http\\Controllers\\TutorController' => $baseDir . '/app/Http/Controllers/TutorController.php',
     'App\\Http\\Middleware\\BlockLoggedUser' => $baseDir . '/app/Http/Middleware/BlockLoggedUser.php',
     'App\\Models\\Adotante' => $baseDir . '/app/Models/Adotante.php',
-    'App\\Models\\Ong' => $baseDir . '/app/Models/Ong.php',
+    'App\\Models\\Animal' => $baseDir . '/app/Models/Animal.php',
     'App\\Models\\Pet' => $baseDir . '/app/Models/Pet.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

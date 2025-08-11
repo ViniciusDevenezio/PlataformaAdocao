@@ -1,588 +1,177 @@
-* { 
-    font-family: 'Poppins', sans-serif;
+* { font-family: 'Poppins', sans-serif; }
+
+body{
+  background-image:url('/img/backgroundpattern.jpg');
+  background-repeat:repeat;
+  background-size:auto;
+  background-position:top left;
+  font-family:'Poppins',sans-serif;
 }
 
-body {
-    background-image: url('/img/backgroundpattern.jpg');
-    background-repeat: repeat; /* Faz o padrão se repetir em todas as direções */
-    background-size: auto; /* Deixa o tamanho original da imagem */
-    background-position: top left; /* Começa a repetição no canto superior esquerdo */
-    font-family: 'Poppins', sans-serif;
-    
+/* NAVBAR */
+.custom-navbar{
+  position:fixed; top:0; left:0; width:100%;
+  background:rgb(243,243,243);
+  box-shadow:6px 4px 6px rgba(0,0,0,.1);
+  padding:0 25px; z-index:1000;
+}
+.custom-navbar .nav-link{
+  color:#333; font-weight:500; padding:0 15px;   /* conserta 'px 15px' */
+  text-transform:uppercase; transition:color .3s;
+}
+.logo-navbar{ height:60px; width:auto; }
+.navbar-nav{ display:flex; align-items:center; gap:5px; }
+.navbar-brand{ display:flex; align-items:center; }
+
+/* Botões topo */
+@keyframes bounce{
+  0%{bottom:-100%}50%{bottom:-50%}80%{bottom:-2%}
+  90%{bottom:-4px}94%{bottom:-3px}96%{bottom:-2px}
+  99%{bottom:-1px}100%{bottom:0}
+}
+#btn-login,#btn-logout,#btn-parceiro{
+  background:#fff; color:#0887F2; border:2px solid #0887F2;
+  padding:10px 20px; border-radius:8px; font-weight:500;
+  text-decoration:none; margin-left:10px; font-size:14px;
+  position:relative; overflow:hidden; transition:color .3s; z-index:1;
+}
+#btn-login::after,#btn-logout::after,#btn-parceiro::after{
+  content:''; position:absolute; left:0; bottom:-100%; width:100%; height:100%;
+  background:#0887F2; z-index:-1; transition:bottom .4s ease-in-out;
+}
+#btn-login:hover,#btn-logout:hover,#btn-parceiro:hover{ color:#fff; }
+#btn-login:hover::after,#btn-logout:hover::after,#btn-parceiro:hover::after{
+  bottom:0; animation:bounce .5s ease-in-out;
+}
+.custom-navbar .btn-adotar{
+  background:#ffb01d; color:#fff; border:2px solid #ffb01d;
+  padding:10px 20px; border-radius:8px; font-weight:500; margin-left:10px; font-size:14px;
 }
 
-
-/* Navbar personalizada */
-.custom-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-
-    background-color: rgb(243, 243, 243); /* Cor de fundo do menu */
-    box-shadow: 6px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra embaixo do menu */
-    padding: 0px 25px;
-    z-index: 1000;
+/* Botão ☰ */
+#btn-toggle-sidebar{
+  background:none; border:none; font-size:28px; color:#333;
+  cursor:pointer; margin-right:15px; z-index:1100;
 }
 
-/* Links padrão do menu */
-.custom-navbar .nav-link {
-    color: #333; /* Cor padrão dos links */
-    font-weight: 500;
-    padding: px 15px;
-    text-transform: uppercase;
-    transition: color 0.3s ease;
+/* SIDEBAR */
+.sidebar{
+  position:fixed; top:60px; bottom:0; left:0;
+  width:220px; background:#2c2c2c; padding-top:1rem; z-index:999;
+}
+.sidebar a{
+  display:block; color:#e0e0e0; padding:12px 20px; text-decoration:none;
+  border-bottom:1px solid #ffffff1a;
+}
+.sidebar a:hover{ background:#4b6374; color:#fff; }
+.active-link{ background:#2e5672ff !important; color:#fff !important; font-weight:bold; }
+
+/* CONTEÚDO */
+
+/* padrão (sem sidebar) */
+.main-content{
+  margin-top:60px;
+  margin-left:0;
+  padding:2rem;
+  min-height:100vh;
+  background:#fff;
 }
 
-.logo-navbar {
-    height: 60px; /* Ajuste a altura conforme necessário */
-    width: auto; /* Mantém a proporção da imagem */
+/* só aplica recuo quando a sidebar está imediatamente antes do conteúdo */
+.sidebar + .main-content{ margin-left:220px; }
+
+/* esconder sidebar via toggle */
+body.sidebar-hidden .sidebar{ display:none !important; }
+body.sidebar-hidden .main-content{ margin-left:0 !important; }
+
+/* CARROSSEL */
+.carousel-inner .carousel-item img{
+  margin-top:5%; width:100%; height:550px; object-fit:cover;
+}
+.carousel-indicators{
+  position:absolute; bottom:10px; left:50%; transform:translateX(-50%);
+  display:flex; justify-content:center; gap:5px; list-style:none; padding:0; margin:0;
+}
+.carousel-indicators li{
+  width:10px; height:10px; background:rgba(255,255,255,.5); cursor:pointer;
+}
+.carousel-indicators .active{ background:#fff; }
+
+/* ===== TELA DE LOGIN – estilo antigo (banner roxo) ===== */
+.welcome-banner{
+  background:#c2b5c5;           /* roxo claro */
+  padding:7rem .25vw;           /* altura generosa */
+  text-align:center;
+  display:flex; justify-content:center; align-items:center;
+  position:relative; z-index:1;
+  margin-top:4rem;              /* abaixo da navbar fixa */
+}
+.welcome-banner h1{
+  font-size:2.5rem; color:#523f5f; margin:0;
 }
 
-.navbar-nav {
-    display: flex;
-    align-items: center;
-    gap: 5px; /* Aumenta o espaço entre os itens */
+/* cards */
+.login-container{
+  max-width:66vw; margin:auto; padding:5vh 5vw;
+  margin-top:-6rem;             /* sobrepõe um pouco o banner sem cortar */
+  display:flex; gap:2rem; justify-content:center; align-items:stretch; flex-wrap:wrap;
+  position:relative; z-index:2;
 }
-
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-
+.card{
+  flex:1; min-width:20rem; padding:2rem; border-radius:.625rem;
+  box-shadow:0 .25rem .625rem rgba(0,0,0,.1);
+  display:flex; flex-direction:column; justify-content:space-between; align-items:center;
+  text-align:center; height:auto; border:none;
 }
-/* Definição da animação */
-@keyframes bounce {
-    0% {
-        bottom: -100%; 
-    }
-    50% {
-        bottom: -50%; 
-    }
-    80% {
-        bottom: -2%; 
-    }
-    90% {
-        bottom: -4px; 
-    }
-    94% {
-        bottom: -3px; 
-    }
-    96% {
-        bottom: -2px; 
-    }
-
-    99% {
-        bottom: -1px; 
-    }
-    100% {
-
-        bottom: 0; 
-    }
+.btn-orange{ background:#f4a261; color:#fff; border:none; padding:.75rem 1.5rem; border-radius:.5rem; cursor:pointer; transition:background .3s,color .3s; width:100%; }
+.btn-orange:hover{ background:#e76f51; color:#fff; }
+.btn-outline-primary{
+  border:.125rem solid #007bff; color:#007bff; padding:.75rem 1.5rem; border-radius:.5rem;
+  cursor:pointer; transition:background .3s,color .3s; width:100%; margin-top:auto;
 }
+.btn-outline-primary:hover{ background:#007bff; color:#fff; }
+.form-control{ width:100%; padding:.75rem; border:.0625rem solid #ccc; border-radius:.5rem; box-sizing:border-box; font-size:1rem; transition:all .3s; margin-bottom:1rem; }
+.form-control:focus{ border-color:#74B9FF; outline:none; box-shadow:0 0 .3125rem rgba(116,185,255,.8); }
 
-
-#btn-login {
-    background-color: white; /* Fundo branco inicial */
-    color: #0887F2; /* Texto azul */
-    border: 2px solid #0887F2; /* Borda azul */
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    margin-left: 10px;
-    font-size: 14px;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.3s;
-    z-index: 1; /* Garante que o texto fique acima do ::after */
+/* CADASTRO */
+#cadastro-container{
+  max-width:800px; background:#f8f8f8; padding:20px; border-radius:10px;
+  box-shadow:0 0 10px rgba(0,0,0,.1); margin:auto; margin-top:0; min-height:400px;
 }
+#cadastro-titulo{ font-size:1.5rem; font-weight:bold; color:#333; margin-bottom:20px; }
+#cadastro-progress .progress-bar{ background:#ffa366; font-weight:bold; }
+form label{ font-weight:bold; color:#666; }
+form input.form-control{ border:1px solid #ccc; border-radius:5px; padding:8px; background:#fff; }
+#cadastro-celular label{ color:#ff5733; }
+#cadastro-botao .btn-custom{ background:#ffb01d; color:#fff; font-weight:bold; padding:10px 20px; border-radius:5px; border:none; }
+.row{ margin-bottom:15px; }
+#alertaAdocao{ margin-top:6rem; }
 
-/* Pseudo-elemento para o efeito de fundo do Login */
-#btn-login::after {
-    content: '';
-    position: absolute;
-    bottom: -100%; /* Começa fora do botão, na parte inferior */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0887F2; /* Cor do fundo azul */
-    z-index: -1; /* Coloca o efeito atrás do texto */
-    transition: bottom 0.4s ease-in-out; /* Transição suave */
-}
+/* Tabela responsiva (mobile) */
+@media (max-width:768px){
+  .navbar-nav{ width:100%; text-align:center; }
+  .navbar-nav .nav-item{ margin-bottom:10px; }
 
-/* Efeito hover do Login */
-#btn-login:hover {
-    color: white; /* Texto muda para branco */
-}
-
-/* Aplicação da animação ao Login */
-#btn-login:hover::after {
-    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
-    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
-}
-
-#btn-logout {
-    background-color: white; /* Fundo branco inicial */
-    color: #0887F2; /* Texto azul */
-    border: 2px solid #0887F2; /* Borda azul */
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    margin-left: 10px;
-    font-size: 14px;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.3s;
-    z-index: 1; /* Garante que o texto fique acima do ::after */
-}
-
-/* Pseudo-elemento para o efeito de fundo do Login */
-#btn-logout::after {
-    content: '';
-    position: absolute;
-    bottom: -100%; /* Começa fora do botão, na parte inferior */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0887F2; /* Cor do fundo azul */
-    z-index: -1; /* Coloca o efeito atrás do texto */
-    transition: bottom 0.4s ease-in-out; /* Transição suave */
-}
-
-/* Efeito hover do Login */
-#btn-logout:hover {
-    color: white; /* Texto muda para branco */
-}
-
-/* Aplicação da animação ao Login */
-#btn-logout:hover::after {
-    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
-    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
-}
-
-/* Estilo do botão Seja um parceiro */
-#btn-parceiro {
-    background-color: white; /* Fundo branco inicial */
-    color: #0887F2; /* Texto azul */
-    border: 2px solid #0887F2; /* Borda azul */
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    margin-left: 10px;
-    font-size: 14px;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.3s;
-    z-index: 1; /* Garante que o texto fique acima do ::after */
-}
-
-/* Pseudo-elemento para o efeito de fundo do Seja um parceiro */
-#btn-parceiro::after {
-    content: '';
-    position: absolute;
-    bottom: -100%; /* Começa fora do botão, na parte inferior */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0887F2; /* Cor do fundo azul */
-    z-index: -1; /* Coloca o efeito atrás do texto */
-    transition: bottom 0.4s ease-in-out; /* Transição suave */
-}
-
-/* Efeito hover do Seja um parceiro */
-#btn-parceiro:hover {
-    color: white; /* Texto muda para branco */
-}
-
-/* Aplicação da animação ao Seja um parceiro */
-#btn-parceiro:hover::after {
-    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
-    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
-}
-/* Botão Quero Adotar */
-.custom-navbar .btn-adotar {
-    background-color: #ffb01d;
-    color: #ffffff; /* Azul semelhante ao da imagem */
-    border: 2px solid #ffb01d;
-    padding: 10px 20px 10px;
-    border-radius: 8px;
-    font-weight: 500;
-    margin-left: 10px;  
-    font-size: 14px;
-}
-
-.sidebar {
-    position: fixed;
-    top: 60px; /* Deixa abaixo da navbar */
-    bottom: 0;
-    left: 0;
-    width: 220px;
-    background-color: #2c2c2c;
-    padding-top: 1rem;
-    z-index: 999;
-}
-
-.main-content {
-    margin-left: 220px; /* Evita sobreposição da sidebar */
-    margin-top: 60px;   /* Evita sobreposição da navbar */
-    padding: 2rem;
-    min-height: 100vh;
-    background-color: #fff;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-    .navbar-nav {
-        width: 100%;
-        text-align: center;
-    }
-    .navbar-nav .nav-item {
-        margin-bottom: 10px;
-    }
-}
-
-/* css do carrossel */
-
-.carousel-inner .carousel-item img {
-    margin-top:5%;
-    width: 100%;            /* As imagens ocupam toda a largura do container */
-    height: 550px;          /* Define a altura fixa para as imagens (ajuste conforme necessário) */
-    object-fit: cover;      /* Garante que a imagem preencha o espaço sem distorcer a proporção */
+  .sidebar{
+    display:none; width:220px; top:60px; bottom:0; left:0; position:fixed;
+    background:#2c2c2c; padding-top:1rem; z-index:1050;
   }
-  
-  .carousel-indicators {
-    position: absolute;
-    bottom: 10px; /* Ajuste conforme necessário */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    gap: 5px; /* Espaçamento entre os indicadores */
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .carousel-indicators li {
-    width: 10px;
-    height: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-  }
-  
-  .carousel-indicators .active {
-    background-color: white;
-  }
+  .sidebar.active{ display:block; }
 
+  .main-content{ margin-left:0 !important; }
 
-    /* Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login ||  */
-    .login-container {
-        max-width: 66vw;
-        margin: auto;
-        padding: 5vh 5vw;
-        margin-top: -14rem; /* Ajusta a posição para sobrepor o fundo roxo */
-        display: flex;
-        gap: 2rem;
-        justify-content: center;
-        align-items: stretch;
-        flex-wrap: wrap;
-        position: relative;
-        z-index: 2;
-    }
-    
-    .card {
-        flex: 1;
-        min-width: 20rem;
-        padding: 2rem;
-        border-radius: 0.625rem;
-        box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; /* Garante espaçamento entre os elementos */
-        align-items: center;
-        text-align: center;
-        height: auto; /* Permite altura dinâmica */
-        border:none;
-    }
-
-    .card.p-4 *,
-    card.p-4 *::before,
-    .card.p-4 *::after {
-    transition: none !important;
-    animation: none !important;
-    }
-
-    
-    .card:first-child {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%; /* Garante altura total */
-    }
-    
-    .card:last-child {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%; /* Faz os dois cards terem a mesma altura */
-    }
-    
-    .btn-orange {
-        background-color: #f4a261;
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: background 0.3s, color 0.3s;
-        width: 100%;
-    }
-    
-    .btn-orange:hover {
-        background-color: #e76f51;
-        color: white;
-    }
-    
-    .btn-outline-primary {
-        border: 0.125rem solid #007bff;
-        color: #007bff;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: background 0.3s, color 0.3s;
-        width: 100%;
-        margin-top: auto; /* Empurra o botão para a parte inferior */
-    }
-    
-    .btn-outline-primary:hover {
-        background-color: #007bff;
-        color: white;
-    }
-    
-    .btn-adotante {
-        margin-top: auto; /* Empurra o botão para a parte inferior */
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 0.75rem;
-        border: 0.0625rem solid #ccc;
-        border-radius: 0.5rem;
-        box-sizing: border-box;
-        font-size: 1rem;
-        transition: all 0.3s ease-in-out;
-        margin-bottom: 1rem;
-    }
-    
-    .form-control:focus {
-        border-color: #74B9FF;
-        outline: none;
-        box-shadow: 0 0 0.3125rem rgba(116, 185, 255, 0.8);
-    }
-    
-    .form-check {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-align: left;
-        width: 100%;
-    }
-    
-    .welcome-banner {
-        background-color: #c2b5c5; /* Cor de fundo roxa clara */
-        padding: 7rem 0.25vw; /* Reduz a altura para evitar espaços excessivos */
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-        margin-top: 4rem;
-    }
-    
-    .welcome-banner h1 {
-        font-size: 2.5rem; /* Ajusta o tamanho do texto */
-        color: #523f5f; /* Cor do texto parecida com a da imagem */
-        margin: 0;
-        margin-bottom: 4rem;
-    }
-
-    /*CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || */
-
-
-    #cadastro-container {
-    max-width: 800px;
-    background-color: #f8f8f8;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin: auto;
-    margin-top: 0rem;
-    min-height: 400px;
-    
-
+  /* login: sem sobrepor o banner em telas menores */
+  .login-container{ margin-top:0; padding:3vh 5vw; }
 }
 
-#cadastro-titulo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
+/* Mostra o ☰ no mobile */
+@media (max-width:768px){
+  #btn-toggle-sidebar{ display:block; }
 }
 
-#cadastro-progress .progress-bar {
-    background-color: #ffa366;
-    font-weight: bold;
-}
-
-form label {
-    font-weight: bold;
-    color: #666;
-}
-
-form input.form-control {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 8px;
-    background-color: #fff;
-}
-
-#cadastro-celular label {
-    color: #ff5733;
-}
-
-#cadastro-botao .btn-custom {
-    background-color: #ffb01d;
-    color: white;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-}
-
-.row {
-    margin-bottom: 15px; /* Adiciona um espaçamento entre as linhas */
-}
-
-.form-control {
-    width: 100%; /* Garante que os inputs fiquem dentro da largura da coluna */
-}
-
-#alertaAdocao{
-    margin-top:6rem;
-}
-
-/* Tabela responsiva em mobile */
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
-
-    .sidebar.active {
-        display: block;
-        position: fixed;
-        z-index: 1050;
-        background-color: #2c2c2c;
-    }
-
-    .main-content {
-        margin-left: 0 !important;
-    }
-
-
-    table.table > tbody > tr {
-        display: block;
-        margin-bottom: 1rem;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-
-    table.table > thead {
-        display: none;
-    }
-
-    table.table > tbody > tr > td {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.5rem 0;
-        border: none !important;
-    }
-
-    table.table > tbody > tr > td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        color: #6c757d;
-    }
-
-    table.table img {
-        max-width: 100px;
-        margin-bottom: 0.5rem;
-    }
-
-    td.d-md-table-cell {
-        display: flex !important;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-}
-
-/* BOTÃO DE MENU (☰) NA NAVBAR */
-#btn-toggle-sidebar {
-    background: none;
-    border: none;
-    font-size: 28px;
-    color: #333;
-    cursor: pointer;
-    display: none; /* escondido no desktop */
-    margin-right: 15px;
-}
-
-/* Mostra o botão ☰ no mobile */
-@media (max-width: 768px) {
-    #btn-toggle-sidebar {
-        display: block;
-    }
-
-    .sidebar {
-        display: none;
-        width: 220px;
-        top: 60px;
-        bottom: 0;
-        left: 0;
-        background-color: #2c2c2c;
-        position: fixed;
-        padding-top: 1rem;
-        z-index: 1050;
-    }
-
-    .sidebar.active {
-        display: block;
-    }
-
-    .main-content {
-        margin-left: 0 !important;
-    }
-}
-
-/* Sidebar ativa no desktop */
-@media (min-width: 769px) {
-    .sidebar {
-        display: block;
-    }
-
-    .sidebar.active {
-        display: block;
-    }
-
-    .main-content {
-        margin-left: 220px;
-    }
+/* Garante sidebar visível no desktop e recuo do conteúdo */
+@media (min-width:769px){
+  .sidebar{ display:block; }
+  .sidebar.active{ display:block; }
+  .sidebar + .main-content{ margin-left:220px; }
 }
