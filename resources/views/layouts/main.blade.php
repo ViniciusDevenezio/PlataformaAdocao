@@ -31,6 +31,7 @@
 
 <body>
     <!-- Navbar -->
+    
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
         <a class="navbar-brand" href="{{ route('home') }}">
             <img src="/img/logo2.png" alt="Logo" class="logo-navbar">

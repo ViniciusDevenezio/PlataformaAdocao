@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
 @section('head')
+@extends('layouts.sidebarpainelong')
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .banner-editar-pet {

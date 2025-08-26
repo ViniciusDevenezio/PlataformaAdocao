@@ -1,6 +1,7 @@
-@extends('layouts.main')
 
 @section('head')
+
+@extends('layouts.sidebarpainelong')
     <style>
         body {
             overflow-x: hidden;
@@ -80,20 +81,6 @@
 @section('content')
 
     {{-- Sidebar Lateral --}}
-    <div class="sidebar" id="sidebar-lateral-ong">
-        <a href="{{ route('painel.ong') }}" class="{{ request()->routeIs('painel.ong') ? 'active-link' : '' }}">
-            🏠 Início
-        </a>
-
-        <a href="{{ route('ong.pets') }}">Meus Pets</a>
-        <a href="{{ route('ong.pets.novo') }}">Novo Pet</a>
-        <a href="{{ route('ong.interesses') }}">Pedidos de Adoção</a>
-        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sair</a>
-
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>
-    </div>
 
     {{-- Conteudo  --}}
     <div class="main-content mb-4">

@@ -1,6 +1,6 @@
 @extends('layouts.main')
+@extends('layouts.sidebarpainelong')
 
-@section('content')
 
     <style>
         body {
@@ -74,19 +74,6 @@
             border-bottom: 1px solid #ffffff1a;
         }
     </style>
-    @yield('head')
-</head>
-<body>
-    {{-- SIDEBAR --}}
-    <div class="sidebar" id="sidebar-lateral-ong">
-        <a href="{{ route('painel.ong') }}" class="{{ request()->routeIs('painel.ong') ? 'active-link' : '' }}">🏠 Início</a>
-        <a href="{{ route('ong.pets') }}" class="{{ request()->routeIs('ong.pets') ? 'active-link' : '' }}">Meus Pets</a>
-        <a href="{{ route('ong.pets.novo') }}" class="{{ request()->routeIs('ong.pets.novo') ? 'active-link' : '' }}">Novo Pet</a>
-        <a href="{{ route('ong.interesses') }}" class="{{ request()->routeIs('ong.interesses') ? 'active-link' : '' }}">Pedidos de Adoção</a>
-        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sair</a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
-    </div>
-    {{-- SIDEBAR --}}
 
     {{-- Conteudo --}}
     <div class="container mt-4">
@@ -159,4 +146,3 @@
             </div>
         @endif
     </div>
-@endsection
