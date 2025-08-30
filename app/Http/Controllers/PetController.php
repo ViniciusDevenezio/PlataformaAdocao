@@ -44,10 +44,9 @@ class PetController extends Controller
         return redirect()->back()->with('success', 'Pet reservado com sucesso. Aguardando aprovação da ONG.');
     }
 
-    public function mostrar($slug)
-    {
-        $pet = \App\Models\Pet::where('slug', $slug)->firstOrFail();
-        return view('pets.mostrar', compact('pet'));
-    }
+   public function mostrar(\App\Models\Pet $pet)
+{
+    return view('pets.mostrar', compact('pet'));
+}
 
 }

@@ -1,9 +1,4 @@
-@extends('layouts.main')
-
-@section('head')
 @extends('layouts.sidebarpainelong')
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .banner-editar-pet {
             background-color: #c2b5c5;
@@ -35,13 +30,6 @@
             min-height: 400px;
         }
     </style>
-@endsection
-
-@section('menu')
-@endsection
-
-@section('content')
-
     <div class="banner-editar-pet">
         <h1>Cadastrar Pet</h1>
     </div>
@@ -164,4 +152,4 @@
             </div>
         </form>
     </div>
-@endsection
+
