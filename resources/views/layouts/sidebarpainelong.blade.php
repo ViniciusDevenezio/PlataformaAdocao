@@ -27,37 +27,37 @@
       border-radius: 0.5rem;
       color: #333;
       cursor: pointer;
-
-      /* Efeito de profundidade estilo "entalhado" */
       box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1),
         inset -2px -2px 5px rgba(255, 255, 255, 0.6),
         1px 1px 4px rgba(0, 0, 0, 0.05);
-      /* leve sombra externa */
-
     }
 
     .topbar {
       position: sticky;
       top: 0;
       z-index: 1050;
-      /* maior que o da sidebar */
     }
+
     /* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 1.9rem; /* ou 56px se sua navbar tiver 56px de altura */
-  left: 0;
-  bottom: 0;
-  width: 240px;
-  background: #2e2e2e;
-  padding-top: 1rem;
-  overflow-y: auto;
-  transform: translateX(-100%);
-  transition: transform .3s;
-  z-index: 1000; /* MENOR que o navbar */
-}
-    .sidebar.open {
+    /* Sidebar sempre logo abaixo da navbar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: var(--nav-h);
+      bottom: 0;
+      width: 240px;
+      background: #2e2e2e;
+      padding-top: 1rem;
+      overflow-y: auto;
       transform: translateX(0);
+      transition: transform .3s, box-shadow .3s;
+      z-index: 1000;
+      /* abaixo da navbar (1050) */
+      box-shadow: 2px 0 8px rgba(0, 0, 0, .25);
+    }
+
+    .sidebar.closed {
+      transform: translateX(-100%);
     }
 
     .sidebar a {
@@ -66,18 +66,20 @@
       padding: 12px 20px;
       text-decoration: none;
       border-bottom: 1px solid #ffffff1a;
-      z-index 10;
+      transition: all 0.3s ease;
     }
 
     .sidebar a:hover {
       background: #4b6374;
       color: #fff;
+      padding-left: 28px;
     }
 
     .active-link {
       background: #2e5672 !important;
       color: #fff !important;
       font-weight: 700;
+      border-left: 4px solid #fff;
     }
 
     .sidebar-backdrop.show {
@@ -92,6 +94,7 @@
       }
     }
   </style>
+
 </head>
 
 <body>
@@ -177,14 +180,34 @@
 
   {{-- Sidebar só aparece para ONG --}}
   @auth('ong')
-    <div id="sidebar-lateral-ong" class="sidebar">
-      <a href="{{ route('painel.ong') }}" class="{{ request()->routeIs('painel.ong') ? 'active-link' : '' }}">🏠
-        Início</a>
-      <a href="{{ route('ong.pets') }}">Meus Pets</a>
-      <a href="{{ route('ong.pets.novo') }}">Novo Pet</a>
-      <a href="{{ route('ong.interesses') }}">Pedidos de Adoção</a>
+    <div id="sidebar-lateral-ong"
+      class="sidebar {{ request()->routeIs('ong.pets.novo', 'ong.pets.editar') ? 'closed' : '' }}">
+      <a href="{{ route('painel.ong') }}"
+   class="{{ request()->routeIs('painel.ong') ? 'active-link' : '' }}">
+  <i class="bi bi-house-door-fill me-2" aria-hidden="true"></i> Início
+</a>
+
+      {{-- "Meus Pets" ativo só em index/lista/detalhe/editar (NÃO pega .novo) --}}
+      <a href="{{ route('ong.pets') }}"
+        class="{{ request()->routeIs('ong.pets', 'ong.pets.index', 'ong.pets.show*', 'ong.pets.editar*') ? 'active-link' : '' }}">
+        Meus Pets
+      </a>
+
+      {{-- "Novo Pet" ativo só no formulário de criação --}}
+      <a href="{{ route('ong.pets.novo') }}" class="{{ request()->routeIs('ong.pets.novo') ? 'active-link' : '' }}">
+        Novo Pet
+      </a>
+
+      <a href="{{ route('ong.interesses') }}"
+        class="{{ request()->routeIs('ong.interesses', 'ong.interesses*') ? 'active-link' : '' }}">
+        Pedidos de Adoção
+      </a>
+
       <a href="{{ route('logout') }}"
-        onclick="event.preventDefault(); document.getElementById('logout-form-side').submit();">Sair</a>
+        onclick="event.preventDefault(); document.getElementById('logout-form-side').submit();">
+        Sair
+      </a>
+      onclick="event.preventDefault(); document.getElementById('logout-form-side').submit();">Sair</a>
       <form id="logout-form-side" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
     </div>
     <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
@@ -212,17 +235,27 @@
         if (!btn || !sidebar || !backdrop) return;
 
         function toggleSidebar() {
-          const open = sidebar.classList.toggle('open');
-          backdrop.classList.toggle('show', open);
-          document.body.classList.toggle('push-main', open);
+          const closed = sidebar.classList.toggle('closed'); // agora controla "fechado"
+          backdrop.classList.toggle('show', !closed); // backdrop só aparece se estiver aberto
+          document.body.classList.toggle('push-main', !closed);
         }
 
         btn.addEventListener('click', toggleSidebar);
         backdrop.addEventListener('click', toggleSidebar);
         document.addEventListener('keydown', e => {
-          if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleSidebar();
+          if (e.key === 'Escape' && !sidebar.classList.contains('closed')) toggleSidebar();
         });
       })();
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const sidebar = document.querySelector(".sidebar");
+
+        if (navbar && sidebar) {
+          const alturaNavbar = navbar.offsetHeight; // mede a altura real da navbar
+          sidebar.style.top = alturaNavbar + "px";
+        }
+      });
     </script>
   @endauth
 </body>

@@ -40,6 +40,10 @@ Route::get('/dashboard', function () {
 Route::get('/painel', function () {
     return view('painel');
 });
+// routes/web.php
+
+
+
 
 Route::get('/cadastroAnimal', function () {
     return view('cadastroAnimal');
@@ -61,8 +65,8 @@ Route::get('/pets', [PetController::class, 'index']);
 
 Route::post('/pets/{id}/reservar', [PetController::class, 'reservar'])->name('pets.reservar')->middleware('auth:adotante');
 // mostrar info completa do pet
-Route::get('/pet/{slug}', [PetController::class, 'mostrar'])->name('pet.mostrar');
 
+Route::get('/pet/{pet}', [PetController::class, 'mostrar'])->name('pet.mostrar');
 
 // Painel da ong // Painel da Ong 
 

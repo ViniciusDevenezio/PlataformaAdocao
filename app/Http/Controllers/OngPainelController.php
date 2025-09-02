@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
+
 
 class OngPainelController extends Controller
 {
@@ -32,90 +34,212 @@ class OngPainelController extends Controller
     // 💾 Salvar novo pet
     public function salvarPet(Request $request)
     {
-        $request->validate([
-            'nome' => 'nullable|string|max:100',
-            'descricao' => 'nullable|string',
-            'imagem_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            // outros campos conforme seu banco
+        $temperamentosValidos = [
+            'Calmo',
+            'Brincalhão',
+            'Sociável',
+            'Independente',
+            'Protetor',
+            'Dócil',
+            'Energético',
+            'Tímido',
+            'Carinhoso',
+            'Curioso',
+            'Vigilante',
+            'Tranquilo'
+        ];
+
+        $dados = $request->validate([
+            'nome' => ['required', 'string', 'max:100'],
+            'especie' => ['required', 'in:cachorro,gato'],
+            'raca' => ['nullable', 'string', 'max:100'],
+            'mistura' => ['required', 'in:0,1'],
+            'misturado_com' => ['nullable', 'string', 'max:100'],
+            'porte' => ['required', 'in:pequeno,medio,grande'],
+            'genero' => ['required', 'in:macho,femea'],
+
+            'idade_num' => ['nullable', 'integer', 'min:0'],
+            'idade_unidade' => ['nullable', 'in:anos,meses'],
+            'idade' => ['nullable', 'string', 'max:50'],
+
+            'status' => ['nullable', 'in:disponivel,reservado,adotado'],
+
+            'temperamento' => ['nullable', 'array', 'max:3'],
+            'temperamento.*' => ['string', 'in:' . implode(',', $temperamentosValidos)],
+
+            'localizacao' => ['nullable', 'string', 'max:100'],
+            'disponivel_ate' => ['nullable', 'date'],
+
+            'descricao' => ['nullable', 'string', 'max:500'],
+            // padronizei os mimes aqui e no update
+            'imagem_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+
+            'vacinado' => ['nullable', 'boolean'],
+            'vermifugado' => ['nullable', 'boolean'],
         ]);
 
-        $pet = new Pet($request->except('imagem_url'));
-        $pet->ong_id = Auth::guard('ong')->id();
-        $pet->slug = Str::slug($request->nome ?? 'sem-nome') . '-' . uniqid();
-        $pet->status = 'disponivel';
+        // Normalizações
+        $dados['nome'] = Str::of($dados['nome'])->trim()->squish()->title();
+        if (!empty($dados['raca']))
+            $dados['raca'] = Str::of($dados['raca'])->trim()->squish()->title();
+        if (!empty($dados['misturado_com']))
+            $dados['misturado_com'] = Str::of($dados['misturado_com'])->trim()->squish()->title();
 
-        // Processar e salvar a imagem com o Storage (como em atualizarPet)
-        if ($request->hasFile('imagem_url')) {
-            $image = $request->file('imagem_url');
-            $nomeImagem = uniqid('pet_') . '.' . $image->getClientOriginalExtension();
-
-            // Salva a imagem em storage/app/public/images
-            Storage::disk('public')->putFileAs('images', $image, $nomeImagem);
-
-            // Salva só o nome no banco (acesso via /storage/images/...)
-            $pet->imagem_url = $nomeImagem;
+        if (empty($dados['localizacao'])) {
+            $dados['localizacao'] = optional(Auth::guard('ong')->user())->cidade;
         }
 
-        $pet->save();
+        $dados['vacinado'] = $request->boolean('vacinado');
+        $dados['vermifugado'] = $request->boolean('vermifugado');
+
+        $dados['temperamento'] = !empty($dados['temperamento']) ? implode(',', $dados['temperamento']) : null;
+
+        // Idade -> meses e faixa_etaria
+        $idadeMeses = null;
+        if (!empty($dados['idade_num']) && !empty($dados['idade_unidade'])) {
+            $idadeMeses = $dados['idade_unidade'] === 'anos'
+                ? (int) $dados['idade_num'] * 12
+                : (int) $dados['idade_num'];
+            $dados['idade'] = $dados['idade_num'] . ' ' . $dados['idade_unidade'];
+        }
+        $dados['faixa_etaria'] = $this->faixaEtariaPorMeses($idadeMeses);
+
+        // slug
+        $dados['slug'] = Str::slug(($dados['nome'] ?? 'sem-nome') . '-' . Str::random(6));
+
+        if (empty($dados['status']))
+            $dados['status'] = 'disponivel';
+
+        $dados['ong_id'] = Auth::guard('ong')->id();
+
+        // Upload imagem -> salvar nome dentro de $dados
+        if ($request->hasFile('imagem_url') && $request->file('imagem_url')->isValid()) {
+            $nomeImagem = uniqid('pet_') . '.' . $request->file('imagem_url')->getClientOriginalExtension();
+
+            // força o disco 'public' e salva em storage/app/public/images
+            $request->file('imagem_url')->storeAs('images', $nomeImagem, 'public');
+
+            $dados['imagem_url'] = $nomeImagem;
+        }
+
+
+        unset($dados['idade_num'], $dados['idade_unidade']);
+
+        Pet::create($dados);
 
         return redirect()->route('ong.pets')->with('success', 'Pet cadastrado com sucesso!');
     }
-
-    // EDITAR PET // EDITAR PET
     public function editarPet($id)
     {
         $pet = Pet::where('ong_id', Auth::guard('ong')->id())->findOrFail($id);
         return view('painel.ong.editarPet', compact('pet'));
     }
 
-
     // ATUALIZAR PET // ATUALIZAR PET 
     public function atualizarPet(Request $request, $id)
     {
         $pet = Pet::where('ong_id', Auth::guard('ong')->id())->findOrFail($id);
 
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'porte' => 'required|string',
-            'genero' => 'required|string',
-            'status' => 'required|in:disponivel,reservado,adotado',
-            'imagem_url' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // validação da imagem
+        $temperamentosValidos = [
+            'Calmo',
+            'Brincalhão',
+            'Sociável',
+            'Independente',
+            'Protetor',
+            'Dócil',
+            'Energético',
+            'Tímido',
+            'Carinhoso',
+            'Curioso',
+            'Vigilante',
+            'Tranquilo'
+        ];
+
+        $dados = $request->validate([
+            'nome' => ['required', 'string', 'max:100'],
+            'especie' => ['required', 'in:cachorro,gato'],
+            'raca' => ['nullable', 'string', 'max:100'],
+            'mistura' => ['required', 'in:0,1'],
+            'misturado_com' => ['nullable', 'string', 'max:100'],
+            'porte' => ['required', 'in:pequeno,medio,grande'],
+            'genero' => ['required', 'in:macho,femea'],
+
+            'idade_num' => ['nullable', 'integer', 'min:0'],
+            'idade_unidade' => ['nullable', 'in:anos,meses'],
+            'idade' => ['nullable', 'string', 'max:50'],
+
+            'status' => ['required', 'in:disponivel,reservado,adotado'],
+            'disponivel_ate' => ['nullable', 'date'],
+
+            'temperamento' => ['nullable', 'array', 'max:3'],
+            'temperamento.*' => ['string', 'in:' . implode(',', $temperamentosValidos)],
+
+            'localizacao' => ['nullable', 'string', 'max:100'],
+            'descricao' => ['nullable', 'string', 'max:500'],
+
+            'imagem_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+
+            'vacinado' => ['nullable', 'boolean'],
+            'vermifugado' => ['nullable', 'boolean'],
         ]);
 
-        // Se enviou nova imagem, processa e salva
-        if ($request->hasFile('imagem_url')) {
-            $image = $request->file('imagem_url');
-            $nomeImagem = uniqid('pet_') . '.' . $image->getClientOriginalExtension();
+        // Normalizações
+        $dados['nome'] = Str::of($dados['nome'])->trim()->squish()->title();
+        if (!empty($dados['raca']))
+            $dados['raca'] = Str::of($dados['raca'])->trim()->squish()->title();
+        if (!empty($dados['misturado_com']))
+            $dados['misturado_com'] = Str::of($dados['misturado_com'])->trim()->squish()->title();
 
-            // Salva a imagem na pasta storage/app/public/images
-            Storage::disk('public')->putFileAs('images', $image, $nomeImagem);
-
-
-            // Atribui ao model (precisa disso antes do update)
-            $pet->imagem_url = $nomeImagem;
+        // Localização default (se vazio mantém a atual ou usa cidade ONG)
+        if (empty($dados['localizacao'])) {
+            $dados['localizacao'] = $pet->localizacao ?? optional(Auth::guard('ong')->user())->cidade;
         }
 
-        // Atualiza os demais campos
-        $pet->update([
-            'nome' => $request->nome,
-            'raca' => $request->raca,
-            'mistura' => $request->mistura,
-            'misturado_com' => $request->misturado_com,
-            'temperamento' => $request->temperamento,
-            'porte' => $request->porte,
-            'genero' => $request->genero,
-            'faixa_etaria' => $request->faixa_etaria,
-            'idade' => $request->idade,
-            'localizacao' => $request->localizacao,
-            'disponivel_ate' => $request->disponivel_ate,
-            'status' => $request->status,
-            'descricao' => $request->descricao,
-            'imagem_url' => $pet->imagem_url, // garante que a nova imagem seja salva
-        ]);
+        // Saúde
+        $dados['vacinado'] = $request->boolean('vacinado');
+        $dados['vermifugado'] = $request->boolean('vermifugado');
+
+        // Chips -> string
+        $dados['temperamento'] = !empty($dados['temperamento']) ? implode(',', $dados['temperamento']) : null;
+
+        // Idade -> meses -> faixa_etaria
+        $idadeMeses = null;
+        if (!empty($dados['idade_num']) && !empty($dados['idade_unidade'])) {
+            $idadeMeses = $dados['idade_unidade'] === 'anos'
+                ? (int) $dados['idade_num'] * 12
+                : (int) $dados['idade_num'];
+            $dados['idade'] = $dados['idade_num'] . ' ' . $dados['idade_unidade'];
+        } else {
+            // se não veio nada no form de idade, mantém a já salva para não zerar faixa_etaria sem querer
+            if ($pet->idade) {
+                // tenta inferir meses da string já salva
+                $idadeMeses = $this->parseIdadeToMeses($pet->idade);
+            }
+        }
+        $dados['faixa_etaria'] = $this->faixaEtariaPorMeses($idadeMeses);
+
+        // Imagem
+        if ($request->hasFile('imagem_url') && $request->file('imagem_url')->isValid()) {
+            // remove a imagem antiga, se existir
+            if ($pet->imagem_url && Storage::disk('public')->exists('images/' . $pet->imagem_url)) {
+                Storage::disk('public')->delete('images/' . $pet->imagem_url);
+            }
+
+            $nomeImagem = uniqid('pet_') . '.' . $request->file('imagem_url')->getClientOriginalExtension();
+
+            // salva em storage/app/public/images
+            $request->file('imagem_url')->storeAs('images', $nomeImagem, 'public');
+
+            $dados['imagem_url'] = $nomeImagem;
+        }
+
+
+        unset($dados['idade_num'], $dados['idade_unidade']);
+
+        $pet->update($dados);
 
         return redirect()->route('ong.pets')->with('success', 'Pet atualizado com sucesso!');
     }
-
     public function atualizarStatusPet(Request $request, $id)
     {
         $pet = Pet::where('ong_id', Auth::guard('ong')->id())->findOrFail($id);
@@ -147,5 +271,47 @@ class OngPainelController extends Controller
         // aqui você pode buscar pets com algum relacionamento "interesses"
         $pets = Pet::where('ong_id', Auth::guard('ong')->id())->get();
         return view('painel.ong.interesses', compact('pets'));
+    }
+
+    private function faixaEtariaPorMeses(?int $m): ?string
+    {
+        if ($m === null)
+            return null;
+        $anos = $m / 12;
+
+        if ($anos < 1)
+            return 'Filhote';
+        elseif ($anos < 4)
+            return 'Jovem';
+        elseif ($anos <= 10)
+            return 'Adulto';
+        else
+            return 'Idoso';
+    }
+
+    /** Converte "2 anos" / "8 meses" / "1 ano" para meses (int) */
+    private function parseIdadeToMeses(?string $idade): ?int
+    {
+        if (!$idade)
+            return null;
+
+        $s = mb_strtolower(trim($idade), 'UTF-8');
+        $s = preg_replace('/\s+/', ' ', $s);
+
+        if (preg_match('/(\d+)\s*(ano|anos|mês|meses)/u', $s, $m)) {
+            $num = (int) $m[1];
+            $uni = $m[2];
+
+            if (in_array($uni, ['ano', 'anos']))
+                return $num * 12;
+            if (in_array($uni, ['mês', 'meses']))
+                return $num;
+        }
+
+        // fallback: só número -> assume meses
+        if (preg_match('/^\d+$/', $s))
+            return (int) $s;
+
+        return null;
     }
 }

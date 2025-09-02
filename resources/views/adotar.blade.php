@@ -63,7 +63,7 @@
                                 @if($pet->status === 'reservado')
                                     <button class="btn btn-secondary w-100" disabled>Pet Reservado</button>
                                 @else
-                                    <a href="{{ route('pet.mostrar', ['slug' => $pet->slug]) }}" class="btn btn-primary w-100 py-2">Quero Adotar</a>
+                                   <a href="{{ route('pet.mostrar', $pet) }}" class="btn btn-primary w-100 py-2">Quero Adotar</a>
                                 @endif
                             </div>
                         </div>

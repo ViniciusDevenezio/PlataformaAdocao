@@ -44,9 +44,9 @@ class PetController extends Controller
         return redirect()->back()->with('success', 'Pet reservado com sucesso. Aguardando aprovação da ONG.');
     }
 
-   public function mostrar(\App\Models\Pet $pet)
+public function mostrar(\App\Models\Pet $pet)
 {
+    $pet->load('ong'); // força carregar a relação
     return view('pets.mostrar', compact('pet'));
 }
-
 }
