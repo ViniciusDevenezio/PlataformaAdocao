@@ -203,11 +203,7 @@
         Pedidos de Adoção
       </a>
 
-      <a href="{{ route('logout') }}"
-        onclick="event.preventDefault(); document.getElementById('logout-form-side').submit();">
-        Sair
-      </a>
-      onclick="event.preventDefault(); document.getElementById('logout-form-side').submit();">Sair</a>
+      <a href="{{ route('logout') }}"onclick="event.preventDefault(); document.getElementById('logout-form-side').submit();">Sair</a>
       <form id="logout-form-side" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
     </div>
     <div id="sidebar-backdrop" class="sidebar-backdrop"></div>

@@ -47,10 +47,10 @@
                     <a class="nav-link" href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Cachorros</a>
+                    <a class="nav-link" href="{{ route('pets.cachorros') }}">Cachorros</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Gatos</a>
+                    <a class="nav-link" href="{{ route('pets.gatos') }}">Gatos</a>
                 </li>
             </ul>
 

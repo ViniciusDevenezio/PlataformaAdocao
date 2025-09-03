@@ -87,3 +87,10 @@ Route::middleware(['auth:ong'])->group(function () {
 Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store');
 //rota para enviar os dados dos pets para editar
 // routes/web.php
+
+//rota para mostrar apenas os cachorros 
+Route::get('/adotar/cachorros', [App\Http\Controllers\PetController::class, 'listarCachorros'])
+    ->name('pets.cachorros');
+
+Route::get('/adotar/gatos', [App\Http\Controllers\PetController::class, 'listarGatos'])
+    ->name('pets.gatos');

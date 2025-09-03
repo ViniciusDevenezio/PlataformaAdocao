@@ -49,4 +49,21 @@ public function mostrar(\App\Models\Pet $pet)
     $pet->load('ong'); // força carregar a relação
     return view('pets.mostrar', compact('pet'));
 }
+
+public function listarCachorros()
+{
+    $pets = \App\Models\Pet::with('ong')
+        ->whereRaw('LOWER(especie) = ?', ['cachorro'])
+        ->get();
+
+    return view('pets.adotarCachorro', compact('pets'));
+}
+public function listarGatos()
+{
+    $pets = \App\Models\Pet::with('ong')
+        ->whereRaw('LOWER(especie) = ?', ['gato'])
+        ->get();
+
+    return view('pets.adotarGato', compact('pets'));
+}
 }
