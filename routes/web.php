@@ -7,6 +7,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdotanteAuthController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\OngPainelController;
+use App\Http\Controllers\SolicitacaoController;
+use App\Http\Controllers\MatchController;
 
 
 
@@ -33,7 +35,7 @@ Route::get('/cadastro', function () {
 
 // Dashboard protegida
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('painelAdotante');
 })->name('dashboard')->middleware('auth');
 
 // Outras páginas
@@ -68,9 +70,8 @@ Route::post('/pets/{id}/reservar', [PetController::class, 'reservar'])->name('pe
 
 Route::get('/pet/{pet}', [PetController::class, 'mostrar'])->name('pet.mostrar');
 
-// Painel da ong // Painel da Ong 
 
-
+//Painel da ong ----------------------------------------------------------------------
 Route::middleware(['auth:ong'])->group(function () {
     Route::view('/painel-ong', 'painelOng')->name('painel.ong');
 
@@ -85,12 +86,40 @@ Route::middleware(['auth:ong'])->group(function () {
     Route::get('/painel-ong/interesses', [OngPainelController::class, 'interesses'])->name('ong.interesses');
 });
 Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store');
-//rota para enviar os dados dos pets para editar
-// routes/web.php
 
-//rota para mostrar apenas os cachorros 
+
+
+//rota para mostrar apenas os cachorros ou gatos ---------------------------
 Route::get('/adotar/cachorros', [App\Http\Controllers\PetController::class, 'listarCachorros'])
     ->name('pets.cachorros');
 
 Route::get('/adotar/gatos', [App\Http\Controllers\PetController::class, 'listarGatos'])
     ->name('pets.gatos');
+
+//solicitaçao -------------------------
+
+Route::post(
+    '/solicitacoes',
+    [SolicitacaoController::class, 'store']
+)->name('solicitacoes.store');
+
+// 👉 rotas do painel da ONG
+Route::middleware('auth:ong')
+    ->prefix('painel/ong')
+    ->name('ong.')
+    ->group(function () {
+        Route::get('/solicitacoes', [SolicitacaoController::class, 'index'])
+            ->name('solicitacoes');
+
+        Route::patch('/solicitacoes/{solicitacao}/status', [SolicitacaoController::class, 'updateStatus'])
+            ->name('solicitacoes.status');
+    });
+
+Route::middleware('auth:adotante')->group(function () {
+    Route::match(['get','post'], '/match', [\App\Http\Controllers\MatchController::class, 'index'])
+        ->name('match');
+});
+
+Route::get('/resultado-match', function () {
+    return view('resultado_match');
+})->name('resultado_match');

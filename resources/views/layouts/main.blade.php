@@ -14,7 +14,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 
     <!-- Seu CSS personalizado -->
@@ -31,7 +31,7 @@
 
 <body>
     <!-- Navbar -->
-    
+
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
         <a class="navbar-brand" href="{{ route('home') }}">
             <img src="/img/logo2.png" alt="Logo" class="logo-navbar">
@@ -60,6 +60,12 @@
                 </li>
 
                 @auth('adotante')
+                    <li class="nav-item">
+                        <a class="nav-link match-btn" href="{{ route('match') }}">
+                            <i class="bi bi-stars" aria-label="Match"></i> Match
+                        </a>
+                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="menuAdotante" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -78,7 +84,6 @@
                         </ul>
                     </li>
                 @elseif(auth('ong')->check())
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="menuOng" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">

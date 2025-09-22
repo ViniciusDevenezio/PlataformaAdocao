@@ -270,7 +270,7 @@ class OngPainelController extends Controller
     {
         // aqui você pode buscar pets com algum relacionamento "interesses"
         $pets = Pet::where('ong_id', Auth::guard('ong')->id())->get();
-        return view('painel.ong.interesses', compact('pets'));
+        return view('painel.ong.solicitacoes', compact('pets'));
     }
 
     private function faixaEtariaPorMeses(?int $m): ?string

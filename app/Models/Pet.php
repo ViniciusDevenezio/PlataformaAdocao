@@ -56,4 +56,7 @@ class Pet extends Model
     {
         return $this->belongsTo(Adotante::class);
     }
+
+    public function solicitacoes() { return $this->hasMany(\App\Models\Solicitacao::class); }
+
 }

@@ -40,4 +40,6 @@ class Ong extends Authenticatable
     {
         return $this->hasMany(Pet::class);
     }
+
+    public function solicitacoes() { return $this->hasMany(\App\Models\Solicitacao::class); }
 }

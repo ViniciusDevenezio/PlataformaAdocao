@@ -50,6 +50,81 @@ body {
     align-items: center;
 
 }
+/* Botão Match */
+/* Botão Match */
+/* Botão Match */
+.match-btn {
+    font-weight: 600;
+    color: #fff !important;
+    background: linear-gradient(270deg, #ff8a00, #e52e71, #9b51e0, #2d9cdb);
+    background-size: 800% 800%;
+    border-radius: 25px;
+    padding: 8px 18px !important;
+    margin-right: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: gradientMove 8s ease infinite;
+    border: 2px solid transparent;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Ícone da estrela */
+.match-btn i {
+    font-size: 1rem;
+    animation: starGlow 2s infinite ease-in-out;
+}
+
+/* Bordas animadas só no hover */
+.match-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    padding: 2px;
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0.9), 
+        rgba(255,255,255,0.3), 
+        rgba(255,255,255,0.9)
+    );
+    background-size: 300% 300%;
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: borderWhiteRun 3s linear infinite;
+    z-index: -1;
+    opacity: 0; /* invisível por padrão */
+    transition: opacity 0.3s ease;
+}
+
+.match-btn:hover::before {
+    opacity: 1; /* aparece só no hover */
+}
+
+/* Animação gradiente de fundo */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Animação da borda branca correndo */
+@keyframes borderWhiteRun {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+/* Estrela discreta */
+@keyframes starGlow {
+    0%   { color: #fff; text-shadow: 0 0 3px #fff; }
+    50%  { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+    100% { color: #fff; text-shadow: 0 0 3px #fff; }
+}
+
 /* Definição da animação */
 @keyframes bounce {
     0% {
@@ -204,13 +279,14 @@ body {
 /* Botão Quero Adotar */
 .custom-navbar .btn-adotar {
     background-color: #ffb01d;
-    color: #ffffff; /* Azul semelhante ao da imagem */
+    color: #fff !important;
     border: 2px solid #ffb01d;
-    padding: 10px 20px 10px;
-    border-radius: 8px;
+    padding: 10px 24px;          /* levemente mais largo p/ oval ficar bonito */
+    border-radius: 25px;         /* deixa oval, igual ao Match */
     font-weight: 500;
     margin-left: 10px;  
     font-size: 14px;
+    transition: all 0.3s ease;
 }
 
 /* Responsivo */

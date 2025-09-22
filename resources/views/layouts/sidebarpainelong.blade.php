@@ -198,7 +198,7 @@
         Novo Pet
       </a>
 
-      <a href="{{ route('ong.interesses') }}"
+      <a href="{{ route('ong.solicitacoes') }}"
         class="{{ request()->routeIs('ong.interesses', 'ong.interesses*') ? 'active-link' : '' }}">
         Pedidos de Adoção
       </a>

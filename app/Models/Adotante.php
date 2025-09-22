@@ -36,4 +36,7 @@ class Adotante extends Authenticatable
     {
         return $this->senha;
     }
+
+    public function solicitacoes() { return $this->hasMany(\App\Models\Solicitacao::class); }
+
 }
