@@ -9,6 +9,7 @@ use App\Http\Controllers\PetController;
 use App\Http\Controllers\OngPainelController;
 use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\MatchController;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -123,3 +124,11 @@ Route::middleware('auth:adotante')->group(function () {
 Route::get('/resultado-match', function () {
     return view('resultado_match');
 })->name('resultado_match');
+
+Route::get('/storage/images/{file}', function (string $file) {
+    $file = ltrim($file, '/');
+    abort_unless(Storage::disk('public')->exists('images/'.$file), 404);
+    // cache opcional
+    return Storage::disk('public')->response('images/'.$file)
+        ->header('Cache-Control', 'public, max-age=604800'); // 7 dias
+})->where('file', '.*');

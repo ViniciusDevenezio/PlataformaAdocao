@@ -59,4 +59,5 @@ class Pet extends Model
 
     public function solicitacoes() { return $this->hasMany(\App\Models\Solicitacao::class); }
 
+    
 }

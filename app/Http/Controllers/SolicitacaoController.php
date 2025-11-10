@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Pet;
 use App\Models\Solicitacao;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-
 
 class SolicitacaoController extends Controller
 {
@@ -53,58 +50,73 @@ class SolicitacaoController extends Controller
         $ong = auth('ong')->user();
         abort_unless($ong, 401, 'ONG não autenticada');
 
-        $paginator = \App\Models\Solicitacao::with([
+        $paginator = Solicitacao::with([
             'pet:id,nome,imagem_url,status',
-            'adotante:id,nome_completo,celular',
+            // agora apenas os campos existentes no seu fillable
+            'adotante:id,nome_completo,email,celular,cpf,nascimento,cep,endereco,numero,bairro,cidade,estado',
         ])
             ->where('ong_id', $ong->id)
             ->orderByDesc('created_at')
             ->paginate(15);
 
-        // monta URL assumindo storage/app/public/images -> /storage/images
+        // helpers
         $makeImg = function (?string $path): string {
             if (empty($path))
                 return 'https://placehold.co/96x96?text=Pet';
-
             $path = trim($path);
-
-            // Já é URL?
-            if (preg_match('#^(https?:)?//#', $path) || str_starts_with($path, 'data:')) {
+            if (preg_match('#^(https?:)?//#', $path) || str_starts_with($path, 'data:'))
                 return $path;
-            }
-
-            // Normaliza e garante pasta "images/"
-            $clean = ltrim($path, '/');           // ex: "fofa.jpg" ou "images/fofa.jpg"
-            if (!str_contains($clean, '/')) {
-                // veio só o nome do arquivo -> assume "images/<arquivo>"
+            $clean = ltrim($path, '/');
+            if (!str_contains($clean, '/'))
                 $clean = 'images/' . $clean;
-            }
-
-            // Se já vier "storage/..." (raro), não duplica
-            if (str_starts_with($clean, 'storage/')) {
-                return asset($clean);
-            }
-
-            // Padrão para quem salva em storage/app/public/images
-            return asset('storage/' . $clean);    // => /storage/images/fofa.jpg
+            return str_starts_with($clean, 'storage/') ? asset($clean) : asset('storage/' . $clean);
         };
-
-        // formata telefone BR simples
         $formatFone = function (?string $fone): string {
             if (!$fone)
                 return '—';
-            $digits = preg_replace('/\D+/', '', $fone);
-            if (strlen($digits) > 11 && str_starts_with($digits, '55'))
-                $digits = substr($digits, 2);
-            if (strlen($digits) === 11)
-                return sprintf('(%s) %s-%s', substr($digits, 0, 2), substr($digits, 2, 5), substr($digits, 7));
-            if (strlen($digits) === 10)
-                return sprintf('(%s) %s-%s', substr($digits, 0, 2), substr($digits, 2, 4), substr($digits, 6));
+            $d = preg_replace('/\D+/', '', $fone);
+            if (strlen($d) > 11 && str_starts_with($d, '55'))
+                $d = substr($d, 2);
+            if (strlen($d) === 11)
+                return sprintf('(%s) %s-%s', substr($d, 0, 2), substr($d, 2, 5), substr($d, 7));
+            if (strlen($d) === 10)
+                return sprintf('(%s) %s-%s', substr($d, 0, 2), substr($d, 2, 4), substr($d, 6));
             return $fone;
         };
+        $formatCpf = function (?string $cpf): ?string {
+            if (!$cpf)
+                return null;
+            $d = preg_replace('/\D+/', '', $cpf);
+            if (strlen($d) !== 11)
+                return $cpf;
+            return substr($d, 0, 3) . '.' . substr($d, 3, 3) . '.' . substr($d, 6, 3) . '-' . substr($d, 9, 2);
+        };
+        $enderecoFull = function ($ad): ?string {
+            if (!$ad)
+                return null;
+            $l1 = trim(implode(', ', array_filter([$ad->endereco, $ad->numero])));
+            $l2 = $ad->bairro ?: null;
+            $l3 = ($ad->cidade && $ad->estado) ? "{$ad->cidade}/{$ad->estado}" : ($ad->cidade ?: null);
+            $l4 = $ad->cep ?: null;
+            $p = array_filter([$l1 ?: null, $l2, $l3, $l4]);
+            return $p ? implode("\n", $p) : null; // \n -> <br> no front
+        };
+        $calcIdade = function (?string $iso): ?int {
+            if (!$iso)
+                return null;
+            try {
+                $d = new \DateTime($iso);
+                $h = new \DateTime();
+                return $d->diff($h)->y;
+            } catch (\Throwable) {
+                return null;
+            }
+        };
 
-        $mapped = $paginator->getCollection()->map(function (\App\Models\Solicitacao $s) use ($makeImg, $formatFone) {
-            $fone = $s->adotante->celular ?? $s->celular_cache ?? null;
+        $mapped = $paginator->getCollection()->map(function (Solicitacao $s) use ($makeImg, $formatFone, $formatCpf, $enderecoFull, $calcIdade) {
+            $ad = $s->adotante;
+            $fone = $ad->celular ?? $s->celular_cache ?? null;
+            $foneDigits = $fone ? preg_replace('/\D+/', '', $fone) : null;
 
             return (object) [
                 'id' => $s->id,
@@ -112,10 +124,29 @@ class SolicitacaoController extends Controller
                 'mensagem' => $s->mensagem,
                 'created_at' => $s->created_at,
 
+                // PET
                 'pet_nome' => $s->pet->nome ?? '—',
                 'pet_foto' => $makeImg($s->pet->imagem_url ?? null),
-                'adotante_nome' => $s->adotante->nome_completo ?? '—',
+
+                // ADOTANTE
+                'adotante_nome' => $ad->nome_completo ?? '—',
+                'adotante_email' => $ad->email ?? null,
+                'adotante_cpf_fmt' => $formatCpf($ad->cpf ?? null) ?? '—',
+                'adotante_nascimento' => $ad->nascimento ?? null,
+                'adotante_idade' => $calcIdade($ad->nascimento ?? null) ?? null,
+
                 'adotante_whatsapp' => $formatFone($fone),
+                'adotante_whatsapp_raw' => $foneDigits,
+                'adotante_celular_fmt' => $formatFone($fone) ?? null,
+
+                // ENDEREÇO
+                'adotante_cep' => $ad->cep ?? null,
+                'adotante_endereco' => $ad->endereco ?? null,
+                'adotante_numero' => $ad->numero ?? null,
+                'adotante_bairro' => $ad->bairro ?? null,
+                'adotante_cidade' => $ad->cidade ?? null,
+                'adotante_estado' => $ad->estado ?? null,
+                'adotante_endereco_full' => $enderecoFull($ad) ?? '—',
             ];
         });
 
@@ -126,4 +157,5 @@ class SolicitacaoController extends Controller
             'ong' => $ong,
         ]);
     }
+
 }
