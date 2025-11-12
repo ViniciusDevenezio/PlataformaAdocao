@@ -13,7 +13,8 @@
         $mudaStatus = [
             'disponivel' => 'Disponível',
             'reservado' => 'Pet reservado',
-            'aguardando_aprovacao' => 'Aguardando aprovação'
+            'aguardando_aprovacao' => 'Aguardando aprovação',
+            'adotado' => 'Adotado',
         ];
     @endphp
 
@@ -40,7 +41,9 @@
                     $cidadeUsuario = auth()->user()->cidade ?? 'sua cidade';
                     $mensagem = "Olá, meu nome é $nomeUsuario e tenho interesse no pet {$pet->nome}. Moro em $cidadeUsuario.";
                     $mensagemUrl = urlencode($mensagem);
-                    $numeroOng = preg_replace('/\D/', '', $pet->ong->telefone);
+                    $numeroOng = preg_replace('/\D/', '', $pet->ong->telefone ?? '');
+                    $indisponivel = in_array($pet->status, ['reservado','adotado']);
+                    $rotuloIndisponivel = $pet->status === 'adotado' ? 'Adotado' : 'Pet Reservado';
                 @endphp
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
@@ -60,10 +63,10 @@
                             </div>
 
                             <div class="text-center mt-auto">
-                                @if($pet->status === 'reservado')
-                                    <button class="btn btn-secondary w-100" disabled>Pet Reservado</button>
+                                @if(!$indisponivel)
+                                    <a href="{{ route('pet.mostrar', $pet) }}" class="btn btn-primary w-100 py-2">Quero Adotar</a>
                                 @else
-                                   <a href="{{ route('pet.mostrar', $pet) }}" class="btn btn-primary w-100 py-2">Quero Adotar</a>
+                                    <button class="btn btn-secondary w-100" disabled>{{ $rotuloIndisponivel }}</button>
                                 @endif
                             </div>
                         </div>
@@ -103,14 +106,7 @@
                     </div>
                 </div>
             @endforeach
-        </div> <!-- fechamento da .row -->
-    </div> <!-- fechamento da .container -->
+        </div> 
+    </div> 
 
 @endsection
-
-
-
-
-<style>
-
-</style>

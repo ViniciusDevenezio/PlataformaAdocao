@@ -94,11 +94,15 @@
 
               <td class="text-center">
                 <div class="d-none d-sm-inline-flex btn-group btn-group-sm" role="group" aria-label="Ações">
-                  <button type="button" class="btn btn-success px-2 py-1"
-                          data-id="{{ $s->id }}"
-                          onclick="aceitarSolicitacao(this)">
-                    <i class="bi bi-check2-circle"></i>
-                  </button>
+                  {{-- substituímos o botão por form POST para usar CSRF e a rota do controller --}}
+                  <form action="{{ url("/painel/ong/solicitacoes/{$s->id}/aceitar") }}" method="POST" style="display:inline">
+                    @csrf
+                    <button type="submit" class="btn btn-success px-2 py-1"
+                            data-id="{{ $s->id }}"
+                            onclick="return confirm('Confirmar aprovação desta solicitação?')">
+                      <i class="bi bi-check2-circle"></i>
+                    </button>
+                  </form>
 
                   {{-- DETALHES (desktop) --}}
                   <button type="button" class="btn btn-outline-secondary px-2 py-1"
@@ -117,9 +121,14 @@
                     <i class="bi bi-person-vcard"></i>
                   </button>
 
-                  <button type="button" class="btn btn-outline-danger px-2 py-1" data-id="{{ $s->id }}" onclick="marcarRecusado(this)">
-                    <i class="bi bi-x-circle-fill"></i>
-                  </button>
+                  <form action="{{ url("/painel/ong/solicitacoes/{$s->id}/status") }}" method="POST" style="display:inline">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="status" value="recusado">
+                    <button type="submit" class="btn btn-outline-danger px-2 py-1" data-id="{{ $s->id }}" onclick="return confirm('Confirmar recusa desta solicitação?')">
+                      <i class="bi bi-x-circle-fill"></i>
+                    </button>
+                  </form>
                 </div>
 
                 <div class="dropdown d-inline d-sm-none">
@@ -128,11 +137,12 @@
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                      <button type="button" class="dropdown-item"
-                              data-id="{{ $s->id }}"
-                              onclick="aceitarSolicitacao(this)">
-                        <i class="bi bi-check2-circle me-2"></i> Aceitar
-                      </button>
+                      <form action="{{ url("/painel/ong/solicitacoes/{$s->id}/aceitar") }}" method="POST" style="display:inline">
+                        @csrf
+                        <button type="submit" class="dropdown-item" onclick="return confirm('Confirmar aprovação desta solicitação?')">
+                          <i class="bi bi-check2-circle me-2"></i> Aceitar
+                        </button>
+                      </form>
                     </li>
                     <li>
                       {{-- DETALHES (mobile) --}}
@@ -154,9 +164,14 @@
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                      <button type="button" class="dropdown-item text-danger" data-id="{{ $s->id }}" onclick="marcarRecusado(this)">
-                        <i class="bi bi-x-circle-fill me-2"></i> Recusar
-                      </button>
+                      <form action="{{ url("/painel/ong/solicitacoes/{$s->id}/status") }}" method="POST" style="display:inline">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="status" value="recusado">
+                        <button type="submit" class="dropdown-item text-danger" data-id="{{ $s->id }}" onclick="return confirm('Confirmar recusa desta solicitação?')">
+                          <i class="bi bi-x-circle-fill me-2"></i> Recusar
+                        </button>
+                      </form>
                     </li>
                   </ul>
                 </div>
@@ -204,14 +219,14 @@
     </div>
   </div>
 
-  {{-- ===== JS (inline — ajustado para preencher apenas o corpo) ===== --}}
+  {{-- ===== JS (inline — ajustado para manter suas funções e sem interferir nos novos forms) ===== --}}
   <script>
     const CSRF = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
     function filtrarStatus(status){
       document.querySelectorAll('.filters [data-status]').forEach(b=>b.classList.remove('active'));
       document.querySelector(`.filters [data-status="${status}"]`)?.classList.add('active');
-      document.querySelectorAll('#tabelaSolicitacoes tbody tr').forEach(tr=>{
+      document.querySelectorAll('#tabelaSolicitacoes tbody tr').forEach(tr=>{ 
         const st = tr.getAttribute('data-status');
         tr.style.display = (status==='todos'||st===status)?'':'none';
       });
@@ -294,11 +309,9 @@
         btnWa.disabled = true;
         btnWa.onclick = null;
       }
-
-    
     });
 
-    // Ações (status)
+    // Ações (status) — usa endpoint PATCH /painel/ong/solicitacoes/{id}/status já presente no seu JS original
     async function atualizarStatus(id, status){
       try{
         const resp = await fetch(`/painel/ong/solicitacoes/${id}/status`, {
@@ -315,7 +328,6 @@
         }
       }catch(e){ console.error(e); alert('Não foi possível atualizar a solicitação. Tente novamente.'); }
     }
-    window.aceitarSolicitacao = (btn)=>{ const id=btn.dataset.id; if(!id)return; if(confirm('Confirmar aprovação desta solicitação?')) atualizarStatus(id,'aprovado'); }
     window.marcarRecusado     = (btn)=>{ const id=btn.dataset.id; if(!id)return; if(confirm('Confirmar recusa desta solicitação?')) atualizarStatus(id,'recusado'); }
     window.aceitarSelecionados= ()=>{ const ids=getSelecionados(); if(!ids.length) return alert('Nenhuma linha selecionada.'); if(confirm(`Aprovar ${ids.length} solicitação(ões)?`)){ ids.forEach(id=>atualizarStatus(id,'aprovado')); document.getElementById('checkAll').checked=false; toggleAll({checked:false}); } }
     window.recusarSelecionados= ()=>{ const ids=getSelecionados(); if(!ids.length) return alert('Nenhuma linha selecionada.'); if(confirm(`Recusar ${ids.length} solicitação(ões)?`)){ ids.forEach(id=>atualizarStatus(id,'recusado')); document.getElementById('checkAll').checked=false; toggleAll({checked:false}); } }

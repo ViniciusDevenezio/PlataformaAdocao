@@ -7,10 +7,8 @@ body {
     background-repeat: repeat; /* Faz o padrão se repetir em todas as direções */
     background-size: auto; /* Deixa o tamanho original da imagem */
     background-position: top left; /* Começa a repetição no canto superior esquerdo */
-    font-family: 'Poppins', sans-serif;
-    
+    font-family: 'Poppins', sans-serif;  
 }
-
 
 /* Navbar personalizada */
 .custom-navbar {
@@ -28,7 +26,7 @@ body {
 .custom-navbar .nav-link {
     color: #333; /* Cor padrão dos links */
     font-weight: 500;
-    padding: px 15px;
+    padding: 0 15px;              /* corrigido (antes estava "px 15px") */
     text-transform: uppercase;
     transition: color 0.3s ease;
 }
@@ -44,14 +42,11 @@ body {
     gap: 5px; /* Aumenta o espaço entre os itens */
 }
 
-
 .navbar-brand {
     display: flex;
     align-items: center;
-
 }
-/* Botão Match */
-/* Botão Match */
+
 /* Botão Match */
 .match-btn {
     font-weight: 600;
@@ -100,10 +95,7 @@ body {
     opacity: 0; /* invisível por padrão */
     transition: opacity 0.3s ease;
 }
-
-.match-btn:hover::before {
-    opacity: 1; /* aparece só no hover */
-}
+.match-btn:hover::before { opacity: 1; }
 
 /* Animação gradiente de fundo */
 @keyframes gradientMove {
@@ -125,157 +117,80 @@ body {
     100% { color: #fff; text-shadow: 0 0 3px #fff; }
 }
 
-/* Definição da animação */
+/* Definição da animação antiga (não usada nos botões azuis agora) */
 @keyframes bounce {
-    0% {
-        bottom: -100%; 
-    }
-    50% {
-        bottom: -50%; 
-    }
-    80% {
-        bottom: -2%; 
-    }
-    90% {
-        bottom: -4px; 
-    }
-    94% {
-        bottom: -3px; 
-    }
-    96% {
-        bottom: -2px; 
-    }
-
-    99% {
-        bottom: -1px; 
-    }
-    100% {
-
-        bottom: 0; 
-    }
+    0% { bottom: -100%; }
+    50% { bottom: -50%; }
+    80% { bottom: -2%; }
+    90% { bottom: -4px; }
+    94% { bottom: -3px; }
+    96% { bottom: -2px; }
+    99% { bottom: -1px; }
+    100% { bottom: 0; }
 }
 
-
-#btn-login {
-    background-color: white; /* Fundo branco inicial */
-    color: #0887F2; /* Texto azul */
-    border: 2px solid #0887F2; /* Borda azul */
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    margin-left: 10px;
-    font-size: 14px;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.3s;
-    z-index: 1; /* Garante que o texto fique acima do ::after */
-}
-
-/* Pseudo-elemento para o efeito de fundo do Login */
-#btn-login::after {
-    content: '';
-    position: absolute;
-    bottom: -100%; /* Começa fora do botão, na parte inferior */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0887F2; /* Cor do fundo azul */
-    z-index: -1; /* Coloca o efeito atrás do texto */
-    transition: bottom 0.4s ease-in-out; /* Transição suave */
-}
-
-/* Efeito hover do Login */
-#btn-login:hover {
-    color: white; /* Texto muda para branco */
-}
-
-/* Aplicação da animação ao Login */
-#btn-login:hover::after {
-    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
-    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
-}
-
-#btn-logout {
-    background-color: white; /* Fundo branco inicial */
-    color: #0887F2; /* Texto azul */
-    border: 2px solid #0887F2; /* Borda azul */
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    margin-left: 10px;
-    font-size: 14px;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.3s;
-    z-index: 1; /* Garante que o texto fique acima do ::after */
-}
-
-/* Pseudo-elemento para o efeito de fundo do Login */
-#btn-logout::after {
-    content: '';
-    position: absolute;
-    bottom: -100%; /* Começa fora do botão, na parte inferior */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0887F2; /* Cor do fundo azul */
-    z-index: -1; /* Coloca o efeito atrás do texto */
-    transition: bottom 0.4s ease-in-out; /* Transição suave */
-}
-
-/* Efeito hover do Login */
-#btn-logout:hover {
-    color: white; /* Texto muda para branco */
-}
-
-/* Aplicação da animação ao Login */
-#btn-logout:hover::after {
-    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
-    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
-}
-
-/* Estilo do botão Seja um parceiro */
+/* =========================
+   Botões azuis (login/logout/parceiro)
+   — efeito fluido + contorno visível + canto meio quadrado
+========================= */
+#btn-login,
+#btn-logout,
 #btn-parceiro {
-    background-color: white; /* Fundo branco inicial */
-    color: #0887F2; /* Texto azul */
-    border: 2px solid #0887F2; /* Borda azul */
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    margin-left: 10px;
-    font-size: 14px;
-    position: relative;
-    overflow: hidden;
-    transition: color 0.3s;
-    z-index: 1; /* Garante que o texto fique acima do ::after */
+  background:#fff;
+  color:#0887F2;
+  /* trocamos border por outline p/ o contorno não ser coberto */
+  border: 0;
+  outline: 3px solid #0887F2;   /* contorno sempre visível */
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 10px;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: color .25s ease;
+  z-index: 1;
 }
 
-/* Pseudo-elemento para o efeito de fundo do Seja um parceiro */
+
+/* camada interna de preenchimento (ligeiramente menor p/ deixar a borda aparecer) */
+#btn-login::after,
+#btn-logout::after,
 #btn-parceiro::after {
-    content: '';
-    position: absolute;
-    bottom: -100%; /* Começa fora do botão, na parte inferior */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0887F2; /* Cor do fundo azul */
-    z-index: -1; /* Coloca o efeito atrás do texto */
-    transition: bottom 0.4s ease-in-out; /* Transição suave */
+  content: '';
+  position: absolute;
+  top: -1px;        /* sobe 1px pra cobrir bordas */
+  left: -1px;       /* estica 1px à esquerda */
+  right: -1px;      /* estica 1px à direita */
+  bottom: -1px;     /* desce 1px pra cobrir o rodapé */
+  background: #0887F2;
+  border-radius: px;      /* ligeiramente maior pra seguir o novo tamanho */
+  transform: translateY(103%);  /* +3% pra compensar o overflow */
+  transition: transform .45s cubic-bezier(.22,.61,.36,1);
+  will-change: transform;
+  z-index: -1;
 }
 
-/* Efeito hover do Seja um parceiro */
-#btn-parceiro:hover {
-    color: white; /* Texto muda para branco */
-}
 
-/* Aplicação da animação ao Seja um parceiro */
-#btn-parceiro:hover::after {
-    bottom: 0; /* Fundo desliza para cima, cobrindo o botão */
-    animation: bounce 0.5s ease-in-out; /* Aplica a animação de rebote */
-}
+/* estados controlados via JS (.is-on / .is-off) */
+#btn-login.is-on,
+#btn-logout.is-on,
+#btn-parceiro.is-on { color: #fff; }    /* texto branco quando cheio */
+
+#btn-login.is-on::after,
+#btn-logout.is-on::after,
+#btn-parceiro.is-on::after { transform: translateY(0%); }
+
+#btn-login.is-off::after,
+#btn-logout.is-off::after,
+#btn-parceiro.is-off::after { transform: translateY(100%); }
+
+/* hover só reforça contraste do texto (opcional) */
+#btn-login:hover,
+#btn-logout:hover,
+#btn-parceiro:hover { color: #fff; }
+
 /* Botão Quero Adotar */
 .custom-navbar .btn-adotar {
     background-color: #ffb01d;
@@ -301,15 +216,14 @@ body {
 }
 
 /* css do carrossel */
-
 .carousel-inner .carousel-item img {
     margin-top:5%;
     width: 100%;            /* As imagens ocupam toda a largura do container */
     height: 550px;          /* Define a altura fixa para as imagens (ajuste conforme necessário) */
     object-fit: cover;      /* Garante que a imagem preencha o espaço sem distorcer a proporção */
-  }
-  
-  .carousel-indicators {
+}
+
+.carousel-indicators {
     position: absolute;
     bottom: 10px; /* Ajuste conforme necessário */
     left: 50%;
@@ -320,158 +234,154 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-  
-  .carousel-indicators li {
+}
+
+.carousel-indicators li {
     width: 10px;
     height: 10px;
     background-color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
-  }
-  
-  .carousel-indicators .active {
+}
+
+.carousel-indicators .active {
     background-color: white;
-  }
+}
 
+/* Login */
+.login-container {
+    max-width: 66vw;
+    margin: auto;
+    padding: 5vh 5vw;
+    margin-top: -14rem; /* Ajusta a posição para sobrepor o fundo roxo */
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
 
-    /* Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login || Login ||  */
-    .login-container {
-        max-width: 66vw;
-        margin: auto;
-        padding: 5vh 5vw;
-        margin-top: -14rem; /* Ajusta a posição para sobrepor o fundo roxo */
-        display: flex;
-        gap: 2rem;
-        justify-content: center;
-        align-items: stretch;
-        flex-wrap: wrap;
-        position: relative;
-        z-index: 2;
-    }
-    
-    .card {
-        flex: 1;
-        min-width: 20rem;
-        padding: 2rem;
-        border-radius: 0.625rem;
-        box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; /* Garante espaçamento entre os elementos */
-        align-items: center;
-        text-align: center;
-        height: auto; /* Permite altura dinâmica */
-        border:none;
-    }
+.card {
+    flex: 1;
+    min-width: 20rem;
+    padding: 2rem;
+    border-radius: 0.625rem;
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Garante espaçamento entre os elementos */
+    align-items: center;
+    text-align: center;
+    height: auto; /* Permite altura dinâmica */
+    border:none;
+}
 
-    .card.p-4 *,
-    card.p-4 *::before,
-    .card.p-4 *::after {
+.card.p-4 *,
+card.p-4 *::before,
+.card.p-4 *::after {
     transition: none !important;
     animation: none !important;
-    }
+}
 
-    
-    .card:first-child {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%; /* Garante altura total */
-    }
-    
-    .card:last-child {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%; /* Faz os dois cards terem a mesma altura */
-    }
-    
-    .btn-orange {
-        background-color: #f4a261;
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: background 0.3s, color 0.3s;
-        width: 100%;
-    }
-    
-    .btn-orange:hover {
-        background-color: #e76f51;
-        color: white;
-    }
-    
-    .btn-outline-primary {
-        border: 0.125rem solid #007bff;
-        color: #007bff;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: background 0.3s, color 0.3s;
-        width: 100%;
-        margin-top: auto; /* Empurra o botão para a parte inferior */
-    }
-    
-    .btn-outline-primary:hover {
-        background-color: #007bff;
-        color: white;
-    }
-    
-    .btn-adotante {
-        margin-top: auto; /* Empurra o botão para a parte inferior */
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 0.75rem;
-        border: 0.0625rem solid #ccc;
-        border-radius: 0.5rem;
-        box-sizing: border-box;
-        font-size: 1rem;
-        transition: all 0.3s ease-in-out;
-        margin-bottom: 1rem;
-    }
-    
-    .form-control:focus {
-        border-color: #74B9FF;
-        outline: none;
-        box-shadow: 0 0 0.3125rem rgba(116, 185, 255, 0.8);
-    }
-    
-    .form-check {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-align: left;
-        width: 100%;
-    }
-    
-    .welcome-banner {
-        background-color: #c2b5c5; /* Cor de fundo roxa clara */
-        padding: 7rem 0.25vw; /* Reduz a altura para evitar espaços excessivos */
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-        margin-top: 4rem;
-    }
-    
-    .welcome-banner h1 {
-        font-size: 2.5rem; /* Ajusta o tamanho do texto */
-        color: #523f5f; /* Cor do texto parecida com a da imagem */
-        margin: 0;
-        margin-bottom: 4rem;
-    }
+.card:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Garante altura total */
+}
 
-    /*CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || CADASTRO DE USUARIO || */
+.card:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Faz os dois cards terem a mesma altura */
+}
 
+.btn-orange {
+    background-color: #f4a261;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    width: 100%;
+}
 
-    #cadastro-container {
+.btn-orange:hover {
+    background-color: #e76f51;
+    color: white;
+}
+
+.btn-outline-primary {
+    border: 0.125rem solid #007bff;
+    color: #007bff;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    width: 100%;
+    margin-top: auto; /* Empurra o botão para a parte inferior */
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-adotante {
+    margin-top: auto; /* Empurra o botão para a parte inferior */
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 1rem;
+}
+
+.form-control:focus {
+    border-color: #74B9FF;
+    outline: none;
+    box-shadow: 0 0 0.3125rem rgba(116, 185, 255, 0.8);
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: left;
+    width: 100%;
+}
+
+.welcome-banner {
+    background-color: #c2b5c5; /* Cor de fundo roxa clara */
+    padding: 7rem 0.25vw; /* Reduz a altura para evitar espaços excessivos */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    margin-top: 4rem;
+}
+
+.welcome-banner h1 {
+    font-size: 2.5rem; /* Ajusta o tamanho do texto */
+    color: #523f5f; /* Cor do texto parecida com a da imagem */
+    margin: 0;
+    margin-bottom: 4rem;
+}
+
+/* CADASTRO DE USUARIO */
+#cadastro-container {
     max-width: 800px;
     background-color: #f8f8f8;
     padding: 20px;
@@ -480,8 +390,6 @@ body {
     margin: auto;
     margin-top: 0rem;
     min-height: 400px;
-    
-
 }
 
 #cadastro-titulo {
@@ -532,4 +440,3 @@ form input.form-control {
 #alertaAdocao{
     margin-top:6rem;
 }
-

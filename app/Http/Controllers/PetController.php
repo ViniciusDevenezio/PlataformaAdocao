@@ -46,10 +46,16 @@ class PetController extends Controller
 
 public function mostrar(\App\Models\Pet $pet)
 {
-    $pet->load('ong'); // força carregar a relação
-    return view('pets.mostrar', compact('pet'));
-}
+    // Bloqueia pets reservados ou adotados
+    if (in_array($pet->status, ['reservado', 'adotado'])) {
+        return redirect()
+            ->route('adotar')
+            ->with('error', 'Este pet não está disponível no momento.');
+    }
 
+    // Exibe normalmente se estiver disponível
+    return view('pets.mostrar', ['pet' => $pet]);
+}
 public function listarCachorros()
 {
     $pets = \App\Models\Pet::with('ong')

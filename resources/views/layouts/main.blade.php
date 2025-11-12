@@ -132,5 +132,47 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('#btn-login, #btn-logout, #btn-parceiro');
+
+  buttons.forEach(btn => {
+    // Define estado inicial
+    btn.classList.add('is-off');
+
+    let isAnimating = false;
+
+    const setOn = () => {
+      if (isAnimating) return;
+      btn.classList.remove('is-off');
+      btn.classList.add('is-on');
+    };
+
+    const setOff = () => {
+      // permite a reversão suave mesmo no meio da animação
+      btn.classList.remove('is-on');
+      btn.classList.add('is-off');
+    };
+
+    // eventos principais
+    btn.addEventListener('mouseenter', setOn);
+    btn.addEventListener('mouseleave', setOff);
+    btn.addEventListener('focus', setOn);
+    btn.addEventListener('blur', setOff);
+
+    // suporte a toque (mobile)
+    btn.addEventListener('touchstart', setOn, { passive: true });
+    btn.addEventListener('touchend', setOff);
+
+    // segurança: se perder o foco da aba, reseta
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) setOff();
+    });
+
+    // evita que o clique dispare seleção de texto
+    btn.addEventListener('mousedown', e => e.preventDefault());
+  });
+});
+</script>
 
 </html>

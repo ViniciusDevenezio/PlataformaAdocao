@@ -132,3 +132,20 @@ Route::get('/storage/images/{file}', function (string $file) {
     return Storage::disk('public')->response('images/'.$file)
         ->header('Cache-Control', 'public, max-age=604800'); // 7 dias
 })->where('file', '.*');
+
+Route::middleware('auth:ong')
+    ->prefix('painel/ong')
+    ->name('ong.')
+    ->group(function () {
+        // lista de solicitações (sua view)
+        Route::get('/solicitacoes', [SolicitacaoController::class, 'index'])
+            ->name('solicitacoes');
+
+        // aceitar uma solicitação (form POST da view usa /painel/ong/solicitacoes/{id}/aceitar)
+        Route::post('/solicitacoes/{id}/aceitar', [SolicitacaoController::class, 'aceitar'])
+            ->name('solicitacoes.aceitar');
+
+        // atualizar status (sua view faz PATCH /painel/ong/solicitacoes/{id}/status)
+        Route::patch('/solicitacoes/{id}/status', [SolicitacaoController::class, 'atualizarStatus'])
+            ->name('solicitacoes.status');
+    });

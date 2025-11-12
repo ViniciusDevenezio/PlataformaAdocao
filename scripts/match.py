@@ -1,15 +1,7 @@
 import json, sys, requests
 
 # 🔑 Chave fixa aqui
-<<<<<<< HEAD
-<<<<<<< HEAD
 API_KEY = "chave open ai"
-=======
-API_KEY = "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"
->>>>>>> 1b7cea5 (Adicionado tela de resultado match, endpoint em python com api para utilizar ia, controller para interpretaçao dos dados de resposta da ia)
-=======
-API_KEY = "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"
->>>>>>> 4fffb37 (Solicitacoes detalhes finalizado)
 
 INSTRUCOES = """
 Você é um especialista em adoção responsável de animais.
