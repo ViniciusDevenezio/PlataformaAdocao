@@ -11,68 +11,72 @@ use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\MatchController;
 use Illuminate\Support\Facades\Storage;
 
-
-
+// Home ---------------------------------------------------------
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-
-// Envio do login - Apenas um controller (AdotanteAuthController, se for o principal)
+// Login / Logout ------------------------------------------------
 Route::post('/login', [AdotanteAuthController::class, 'login'])->name('adotante.login');
 
-// Controle de login se estiver logado
 Route::get('/login', [LoginController::class, 'showLoginForm'])
     ->name('login')
     ->middleware('bloquear_se_logado');
 
-// Logout
 Route::post('/logout', [AdotanteAuthController::class, 'logout'])->name('logout');
 
-// Cadastro
+// Cadastro adotante ---------------------------------------------
 Route::get('/cadastro', function () {
     return view('cadastro');
 })->name('cadastro');
 
-// Dashboard protegida
+// rota de POST principal do cadastro (name único tutor.store)
+Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store');
+
+// rota alternativa, sem name (não conflita com tutor.store)
+Route::post('/tutor/store', [TutorController::class, 'store']);
+
+// Dashboard protegida -------------------------------------------
 Route::get('/dashboard', function () {
     return view('painelAdotante');
 })->name('dashboard')->middleware('auth');
 
-// Outras páginas
+// Outras páginas simples ----------------------------------------
 Route::get('/painel', function () {
     return view('painel');
 });
-// routes/web.php
-
-
-
 
 Route::get('/cadastroAnimal', function () {
     return view('cadastroAnimal');
 });
 
+// Painel Adotante -----------------------------------------------
 Route::get('/painelAdotante', [AdotanteAuthController::class, 'painelAdotante'])
     ->name('adotante.pets')
     ->middleware('auth:adotante');
 
-Route::post('/tutor/store', [TutorController::class, 'store'])->name('tutor.store');
-
-// CRUD de adotantes
+// CRUD de adotantes ---------------------------------------------
 Route::resource('adotantes', AdotanteController::class);
 
+// Adoção / Pets -------------------------------------------------
 Route::get('/adotar', [PetController::class, 'adotar'])->name('adotar');
-
 
 Route::get('/pets', [PetController::class, 'index']);
 
-Route::post('/pets/{id}/reservar', [PetController::class, 'reservar'])->name('pets.reservar')->middleware('auth:adotante');
-// mostrar info completa do pet
+Route::post('/pets/{id}/reservar', [PetController::class, 'reservar'])
+    ->name('pets.reservar')
+    ->middleware('auth:adotante');
 
 Route::get('/pet/{pet}', [PetController::class, 'mostrar'])->name('pet.mostrar');
 
+// Filtros de pets (cachorros / gatos) ---------------------------
+Route::get('/adotar/cachorros', [PetController::class, 'listarCachorros'])
+    ->name('pets.cachorros');
 
-//Painel da ong ----------------------------------------------------------------------
+Route::get('/adotar/gatos', [PetController::class, 'listarGatos'])
+    ->name('pets.gatos');
+
+// Painel da ONG - Pets / Interesses -----------------------------
 Route::middleware(['auth:ong'])->group(function () {
     Route::view('/painel-ong', 'painelOng')->name('painel.ong');
 
@@ -86,53 +90,12 @@ Route::middleware(['auth:ong'])->group(function () {
 
     Route::get('/painel-ong/interesses', [OngPainelController::class, 'interesses'])->name('ong.interesses');
 });
-Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store');
 
+// Solicitações de adoção (adotante) -----------------------------
+Route::post('/solicitacoes', [SolicitacaoController::class, 'store'])
+    ->name('solicitacoes.store');
 
-
-//rota para mostrar apenas os cachorros ou gatos ---------------------------
-Route::get('/adotar/cachorros', [App\Http\Controllers\PetController::class, 'listarCachorros'])
-    ->name('pets.cachorros');
-
-Route::get('/adotar/gatos', [App\Http\Controllers\PetController::class, 'listarGatos'])
-    ->name('pets.gatos');
-
-//solicitaçao -------------------------
-
-Route::post(
-    '/solicitacoes',
-    [SolicitacaoController::class, 'store']
-)->name('solicitacoes.store');
-
-// 👉 rotas do painel da ONG
-Route::middleware('auth:ong')
-    ->prefix('painel/ong')
-    ->name('ong.')
-    ->group(function () {
-        Route::get('/solicitacoes', [SolicitacaoController::class, 'index'])
-            ->name('solicitacoes');
-
-        Route::patch('/solicitacoes/{solicitacao}/status', [SolicitacaoController::class, 'updateStatus'])
-            ->name('solicitacoes.status');
-    });
-
-Route::middleware('auth:adotante')->group(function () {
-    Route::match(['get','post'], '/match', [\App\Http\Controllers\MatchController::class, 'index'])
-        ->name('match');
-});
-
-Route::get('/resultado-match', function () {
-    return view('resultado_match');
-})->name('resultado_match');
-
-Route::get('/storage/images/{file}', function (string $file) {
-    $file = ltrim($file, '/');
-    abort_unless(Storage::disk('public')->exists('images/'.$file), 404);
-    // cache opcional
-    return Storage::disk('public')->response('images/'.$file)
-        ->header('Cache-Control', 'public, max-age=604800'); // 7 dias
-})->where('file', '.*');
-
+// Painel da ONG - Solicitações ----------------------------------
 Route::middleware('auth:ong')
     ->prefix('painel/ong')
     ->name('ong.')
@@ -150,4 +113,24 @@ Route::middleware('auth:ong')
             ->name('solicitacoes.status');
     });
 
-    Route::view('/politica-de-privacidade', 'politica-privacidade')->name('politica');
+// Match ---------------------------------------------------------
+Route::middleware('auth:adotante')->group(function () {
+    Route::match(['get', 'post'], '/match', [MatchController::class, 'index'])
+        ->name('match');
+});
+
+Route::get('/resultado-match', function () {
+    return view('resultado_match');
+})->name('resultado_match');
+
+// Servir imagens do storage -------------------------------------
+Route::get('/storage/images/{file}', function (string $file) {
+    $file = ltrim($file, '/');
+    abort_unless(Storage::disk('public')->exists('images/'.$file), 404);
+
+    return Storage::disk('public')->response('images/'.$file)
+        ->header('Cache-Control', 'public, max-age=604800'); // 7 dias
+})->where('file', '.*');
+
+// Política de privacidade ---------------------------------------
+Route::view('/politica-de-privacidade', 'politica-privacidade')->name('politica');
