@@ -10,16 +10,20 @@ body {
     font-family: 'Poppins', sans-serif;  
 }
 
+
 /* Navbar personalizada */
 .custom-navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgb(255, 255, 255); /* Cor de fundo do menu */
-    box-shadow: 6px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra embaixo do menu */
+    background-color: rgb(255, 255, 255); 
+    box-shadow: 6px 4px 6px rgba(0, 0, 0, 0.1);
     padding: 0px 25px;
     z-index: 1000;
+     display: flex;
+    justify-content: center; /* centraliza os itens */
+    width: 100%;
 }
 
 /* Links padrão do menu */
@@ -46,6 +50,7 @@ body {
     display: flex;
     align-items: center;
 }
+
 
 /* Botão Match */
 .match-btn {
@@ -262,7 +267,8 @@ body {
     z-index: 2;
 }
 
-.card {
+/* esses cards são só do LOGIN */
+.login-container .card {
     flex: 1;
     min-width: 20rem;
     padding: 2rem;
@@ -270,10 +276,10 @@ body {
     box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Garante espaçamento entre os elementos */
+    justify-content: space-between;
     align-items: center;
     text-align: center;
-    height: auto; /* Permite altura dinâmica */
+    height: auto;
     border:none;
 }
 
@@ -420,6 +426,7 @@ form input.form-control {
     color: #ff5733;
 }
 
+
 #cadastro-botao .btn-custom {
     background-color: #ffb01d;
     color: white;
@@ -440,3 +447,5 @@ form input.form-control {
 #alertaAdocao{
     margin-top:6rem;
 }
+
+

@@ -2,18 +2,27 @@
 
 @section('head')
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 
 @section('menu')
 @endsection
 
-
 <style>
     #cadastro-container {
         display: none;
     }
+    .lgpd-box {
+        background: #f7f2fa;
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        font-size: .9rem;
+        color: #4a4453;
+        text-align: left;
+        margin-top: 1.5rem;
+    }
 </style>
+
 <div class="welcome-banner">
     <h1>Cadastro de Tutor</h1>
 </div>
@@ -22,7 +31,7 @@
     <div class="row mt-4">
         <div class="col-md-6"></div>
 
-        <div id="cadastro-container" class="container" >
+        <div id="cadastro-container" class="container">
 
             @if ($errors->any())
                 <div class="alert alert-danger mt-3">
@@ -116,6 +125,32 @@
                         </select>
                     </div>
                 </div>
+
+                {{-- ✅ Bloco LGPD / Política de Privacidade --}}
+                <div class="lgpd-box mt-3">
+                    <div class="form-check">
+                        <input
+                            class="form-check-input @error('lgpd_aceite') is-invalid @enderror"
+                            type="checkbox"
+                            id="lgpd_aceite"
+                            name="lgpd_aceite"
+                            value="1"
+                            {{ old('lgpd_aceite') ? 'checked' : '' }}
+                            required
+                        >
+                        <label class="form-check-label" for="lgpd_aceite">
+                            Li e concordo com a
+                            <a href="{{ route('politica') }}" target="_blank">
+                                Política de Privacidade
+                            </a>
+                            e autorizo o tratamento dos meus dados pessoais em conformidade com a LGPD.
+                        </label>
+                        @error('lgpd_aceite')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                {{-- fim LGPD --}}
 
                 <div id="cadastro-botao" class="text-center mt-4">
                     <button type="submit" class="btn btn-custom">Cadastrar</button>

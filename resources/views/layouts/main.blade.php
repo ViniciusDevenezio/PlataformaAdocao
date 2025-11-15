@@ -118,9 +118,14 @@
     </div>
 
     <!-- Rodapé -->
-    <footer class="text-center mt-4">
-        <p>Pet Projeto &copy; 2025</p>
+    <footer class="site-footer text-center py-4">
+        <p class="footer-copy">Pet Projeto &copy; 2025</p>
+
+        <a href="{{ route('politica') }}" class="footer-link">
+            Política de Privacidade
+        </a>
     </footer>
+
 
     <!-- Bootstrap JS e Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -133,46 +138,46 @@
 
 </body>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const buttons = document.querySelectorAll('#btn-login, #btn-logout, #btn-parceiro');
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('#btn-login, #btn-logout, #btn-parceiro');
 
-  buttons.forEach(btn => {
-    // Define estado inicial
-    btn.classList.add('is-off');
+        buttons.forEach(btn => {
+            // Define estado inicial
+            btn.classList.add('is-off');
 
-    let isAnimating = false;
+            let isAnimating = false;
 
-    const setOn = () => {
-      if (isAnimating) return;
-      btn.classList.remove('is-off');
-      btn.classList.add('is-on');
-    };
+            const setOn = () => {
+                if (isAnimating) return;
+                btn.classList.remove('is-off');
+                btn.classList.add('is-on');
+            };
 
-    const setOff = () => {
-      // permite a reversão suave mesmo no meio da animação
-      btn.classList.remove('is-on');
-      btn.classList.add('is-off');
-    };
+            const setOff = () => {
+                // permite a reversão suave mesmo no meio da animação
+                btn.classList.remove('is-on');
+                btn.classList.add('is-off');
+            };
 
-    // eventos principais
-    btn.addEventListener('mouseenter', setOn);
-    btn.addEventListener('mouseleave', setOff);
-    btn.addEventListener('focus', setOn);
-    btn.addEventListener('blur', setOff);
+            // eventos principais
+            btn.addEventListener('mouseenter', setOn);
+            btn.addEventListener('mouseleave', setOff);
+            btn.addEventListener('focus', setOn);
+            btn.addEventListener('blur', setOff);
 
-    // suporte a toque (mobile)
-    btn.addEventListener('touchstart', setOn, { passive: true });
-    btn.addEventListener('touchend', setOff);
+            // suporte a toque (mobile)
+            btn.addEventListener('touchstart', setOn, { passive: true });
+            btn.addEventListener('touchend', setOff);
 
-    // segurança: se perder o foco da aba, reseta
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) setOff();
+            // segurança: se perder o foco da aba, reseta
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) setOff();
+            });
+
+            // evita que o clique dispare seleção de texto
+            btn.addEventListener('mousedown', e => e.preventDefault());
+        });
     });
-
-    // evita que o clique dispare seleção de texto
-    btn.addEventListener('mousedown', e => e.preventDefault());
-  });
-});
 </script>
 
 </html>

@@ -33,6 +33,7 @@ class AdotanteController extends Controller
         'bairro' => 'required',
         'estado' => 'required',
         'cidade' => 'required',
+        'lgpd_aceite' => ['accepted'],
     ]);
 
     // Etapa 2: Converter nascimento de d/m/Y para Y-m-d

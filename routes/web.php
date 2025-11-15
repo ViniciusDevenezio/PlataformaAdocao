@@ -149,3 +149,5 @@ Route::middleware('auth:ong')
         Route::patch('/solicitacoes/{id}/status', [SolicitacaoController::class, 'atualizarStatus'])
             ->name('solicitacoes.status');
     });
+
+    Route::view('/politica-de-privacidade', 'politica-privacidade')->name('politica');
