@@ -222,20 +222,21 @@ body {
 
 /* css do carrossel */
 .carousel-inner .carousel-item img {
-    margin-top:5%;
-    width: 100%;            /* As imagens ocupam toda a largura do container */
-    height: 550px;          /* Define a altura fixa para as imagens (ajuste conforme necessário) */
-    object-fit: cover;      /* Garante que a imagem preencha o espaço sem distorcer a proporção */
+    margin-top: 5%;
+    width: 100%;            /* Imagem ocupa toda a largura do container */
+    height: 550px;          /* Altura fixa */
+    object-fit: cover;      /* Preenche sem distorcer */
 }
+
 
 .carousel-indicators {
     position: absolute;
-    bottom: 10px; /* Ajuste conforme necessário */
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
-    gap: 5px; /* Espaçamento entre os indicadores */
+    gap: 5px;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -251,7 +252,6 @@ body {
 .carousel-indicators .active {
     background-color: white;
 }
-
 /* Login */
 .login-container {
     max-width: 66vw;
