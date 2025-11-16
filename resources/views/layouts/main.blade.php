@@ -18,7 +18,7 @@
 
 
     <!-- Seu CSS personalizado -->
-    <link rel="stylesheet" href="{{ secure_asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ ('css/styles.css') }}">
 
     
 

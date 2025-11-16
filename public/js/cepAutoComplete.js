@@ -1,56 +1,90 @@
+// public/js/cepAutoComplete.js
+
 document.addEventListener('DOMContentLoaded', function () {
-    const cepInput = document.getElementById('cep');
-    const estadoSelect = document.getElementById('estado');
-    const cidadeSelect = document.getElementById('cidade');
+    const cepInput      = document.getElementById('cep');
+    const estadoSelect  = document.getElementById('estado');
+    const cidadeSelect  = document.getElementById('cidade');
     const enderecoInput = document.getElementById('endereco');
-    const bairroInput = document.getElementById('bairro');
+    const bairroInput   = document.getElementById('bairro');
 
     if (!cepInput) return;
+
+    function limparCampos() {
+        if (enderecoInput) enderecoInput.value = '';
+        if (bairroInput)   bairroInput.value   = '';
+        if (cidadeSelect)  cidadeSelect.value  = '';
+        if (estadoSelect)  estadoSelect.value  = '';
+    }
 
     cepInput.addEventListener('blur', function () {
         const cep = cepInput.value.replace(/\D/g, '');
 
-        if (cep.length !== 8) return;
+        // CEP vazio ou com tamanho errado: só limpa e sai
+        if (!cep) {
+            limparCampos();
+            return;
+        }
 
+        if (cep.length !== 8) {
+            alert('CEP inválido. Digite 8 dígitos.');
+            limparCampos();
+            return;
+        }
+
+        // Busca ViaCEP sempre em HTTPS
         fetch(`https://viacep.com.br/ws/${cep}/json/`)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Erro ao consultar o ViaCEP');
+                }
+                return res.json();
+            })
             .then(data => {
                 if (data.erro) {
-                    alert('CEP não encontrado');
+                    alert('CEP não encontrado.');
+                    limparCampos();
                     return;
                 }
 
-                // Preencher os campos imediatamente disponíveis
-                enderecoInput.value = data.logradouro || '';
-                bairroInput.value = data.bairro || '';
+                const logradouro = data.logradouro || '';
+                const bairro     = data.bairro     || '';
+                const uf         = data.uf         || '';
+                const cidade     = data.localidade || '';
 
-                // Selecionar o estado (sigla)
-                const estado = data.uf;
-                const cidade = data.localidade;
+                if (enderecoInput) enderecoInput.value = logradouro;
+                if (bairroInput)   bairroInput.value   = bairro;
 
-                // Espera até os estados estarem carregados
-                const tryFillCidade = setInterval(() => {
-                    const estadoOptions = [...estadoSelect.options].map(o => o.value);
-                    if (estadoOptions.includes(estado)) {
-                        estadoSelect.value = estado;
-                        estadoSelect.dispatchEvent(new Event('change')); // dispara para carregar cidades
+                // Preenche estado se o select existir
+                if (estadoSelect && uf) {
+                    estadoSelect.value = uf;
+                }
 
-                        // Espera as cidades carregarem
-                        const waitCidade = setInterval(() => {
-                            const cidadeOptions = [...cidadeSelect.options].map(o => o.textContent);
-                            if (cidadeOptions.includes(cidade)) {
-                                cidadeSelect.value = cidade;
-                                cidadeSelect.disabled = false;
-                                clearInterval(waitCidade);
-                            }
-                        }, 300);
+                // Preenche cidade se o select existir
+                if (cidadeSelect && cidade) {
+                    // Tenta encontrar uma option já existente com esse texto
+                    const options = Array.from(cidadeSelect.options);
+                    const existente = options.find(o =>
+                        o.textContent.trim().toLowerCase() === cidade.toLowerCase()
+                    );
 
-                        clearInterval(tryFillCidade);
+                    if (existente) {
+                        cidadeSelect.value = existente.value;
+                    } else {
+                        // Se não existir, cria uma option nova e seleciona
+                        const opt = document.createElement('option');
+                        opt.value = cidade;
+                        opt.textContent = cidade;
+                        cidadeSelect.appendChild(opt);
+                        cidadeSelect.value = cidade;
                     }
-                }, 300);
+
+                    cidadeSelect.disabled = false;
+                }
             })
-            .catch(() => {
-                alert('Erro ao buscar o CEP');
+            .catch(err => {
+                console.error('Erro na requisição ViaCEP:', err);
+                alert('Não foi possível consultar o CEP no momento.');
+                limparCampos();
             });
     });
 });
