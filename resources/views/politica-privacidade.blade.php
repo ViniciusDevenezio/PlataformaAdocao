@@ -134,13 +134,14 @@
             <li>Responsável e informações de contato</li>
             <li>E-mail e senha (criptografada)</li>
             <li>Cidade, estado, endereço aproximado</li>
-            <li>CNPJ (quando informado)</li>
+            <li>CNPJ</li>
             <li>Links e dados de redes sociais</li>
         </ul>
 
         <h3>2.2 Dados de Adotantes</h3>
         <ul>
             <li>Nome completo</li>
+            <li>CPF</li>
             <li>E-mail e senha (criptografada)</li>
             <li>Telefone / WhatsApp</li>
             <li>Cidade e estado</li>
@@ -150,7 +151,7 @@
 
         <h3>2.3 Dados de Pets e Solicitações</h3>
         <ul>
-            <li>Cadastro de animais (nome, porte, raça, idade, temperamento, fotos, descrição)</li>
+            <li>Cadastro de animais (nome, porte, raça, idade, temperamento, foto, descrições)</li>
             <li>Status de adoção</li>
             <li>Solicitações de adoção e histórico</li>
             <li>Mensagens enviadas entre adotantes e ONGs</li>
