@@ -14,7 +14,6 @@
     <div class="row mt-4 justify-content-center">
         <div class="col-12">
             
-            {{-- 🔥 Esse cara usa o CSS do #cadastro-container que você mostrou --}}
             <div id="cadastro-container">
 
                 <h4 id="cadastro-titulo" class="text-center mb-4">
