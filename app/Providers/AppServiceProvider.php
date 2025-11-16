@@ -23,5 +23,8 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.force_https') || $this->app->environment('production')) {
             URL::forceScheme('https');
         }
+        if (env('RUN_STORAGE_LINK') && !is_link(public_path('storage'))) {
+            Artisan::call('storage:link');
+        }
     }
 }

@@ -18,16 +18,16 @@
 
 
     <!-- Seu CSS personalizado -->
-    <link rel="stylesheet" href="{{ secure_asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{asset('css/styles.css') }}">
 
-    
+
 
     <!-- Fonte utilizada -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
 
-    @yield('head') <!-- Permite incluir algo extra no <head> se necessário -->
+    @yield('head')
 
 </head>
 
