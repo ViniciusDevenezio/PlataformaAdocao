@@ -57,7 +57,7 @@
                             'table-danger'  => $pet->status == 'adotado',
                         ])>
                             <td style="width: 80px">
-                                <img src="{{ asset('storage/images/' . $pet->imagem_url) }}" 
+                                <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}"
                                      width="70" class="rounded shadow-sm" alt="Foto do pet">
                             </td>
                             <td>{{ $pet->nome }}</td>

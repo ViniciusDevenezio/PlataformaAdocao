@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('head')
-    <link rel="stylesheet" href="{{ asset('css/styleCadastro.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/styleCadastro.css') }}">
 @endsection
 
 @section('menu')
@@ -54,7 +54,7 @@
 
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
-                        <img src="{{ asset('storage/images/' . $pet->imagem_url) }}"
+                        <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}"
                              class="card-img-top"
                              style="height: 15rem; object-fit: cover; width: 100%;"
                              alt="{{ $pet->nome }}">

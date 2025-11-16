@@ -24,7 +24,7 @@
 
       @php
         $img = $pet->imagem_url
-            ? asset('storage/images/' . ltrim($pet->imagem_url, '/'))
+            ? secure_asset('storage/images/' . ltrim($pet->imagem_url, '/'))
             : 'https://placehold.co/200x200?text=Pet';
       @endphp
 
