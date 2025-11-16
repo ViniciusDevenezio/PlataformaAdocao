@@ -134,21 +134,3 @@ Route::get('/storage/images/{file}', function (string $file) {
 
 // Política de privacidade ---------------------------------------
 Route::view('/politica-de-privacidade', 'politica-privacidade')->name('politica');
-
-Route::get('/criar-ong-dev', function () {
-    $ong = Ong::create([
-        'nome'      => 'ONG Teste Dev',
-        'email'     => 'ongteste@dev.com',
-        'senha'     => Hash::make('123'), // bcrypt automático
-        'telefone'  => '11999990000',
-        'cnpj'      => '00.000.000/0001-00',
-        'cep'       => '01001000',
-        'endereco'  => 'Rua Teste',
-        'numero'    => '123',
-        'bairro'    => 'Centro',
-        'cidade'    => 'São Paulo',
-        'estado'    => 'SP',
-    ]);
-
-    return "ONG criada com sucesso! ID: {$ong->id}";
-});
