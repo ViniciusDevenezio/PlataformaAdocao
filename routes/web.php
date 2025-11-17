@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdotanteAuthController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\OngPainelController;
+use App\Http\Controllers\OngController;
 use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\MatchController;
 use Illuminate\Support\Facades\Storage;
@@ -35,6 +36,10 @@ Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store')
 
 // rota alternativa, sem name (não conflita com tutor.store)
 Route::post('/tutor/store', [TutorController::class, 'store']);
+
+// Cadastro de ONG ------------------------------------------------
+Route::get('/cadastro-ong', [OngController::class, 'create'])->name('ong.cadastro');
+Route::post('/cadastro-ong', [OngController::class, 'store'])->name('ong.store');
 
 // Dashboard protegida -------------------------------------------
 Route::get('/dashboard', function () {
