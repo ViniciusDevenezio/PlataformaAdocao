@@ -2,6 +2,16 @@
 
 @section('head')
     <style>
+        /* Tira qualquer animaçãozinha chata dessa página */
+        .welcome-banner,
+        .login-container,
+        #cadastro-container {
+            opacity: 1 !important;
+            transform: none !important;
+            animation: none !important;
+            transition: none !important;
+        }
+
         .welcome-banner {
             margin-top: -1px;
         }
@@ -49,12 +59,32 @@
             background-color: #ffffff;
         }
 
-        .row+.row {
+        .row + .row {
             margin-top: 12px;
         }
 
         .alert {
             border-radius: 12px;
+        }
+
+        /* LGPD igual do cadastro */
+        .lgpd-box {
+            background: #f9fafb;
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: .9rem;
+            color: #4b5563;
+            margin-top: 1rem;
+        }
+
+        .lgpd-box a {
+            color: #f97316;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .lgpd-box a:hover {
+            text-decoration: underline;
         }
 
         .btn-custom {
@@ -106,6 +136,7 @@
     <div class="row mt-4 justify-content-center">
         <div class="col-12">
             <div id="cadastro-container">
+
                 @if ($errors->any())
                     <div class="alert alert-danger mt-3">
                         <ul class="mb-0">
@@ -128,69 +159,115 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="nome">Nome da ONG</label>
-                            <input type="text" id="nome" name="nome" class="form-control" value="{{ old('nome') }}" required>
+                            <input type="text" id="nome" name="nome" class="form-control"
+                                   value="{{ old('nome') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="cnpj">CNPJ</label>
-                            <input type="text" id="cnpj" name="cnpj" class="form-control" value="{{ old('cnpj') }}" required>
+                            <input type="text" id="cnpj" name="cnpj" class="form-control"
+                                   value="{{ old('cnpj') }}" required>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <label for="email">E-mail</label>
-                            <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required>
+                            <input type="email" id="email" name="email" class="form-control"
+                                   value="{{ old('email') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="telefone">Telefone</label>
-                            <input type="text" id="telefone" name="telefone" class="form-control" value="{{ old('telefone') }}">
+                            <input type="text" id="telefone" name="telefone" class="form-control"
+                                   value="{{ old('telefone') }}">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <label for="senha">Senha</label>
-                            <input type="password" id="senha" name="senha" class="form-control" placeholder="Digite sua senha" required>
+                            <input type="password" id="senha" name="senha" class="form-control"
+                                   placeholder="Digite sua senha" required>
                         </div>
                         <div class="col-md-6">
                             <label for="cep">CEP</label>
-                            <input type="text" id="cep" name="cep" class="form-control" value="{{ old('cep') }}" required>
+                            <input type="text" id="cep" name="cep" class="form-control"
+                                   value="{{ old('cep') }}" required>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <label for="endereco">Endereço</label>
-                            <input type="text" id="endereco" name="endereco" class="form-control" value="{{ old('endereco') }}" required>
+                            <input type="text" id="endereco" name="endereco" class="form-control"
+                                   value="{{ old('endereco') }}" required>
                         </div>
                         <div class="col-md-3">
                             <label for="numero">Número</label>
-                            <input type="text" id="numero" name="numero" class="form-control" value="{{ old('numero') }}" required>
+                            <input type="text" id="numero" name="numero" class="form-control"
+                                   value="{{ old('numero') }}" required>
                         </div>
                         <div class="col-md-3">
                             <label for="bairro">Bairro</label>
-                            <input type="text" id="bairro" name="bairro" class="form-control" value="{{ old('bairro') }}" required>
+                            <input type="text" id="bairro" name="bairro" class="form-control"
+                                   value="{{ old('bairro') }}" required>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <label for="cidade">Cidade</label>
-                            <input type="text" id="cidade" name="cidade" class="form-control" value="{{ old('cidade') }}" required>
+                            <input type="text" id="cidade" name="cidade" class="form-control"
+                                   value="{{ old('cidade') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="estado">Estado</label>
-                            <input type="text" id="estado" name="estado" class="form-control" maxlength="2" value="{{ old('estado') }}" required>
+                            <input type="text" id="estado" name="estado" class="form-control"
+                                   maxlength="2" value="{{ old('estado') }}" required>
                         </div>
                     </div>
 
-                    <div id="cadastro-botao" class="row">
+                    {{-- LGPD igual ao cadastro de tutor --}}
+                    <div class="lgpd-box mt-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="lgpd_aceite"
+                                name="lgpd_aceite"
+                                value="1"
+                                required
+                            >
+                            <label class="form-check-label" for="lgpd_aceite">
+                                Li e concordo com a
+                                <a href="{{ route('politica') }}" target="_blank">
+                                    Política de Privacidade
+                                </a>
+                                e autorizo o tratamento dos meus dados pessoais.
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="cadastro-botao" class="row mt-4">
                         <div class="col-md-6 offset-md-3">
                             <button type="submit" class="btn btn-custom">Cadastrar ONG</button>
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
 </div>
+
+{{-- Scripts iguais (máscaras + CEP), adaptados pros campos da ONG --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script src="{{ secure_asset('js/cepAutoComplete.js') }}"></script>
+
+<script>
+    $(function () {
+        $('#telefone').mask('(00) 00000-0000');
+        $('#cep').mask('00000-000');
+        $('#cnpj').mask('00.000.000/0000-00');
+    });
+</script>

@@ -38,8 +38,8 @@ Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store')
 Route::post('/tutor/store', [TutorController::class, 'store']);
 
 // Cadastro de ONG ------------------------------------------------
-Route::get('/cadastro-ong', [OngController::class, 'create'])->name('ong.cadastro');
-Route::post('/cadastro-ong', [OngController::class, 'store'])->name('ong.store');
+Route::get('/cadastro-ong-AssddkOWDOK099dplds', [OngController::class, 'create'])->name('ong.cadastro');
+Route::post('/cadastro-ong-AssddkOWDOK099dplds', [OngController::class, 'store'])->name('ong.store');
 
 // Dashboard protegida -------------------------------------------
 Route::get('/dashboard', function () {

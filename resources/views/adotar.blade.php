@@ -202,7 +202,7 @@
                                         <img src="{{ secure_asset('storage/images/macho.png') }}" alt="Macho"
                                             class="pet-gender-icon pet-gender-macho">
                                     @elseif($generoLower === 'femea')
-                                        <img src="{{ secure_asset('storage/images/femea.png') }}" alt="Fêmea"
+                                        <img src="{{secure_asset('storage/images/femea.png') }}" alt="Fêmea"
                                             class="pet-gender-icon pet-gender-femea">
                                     @endif
                                 </div>

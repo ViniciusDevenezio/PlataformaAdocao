@@ -1,7 +1,7 @@
 import json, sys, requests
 
 # Chave fixa aqui
-#API_KEY =
+#API_KEY =""
 
 INSTRUCOES = """
 Você é um especialista em adoção responsável de animais.
