@@ -131,11 +131,22 @@ Route::get('/resultado-match', function () {
 // Servir imagens do storage -------------------------------------
 Route::get('/storage/images/{file}', function (string $file) {
     $file = ltrim($file, '/');
-    abort_unless(Storage::disk('public')->exists('images/'.$file), 404);
+    abort_unless(Storage::disk('public')->exists('images/' . $file), 404);
 
-    return Storage::disk('public')->response('images/'.$file)
+    return Storage::disk('public')->response('images/' . $file)
         ->header('Cache-Control', 'public, max-age=604800'); // 7 dias
 })->where('file', '.*');
 
 // Política de privacidade ---------------------------------------
 Route::view('/politica-de-privacidade', 'politica-privacidade')->name('politica');
+
+
+Route::get('/teste-make3', function () {
+    $url = 'https://hook.us2.make.com/rg9i0wmm0su9dvzwlggirg4p6jn4ye56';
+    $response = Http::post($url, [
+        'descricao' => 'Teste 2 de cachorro fofo',
+        'url_foto' => 'https://petprojeto.com.br/storage/images/pet_691b7b04653da.jpg'
+    ]);
+
+    return $response->body();
+});
