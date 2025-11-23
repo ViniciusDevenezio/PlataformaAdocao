@@ -2,12 +2,34 @@
     font-family: 'Poppins', sans-serif;
 }
 
+html,
+body {
+    height: 100%;
+}
+
 body {
     background-image: url('/img/backgroundpattern.jpg');
     background-repeat: repeat; /* Faz o padrão se repetir em todas as direções */
     background-size: auto; /* Deixa o tamanho original da imagem */
     background-position: top left; /* Começa a repetição no canto superior esquerdo */
-    font-family: 'Poppins', sans-serif;  
+    font-family: 'Poppins', sans-serif;
+}
+
+.page-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    padding-top: 90px;
+}
+
+.site-footer {
+    margin-top: auto;
+    background-color: #fff;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.05);
 }
 
 
