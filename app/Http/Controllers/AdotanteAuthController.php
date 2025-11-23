@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Pet;
+use App\Models\Solicitacao;
 
 
 class AdotanteAuthController extends Controller
@@ -41,8 +41,12 @@ class AdotanteAuthController extends Controller
     public function painelAdotante()
     {
         $adotante = Auth::guard('adotante')->user();
-        $pets = Pet::where('adotante_id', $adotante->id)->get();
-        return view('painelAdotante', compact('pets'));
+        $solicitacoes = Solicitacao::with('pet')
+            ->where('adotante_id', $adotante->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('painelAdotante', compact('solicitacoes'));
     }
 
     public function logout(Request $request)
