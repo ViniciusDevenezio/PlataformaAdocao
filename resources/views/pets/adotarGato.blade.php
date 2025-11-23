@@ -1,7 +1,138 @@
 @extends('layouts.main')
 
 @section('head')
-    <link rel="stylesheet" href="{{ secure_asset('css/styleCadastro.css') }}">
+    <style>
+        .pet-meta-highlight {
+            color: #0B5ED7!important;
+            font-weight: 450;
+        }
+
+        .pet-gender-femea {
+            width: 18px !important;
+            /* mesma largura do macho */
+            height: auto !important;
+            /* deixa a altura proporcional */
+            transform: scale(0.75);
+            /* aumenta sem distorcer */
+            transform-origin: center;
+        }
+
+        .pet-card {
+            height: 380px;
+            /* um pouco mais alto */
+            display: flex;
+            flex-direction: column;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.22);
+            transition: transform .2s ease, box-shadow .2s ease;
+            border: none;
+        }
+
+        .pet-card .card-img-top {
+            height: 12rem;
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .pet-card .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 1.25rem 1.75rem;
+            /* mais espaço embaixo pro botão respirar */
+        }
+
+        /* Bloco com nome + meta + descrição (parte de cima) */
+        .pet-info {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            gap: .35rem;
+        }
+
+        /* Linha com porte + idade (esquerda) e ícone (direita) */
+        .pet-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+        }
+
+        .pet-meta {
+            font-size: .85rem;
+            margin: 0;
+        }
+
+        /* Ícone de gênero (SVG do storage) */
+        .pet-gender-icon {
+            width: 1.1rem;
+            height: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .pet-gender-macho {
+            /* se o SVG tiver fill="currentColor", pode usar color aqui */
+            /* color: #4f8fff; */
+        }
+
+        .pet-gender-femea {
+            /* color: #ff4f7b; */
+        }
+
+        /* Descrição com rolagem interna (a partir de ~3 linhas) */
+        .card-desc-scroll {
+            margin-top: .25rem;
+            font-size: .9rem;
+            line-height: 1.3;
+
+            max-height: calc(1.3em * 3);
+            /* limite visual ~3 linhas */
+            min-height: calc(1.3em * 3);
+            /* garante altura fixa pros cards */
+            overflow-y: auto;
+            /* só aparece scroll se passar disso */
+            padding-right: 4px;
+            /* espaço pro scroll */
+        }
+
+        /* scrollbar fininha e discreta */
+        .card-desc-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .card-desc-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .card-desc-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 999px;
+        }
+
+        /* Botão no rodapé do card, com espaçamento */
+        .card-footer-adotar {
+            margin-top: .75rem;
+            /* descola mais da descrição */
+        }
+
+        .card-footer-adotar .btn {
+            width: 100%;
+            padding: 8px 0;
+            border-radius: 8px;
+        }
+
+        .pet-card h6 {
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .pet-card p {
+            margin: 0;
+        }
+    </style>
 @endsection
 
 @section('menu')
@@ -12,13 +143,6 @@
     @php
         use Illuminate\Support\Str;
 
-        $mudaStatus = [
-            'disponivel' => 'Disponível',
-            'reservado' => 'Pet reservado',
-            'aguardando_aprovacao' => 'Aguardando aprovação'
-        ];
-
-        // Filtra apenas espécie "Gato" (case-insensitive)
         $gatos = $pets->filter(function ($p) {
             return isset($p->especie) && Str::lower($p->especie) === 'gato';
         });
@@ -36,12 +160,6 @@
     <div id="cardsAdotar" class="container">
         <h1>Gatos disponíveis</h1>
 
-        @if($gatos->isEmpty())
-            <div class="alert alert-info my-4">
-                No momento não há gatos disponíveis para adoção.
-            </div>
-        @endif
-
         <div class="row">
             @foreach ($gatos as $pet)
                 @php
@@ -50,39 +168,55 @@
                     $mensagem      = "Olá, meu nome é $nomeUsuario e tenho interesse no pet {$pet->nome}. Moro em $cidadeUsuario.";
                     $mensagemUrl   = urlencode($mensagem);
                     $numeroOng     = preg_replace('/\D/', '', $pet->ong->telefone ?? '');
+
+                    $indisponivel = in_array($pet->status, ['reservado', 'adotado']);
+                    $rotuloIndisponivel = $pet->status === 'adotado' ? 'Adotado' : 'Pet Reservado';
+
+                    $generoLower = strtolower($pet->genero ?? '');
                 @endphp
 
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}"
-                             class="card-img-top"
-                             style="height: 15rem; object-fit: cover; width: 100%;"
-                             alt="{{ $pet->nome }}">
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="card pet-card">
+                        <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
+                            alt="{{ $pet->nome }}">
 
-                        <div class="card-body text-start d-flex flex-column">
-                            <div class="flex-grow-1">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h6 class="fw-bold mb-0">{{ $pet->nome ?? 'Sem nome ainda' }}</h6>
-                                    <span class="badge bg-primary-subtle text-primary border">
-                                        Gato
-                                    </span>
+                        <div class="card-body text-start">
+                            <div class="pet-info">
+                                <h6>{{ $pet->nome ?? 'Sem nome ainda' }}</h6>
+
+                                {{-- porte + idade à esquerda / ícone à direita --}}
+                                <div class="pet-meta-row">
+                                    <p class="pet-meta pet-meta-highlight">
+                                        {{ ucfirst($pet->porte) }}
+                                        @if($pet->idade)
+                                            | {{ $pet->idade }}
+                                        @else
+                                            | Idade não informada
+                                        @endif
+                                    </p>
+                                    @if($generoLower === 'macho')
+                                        <img src="{{ secure_asset('storage/images/macho.png') }}" alt="Macho"
+                                            class="pet-gender-icon pet-gender-macho">
+                                    @elseif($generoLower === 'femea')
+                                        <img src="{{secure_asset('storage/images/femea.png') }}" alt="Fêmea"
+                                            class="pet-gender-icon pet-gender-femea">
+                                    @endif
                                 </div>
 
-                                <p class="text-muted mb-1 mt-2">
-                                    {{ ucfirst($pet->porte) }} | {{ ucfirst($pet->genero) }} |
-                                    {{ $pet->idade ?? 'Idade não informada' }}
-                                </p>
-
-                                <p class="mb-3">
+                                <div class="card-desc-scroll">
                                     {{ $pet->descricao ?? "Conheça este pet adorável, dócil e brincalhão, perfeito para qualquer lar. Está pronto para encontrar uma nova família." }}
-                                </p>
+                                </div>
                             </div>
 
-                            <div class="text-center mt-auto">
-                                @if($pet->status === 'reservado')
-                                    <button class="btn btn-secondary w-100" disabled>Pet Reservado</button>
+                            <div class="card-footer-adotar text-center">
+                                @if(!$indisponivel)
+                                    <a href="{{ route('pet.mostrar', $pet) }}" class="btn btn-primary">
+                                        Quero Adotar
+                                    </a>
                                 @else
-                                    <a href="{{ route('pet.mostrar', $pet) }}" class="btn btn-primary w-100 py-2">Quero Adotar</a>
+                                    <button class="btn btn-secondary" disabled>
+                                        {{ $rotuloIndisponivel }}
+                                    </button>
                                 @endif
                             </div>
                         </div>
