@@ -10,11 +10,17 @@ use App\Http\Controllers\OngPainelController;
 use App\Http\Controllers\OngController;
 use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\MatchController;
+use App\Models\Ong;
+use App\Models\Pet;
 use Illuminate\Support\Facades\Storage;
 
 // Home ---------------------------------------------------------
 Route::get('/', function () {
-    return view('home');
+    $petsAdotados = Pet::where('status', 'adotado')->count();
+    $ongsParceiras = Ong::count();
+    $cidadesAtendidas = Ong::distinct('cidade')->count('cidade');
+
+    return view('home', compact('petsAdotados', 'ongsParceiras', 'cidadesAtendidas'));
 })->name('home');
 
 // Login / Logout ------------------------------------------------
