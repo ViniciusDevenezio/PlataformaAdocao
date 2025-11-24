@@ -13,19 +13,19 @@ body {
     flex-direction: column;
 }
 
-.main-content {
-    flex: 1;
-}
 .site-footer {
     background-color: #ffffff;
     padding: 6px 0;     
+    padding: 6px 0;
     text-align: center;
     width: 100%;
     margin-top: auto;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
     border-top: 1px solid rgba(0, 0, 0, 0.04);
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
-
 .site-footer .footer-copy {
     font-size: 0.8rem;  /* menor */
     color: #555;
