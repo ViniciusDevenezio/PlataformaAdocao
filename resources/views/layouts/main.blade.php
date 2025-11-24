@@ -121,7 +121,7 @@
         </div>
     </main>
 
-    <!-- Rodapé -->
+    <!-- footer -->
     <footer class="site-footer text-center py-4 mt-auto">
         <p class="footer-copy">Pet Projeto &copy; 2025</p>
 
@@ -129,7 +129,6 @@
             Política de Privacidade
         </a>
     </footer>
-
 
     <!-- Bootstrap JS e Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
