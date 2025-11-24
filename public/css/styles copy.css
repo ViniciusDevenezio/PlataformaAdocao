@@ -7,49 +7,13 @@ body {
     background-repeat: repeat; /* Faz o padrão se repetir em todas as direções */
     background-size: auto; /* Deixa o tamanho original da imagem */
     background-position: top left; /* Começa a repetição no canto superior esquerdo */
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.main-content {
-    flex: 1;
-}
-.site-footer {
-    background-color: #ffffff;
-    padding: 6px 0;     
-    text-align: center;
-    width: 100%;
-    margin-top: auto;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-    border-top: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.site-footer .footer-copy {
-    font-size: 0.8rem;  /* menor */
-    color: #555;
-    font-weight: 500;
-    margin: 0;
-}
-
-.site-footer .footer-link {
-    display: inline-block;
-    margin-top: 2px;
-    color: #0B5ED7;
-    text-decoration: none;
-    font-size: 0.75rem; /* menor */
-    font-weight: 500;
-    transition: opacity 0.2s ease;
-}
-
-.site-footer .footer-link:hover {
-    opacity: 0.7;
+    font-family: 'Poppins', sans-serif;  
 }
 #cardsAdotar {
     margin-top: 0 !important;
     padding-top: 1rem !important;
 }
+
 
 /* Navbar personalizada */
 .custom-navbar {

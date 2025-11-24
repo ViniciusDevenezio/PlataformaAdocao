@@ -19,7 +19,6 @@
 
         .pet-card {
             height: 380px;
-            /* um pouco mais alto */
             display: flex;
             flex-direction: column;
             border-radius: 14px;
