@@ -183,19 +183,19 @@
         <div class="row text-center">
             <div class="col-md-4 mb-3 mb-md-0">
                 <div class="stat-item">
-                    <h3>+120</h3>
+                    <h3>+{{ $petsAdotados ?? 0 }}</h3>
                     <p>pets adotados pela plataforma</p>
                 </div>
             </div>
             <div class="col-md-4 mb-3 mb-md-0">
                 <div class="stat-item">
-                    <h3>8</h3>
+                    <h3>{{ $ongsParceiras ?? 0 }}</h3>
                     <p>ONGs parceiras ativas</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="stat-item">
-                    <h3>3</h3>
+                    <h3>{{ $cidadesAtendidas ?? 0 }}</h3>
                     <p>cidades atendidas atualmente</p>
                 </div>
             </div>
