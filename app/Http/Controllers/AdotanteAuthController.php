@@ -24,13 +24,13 @@ class AdotanteAuthController extends Controller
         // Tenta como Adotante
         if (Auth::guard('adotante')->attempt($credenciais)) {
             $request->session()->regenerate();
-            return redirect('/');
+            return redirect()->intended('/');
         }
 
         // Tenta como ONG
         if (Auth::guard('ong')->attempt($credenciais)) {
             $request->session()->regenerate();
-            return redirect('/');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
