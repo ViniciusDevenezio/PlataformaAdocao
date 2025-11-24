@@ -146,11 +146,12 @@
                     @endphp
 
                     @auth('adotante')
-                        <form method="POST" action="{{ route('solicitacoes.store') }}" class="d-grid gap-2">
+                        <form method="POST" action="{{ route('solicitacoes.store') }}" class="d-grid gap-2" id="formSolicitacaoAdocao">
                             @csrf
                             <input type="hidden" name="pet_id" value="{{ $pet->id }}">
 
-                            <button type="submit" class="btn btn-primary w-100 fw-bold" {{ $desabilitar ? 'disabled' : '' }}>
+                            <button type="button" class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal"
+                                    data-bs-target="#confirmarAdocaoModal" {{ $desabilitar ? 'disabled' : '' }}>
                                 Quero Adotar!
                             </button>
                         </form>
@@ -170,7 +171,42 @@
             <p>{{ $pet->descricao ?? 'Sem história informada.' }}</p>
         </div>
     </div>
-    
+
+    @auth('adotante')
+        <div class="modal fade" id="confirmarAdocaoModal" tabindex="-1" aria-labelledby="confirmarAdocaoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmarAdocaoModalLabel">Confirmar solicitação de adoção</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-3">Sua solicitação será enviada para a ONG responsável. Ela entrará em contato assim que receber o pedido.</p>
+                        <p class="mb-3">O processo passará por análise e você poderá ser convidado para uma conversa antes da aprovação.</p>
+                        <p class="fw-semibold mb-0">Tem certeza de que deseja adotar {{ $pet->nome }}?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="confirmarEnvioSolicitacao">Enviar solicitação</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var botaoConfirmar = document.getElementById('confirmarEnvioSolicitacao');
+                var formularioSolicitacao = document.getElementById('formSolicitacaoAdocao');
+
+                if (botaoConfirmar && formularioSolicitacao) {
+                    botaoConfirmar.addEventListener('click', function () {
+                        formularioSolicitacao.submit();
+                    });
+                }
+            });
+        </script>
+    @endauth
+
     @if(session('success') || session('error'))
   <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index:1080">
 

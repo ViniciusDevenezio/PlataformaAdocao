@@ -10,8 +10,12 @@ use App\Models\Ong;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+        if ($request->filled('redirect')) {
+            session(['url.intended' => $request->redirect]);
+        }
+
         return view('login');
     }
 
