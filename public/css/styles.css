@@ -12,6 +12,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+    .main-content {
+        padding-top: 0 !important;
+    }
 
 .site-footer {
     background-color: #ffffff;
