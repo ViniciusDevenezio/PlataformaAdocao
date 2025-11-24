@@ -9,7 +9,10 @@ body {
     background-position: top left; /* Começa a repetição no canto superior esquerdo */
     font-family: 'Poppins', sans-serif;  
 }
-
+#cardsAdotar {
+    margin-top: 0 !important;
+    padding-top: 1rem !important;
+}
 
 /* Navbar personalizada */
 .custom-navbar {
