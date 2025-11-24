@@ -7,7 +7,16 @@ body {
     background-repeat: repeat; /* Faz o padrão se repetir em todas as direções */
     background-size: auto; /* Deixa o tamanho original da imagem */
     background-position: top left; /* Começa a repetição no canto superior esquerdo */
-    font-family: 'Poppins', sans-serif;  
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    padding-top: 96px; /* compensa a navbar fixa */
+    padding-bottom: 40px;
+    flex: 1;
 }
 #cardsAdotar {
     margin-top: 0 !important;
