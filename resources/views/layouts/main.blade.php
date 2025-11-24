@@ -31,7 +31,7 @@
 
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
 
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
@@ -115,12 +115,14 @@
     </nav>
 
     <!-- Conteúdo da página -->
-    <div class="container mt-4">
-        @yield('content')
-    </div>
+    <main class="main-content flex-fill">
+        <div class="container">
+            @yield('content')
+        </div>
+    </main>
 
     <!-- Rodapé -->
-    <footer class="site-footer text-center py-4">
+    <footer class="site-footer text-center py-4 mt-auto">
         <p class="footer-copy">Pet Projeto &copy; 2025</p>
 
         <a href="{{ route('politica') }}" class="footer-link">
