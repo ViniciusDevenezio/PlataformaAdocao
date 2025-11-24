@@ -132,6 +132,12 @@
         .pet-card p {
             margin: 0;
         }
+
+        /* Centraliza os cards quando há poucas opções */
+        #cardsAdotar .row {
+            justify-content: center;
+            gap: 1.5rem 1rem;
+        }
     </style>
 @endsection
 
