@@ -118,7 +118,7 @@
                             <div class="campaign-badge">
                                 <span>Campanha ativa</span>
                             </div>
-                            <div class="campaign-title">Adote um adulto: amor sem idade</div>
+                            <div class="campaign-title">Adote um pet adulto: amor sem idade</div>
                             <div class="campaign-text">
                                 Animais adultos esperam há meses por uma chance. Veja os pets dessa campanha e mude uma vida hoje.
                             </div>

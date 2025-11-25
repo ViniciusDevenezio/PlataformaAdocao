@@ -139,6 +139,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             margin-bottom: 1.25rem;
             margin-top:-3rem;
+            padding-bottom: 1px;
         }
 
         .filter-bar label {
@@ -176,6 +177,13 @@
             'aguardando_aprovacao' => 'Aguardando aprovação',
             'adotado' => 'Adotado',
         ];
+
+        // agora também montamos a lista de idades disponíveis
+        $filtros = [
+            'portes'   => $pets->pluck('porte')->filter()->unique()->sort()->values(),
+            'generos'  => $pets->pluck('genero')->filter()->unique()->sort()->values(),
+            'idades'   => $pets->pluck('idade')->filter()->unique()->sort()->values(),
+        ];
     @endphp
 
     <div id="alertaAdocao">
@@ -194,18 +202,9 @@
 
     <div id="cardsAdotar" class="container">
 
-        {{-- NOVO: barra de filtros horizontal abaixo da nav e acima do título --}}
-        @php
-            $filtros = [
-                'especies' => $pets->pluck('especie')->filter()->unique()->sort()->values(),
-                'portes'   => $pets->pluck('porte')->filter()->unique()->sort()->values(),
-                'generos'  => $pets->pluck('genero')->filter()->unique()->sort()->values(),
-            ];
-        @endphp
-
+        {{-- BARRA DE FILTROS HORIZONTAL --}}
         <div class="filter-bar">
             <div class="row g-2 align-items-end">
-
 
                 <div class="col-6 col-md-3">
                     <label for="filtroPorte" class="form-label mb-0">Porte</label>
@@ -227,17 +226,22 @@
                     </select>
                 </div>
 
+                {{-- NOVO: filtro por idade --}}
+                <div class="col-6 col-md-3 mt-2 mt-md-0">
+                    <label for="filtroIdade" class="form-label mb-0">Idade</label>
+                    <select id="filtroIdade" class="form-select form-select-sm">
+                        <option value="">Todas</option>
+                        @foreach($filtros['idades'] as $idade)
+                            <option value="{{ $idade }}">{{ $idade }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <div class="col-6 col-md-3 mt-2 mt-md-0 d-flex align-items-center">
-                    <div class="form-check ms-md-2">
-                        <input class="form-check-input" type="checkbox" value="disponivel" id="filtroDisponivel" checked>
-                        <label class="form-check-label" for="filtroDisponivel">
-                            Apenas disponíveis
-                        </label>
-                    </div>
                 </div>
             </div>
         </div>
-        {{-- FIM NOVO --}}
+        {{-- FIM BARRA DE FILTRO --}}
 
         <h1>Pets disponíveis</h1>
         <div class="row">
@@ -254,13 +258,14 @@
                     $generoLower = strtolower($pet->genero ?? '');
                 @endphp
 
-                {{-- NOVO: classe e data-attributes para filtro, sem mexer no estilo dos cards --}}
+                {{-- agora também tem data-idade --}}
                 <div
                     class="col-md-3 col-sm-6 mb-4 pet-card-wrapper"
                     data-especie="{{ strtolower($pet->especie ?? '') }}"
                     data-porte="{{ strtolower($pet->porte ?? '') }}"
                     data-genero="{{ strtolower($pet->genero ?? '') }}"
                     data-status="{{ strtolower($pet->status ?? '') }}"
+                    data-idade="{{ $pet->idade ?? '' }}"
                 >
                     <div class="card pet-card">
                         <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
@@ -284,7 +289,7 @@
                                         <img src="{{ secure_asset('storage/images/macho.png') }}" alt="Macho"
                                             class="pet-gender-icon pet-gender-macho">
                                     @elseif($generoLower === 'femea')
-                                        <img src="{{secure_asset('storage/images/femea.png') }}" alt="Fêmea"
+                                        <img src="{{ secure_asset('storage/images/femea.png') }}" alt="Fêmea"
                                             class="pet-gender-icon pet-gender-femea">
                                     @endif
                                 </div>
@@ -345,38 +350,39 @@
         </div>
     </div>
 
-    {{-- NOVO: script do filtro horizontal --}}
+    {{-- script do filtro horizontal, agora com idade --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const filtroEspecie   = document.getElementById('filtroEspecie');
-            const filtroPorte     = document.getElementById('filtroPorte');
-            const filtroGenero    = document.getElementById('filtroGenero');
+            const filtroPorte      = document.getElementById('filtroPorte');
+            const filtroGenero     = document.getElementById('filtroGenero');
+            const filtroIdade      = document.getElementById('filtroIdade');
             const filtroDisponivel = document.getElementById('filtroDisponivel');
+
             const cards = document.querySelectorAll('.pet-card-wrapper');
 
             const aplicaFiltros = () => {
-                const especie = filtroEspecie.value;
                 const porte   = filtroPorte.value;
                 const genero  = filtroGenero.value;
+                const idade   = filtroIdade.value;
                 const apenasDisponiveis = filtroDisponivel.checked;
 
                 cards.forEach((card) => {
-                    const cardEspecie = card.dataset.especie;
                     const cardPorte   = card.dataset.porte;
                     const cardGenero  = card.dataset.genero;
+                    const cardIdade   = card.dataset.idade;
                     const cardStatus  = card.dataset.status;
 
-                    const coincideEspecie = !especie || cardEspecie === especie;
-                    const coincidePorte   = !porte   || cardPorte   === porte;
-                    const coincideGenero  = !genero  || cardGenero  === genero;
+                    const coincidePorte   = !porte  || cardPorte === porte;
+                    const coincideGenero  = !genero || cardGenero === genero;
+                    const coincideIdade   = !idade  || cardIdade === idade;
                     const coincideStatus  = !apenasDisponiveis || cardStatus === 'disponivel';
 
-                    const visivel = coincideEspecie && coincidePorte && coincideGenero && coincideStatus;
+                    const visivel = coincidePorte && coincideGenero && coincideIdade && coincideStatus;
                     card.classList.toggle('d-none', !visivel);
                 });
             };
 
-            [filtroEspecie, filtroPorte, filtroGenero, filtroDisponivel].forEach((elemento) => {
+            [filtroPorte, filtroGenero, filtroIdade, filtroDisponivel].forEach((elemento) => {
                 elemento.addEventListener('change', aplicaFiltros);
             });
 
