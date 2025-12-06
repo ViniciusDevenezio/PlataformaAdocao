@@ -34,6 +34,8 @@ class OngPainelController extends Controller
     // 💾 Salvar novo pet
     public function salvarPet(Request $request)
     {
+        $this->garantirStoragePublico();
+
         $temperamentosValidos = [
             'Calmo',
             'Brincalhão',
@@ -113,6 +115,10 @@ class OngPainelController extends Controller
         $dados['ong_id'] = Auth::guard('ong')->id();
 
         // Upload imagem -> salvar nome dentro de $dados
+        if (!File::exists(storage_path('app/public/images'))) {
+            File::makeDirectory(storage_path('app/public/images'), 0755, true);
+        }
+
         if ($request->hasFile('imagem_url') && $request->file('imagem_url')->isValid()) {
             $nomeImagem = uniqid('pet_') . '.' . $request->file('imagem_url')->getClientOriginalExtension();
 
@@ -138,6 +144,8 @@ class OngPainelController extends Controller
     // ATUALIZAR PET // ATUALIZAR PET 
     public function atualizarPet(Request $request, $id)
     {
+        $this->garantirStoragePublico();
+
         $pet = Pet::where('ong_id', Auth::guard('ong')->id())->findOrFail($id);
 
         $temperamentosValidos = [
@@ -219,6 +227,10 @@ class OngPainelController extends Controller
         $dados['faixa_etaria'] = $this->faixaEtariaPorMeses($idadeMeses);
 
         // Imagem
+        if (!File::exists(storage_path('app/public/images'))) {
+            File::makeDirectory(storage_path('app/public/images'), 0755, true);
+        }
+
         if ($request->hasFile('imagem_url') && $request->file('imagem_url')->isValid()) {
             // remove a imagem antiga, se existir
             if ($pet->imagem_url && Storage::disk('public')->exists('images/' . $pet->imagem_url)) {
@@ -271,6 +283,24 @@ class OngPainelController extends Controller
         // aqui você pode buscar pets com algum relacionamento "interesses"
         $pets = Pet::where('ong_id', Auth::guard('ong')->id())->get();
         return view('painel.ong.solicitacoes', compact('pets'));
+    }
+
+    /**
+     * Garante que o disco "public" esteja acessível via link simbólico (public/storage),
+     * evitando falha de exibição das imagens em ambientes locais.
+     */
+    private function garantirStoragePublico(): void
+    {
+        $destino = public_path('storage');
+        $origem = storage_path('app/public');
+
+        if (!File::exists($origem)) {
+            File::makeDirectory($origem, 0755, true);
+        }
+
+        if (!File::exists($destino)) {
+            File::link($origem, $destino);
+        }
     }
 
     private function faixaEtariaPorMeses(?int $m): ?string
