@@ -237,7 +237,12 @@
                     </select>
                 </div>
 
-                <div class="col-6 col-md-3 mt-2 mt-md-0 d-flex align-items-center">
+                <div class="col-6 col-md-3 mt-2 mt-md-0 d-flex align-items-center justify-content-end">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="filtroDisponivel"
+                            checked>
+                        <label class="form-check-label" for="filtroDisponivel">Apenas disponíveis</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -364,7 +369,7 @@
                 const porte   = filtroPorte.value;
                 const genero  = filtroGenero.value;
                 const idade   = filtroIdade.value;
-                const apenasDisponiveis = filtroDisponivel.checked;
+                const apenasDisponiveis = filtroDisponivel ? filtroDisponivel.checked : false;
 
                 cards.forEach((card) => {
                     const cardPorte   = card.dataset.porte;
@@ -382,9 +387,9 @@
                 });
             };
 
-            [filtroPorte, filtroGenero, filtroIdade, filtroDisponivel].forEach((elemento) => {
-                elemento.addEventListener('change', aplicaFiltros);
-            });
+            [filtroPorte, filtroGenero, filtroIdade, filtroDisponivel]
+                .filter(Boolean)
+                .forEach((elemento) => elemento.addEventListener('change', aplicaFiltros));
 
             aplicaFiltros();
         });
