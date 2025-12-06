@@ -1,7 +1,7 @@
 import json, sys, requests
 
 # Chave fixa aqui
-API_KEY ="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"
+API_KEY ="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"
 
 INSTRUCOES = """
 Você é um especialista em adoção responsável de animais.
