@@ -177,7 +177,7 @@
 
                 <div class="col-md-3 col-sm-6 mb-4">
                     <div class="card pet-card">
-                        <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
+                        <img src="{{asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
                             alt="{{ $pet->nome }}">
 
                         <div class="card-body text-start">
@@ -195,10 +195,10 @@
                                         @endif
                                     </p>
                                     @if($generoLower === 'macho')
-                                        <img src="{{ secure_asset('storage/images/macho.png') }}" alt="Macho"
+                                        <img src="{{asset('storage/images/macho.png') }}" alt="Macho"
                                             class="pet-gender-icon pet-gender-macho">
                                     @elseif($generoLower === 'femea')
-                                        <img src="{{secure_asset('storage/images/femea.png') }}" alt="Fêmea"
+                                        <img src="{{asset('storage/images/femea.png') }}" alt="Fêmea"
                                             class="pet-gender-icon pet-gender-femea">
                                     @endif
                                 </div>
