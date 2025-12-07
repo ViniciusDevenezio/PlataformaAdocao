@@ -44,21 +44,30 @@
         }
 
 
-                 .pet-image-wrapper {
-                position: relative;
-                width: 100%;
-                aspect-ratio: 4 / 3;
-                background: #f8f9fa;
-                overflow: hidden;
-            }
-    
-            .pet-image-wrapper img,
-            .pet-image-wrapper .placeholder-image {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-            }
+        .pet-image-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: #f8f9fa;
+            overflow: hidden;
+        }
+
+        .pet-image-wrapper img,
+        .pet-image-wrapper .placeholder-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .pet-image-wrapper .placeholder-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-weight: 600;
+            background: #f8f9fa;
+        }
     </style>
 @endsection
 
@@ -73,13 +82,15 @@
                         : null;
                 @endphp
 
-                @if($src)
-                    <img src="{{ $src }}" class="img-fluid rounded shadow" alt="{{ $pet->nome }}">
-                @else
-                    <div class="bg-light d-flex align-items-center justify-content-center rounded shadow" style="height:300px;">
-                        <span class="text-muted">Sem foto</span>
-                    </div>
-                @endif
+                <div class="pet-image-wrapper rounded shadow">
+                    @if($src)
+                        <img src="{{ $src }}" alt="{{ $pet->nome }}">
+                    @else
+                        <div class="placeholder-image">
+                            <span>Sem foto</span>
+                        </div>
+                    @endif
+                </div>
             </div>
 
             <!-- Coluna de informações -->
