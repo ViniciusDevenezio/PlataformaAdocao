@@ -18,8 +18,7 @@
         }
 
         .pet-card {
-            height: 380px;
-            /* um pouco mais alto */
+            height: 500px;
             display: flex;
             flex-direction: column;
             border-radius: 14px;
@@ -31,7 +30,7 @@
         }
 
         .pet-card .card-img-top {
-            height: 12rem;
+            height: 18rem;
             width: 100%;
             object-fit: cover;
             object-position: center;
@@ -41,7 +40,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 1rem 1.25rem 1.75rem;
+            padding: 1.5rem 1.5rem 1.75rem;
             /* mais espaço embaixo pro botão respirar */
         }
 
@@ -132,6 +131,37 @@
         .pet-card p {
             margin: 0;
         }
+
+        {{-- NOVO: estilo da barra de filtros horizontal --}}
+        .filter-bar {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.25rem;
+            margin-top:-3rem;
+            padding-bottom: 1px;
+        }
+
+        .filter-bar label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.20rem;
+        }
+
+        .filter-bar .form-select,
+        .filter-bar .form-check-input {
+            font-size: 0.85rem;
+        }
+
+        .filter-bar .form-select {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .filter-bar .form-check-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
     </style>
 @endsection
 
@@ -146,36 +176,104 @@
         $gatos = $pets->filter(function ($p) {
             return isset($p->especie) && Str::lower($p->especie) === 'gato';
         });
+
+        $filtros = [
+            'portes'  => $gatos->pluck('porte')->filter()->unique()->sort()->values(),
+            'generos' => $gatos->pluck('genero')->filter()->unique()->sort()->values(),
+            'idades'  => $gatos->pluck('idade')->filter()->unique()->sort()->values(),
+        ];
     @endphp
 
     <div id="alertaAdocao">
         @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
         @endif
+
         @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
         @endif
     </div>
 
     <div id="cardsAdotar" class="container">
-        <h1>Gatos disponíveis</h1>
 
+        {{-- BARRA DE FILTROS HORIZONTAL --}}
+        <div class="filter-bar">
+            <div class="row g-2 align-items-end">
+
+                <div class="col-6 col-md-3">
+                    <label for="filtroPorte" class="form-label mb-0">Porte</label>
+                    <select id="filtroPorte" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                        @foreach($filtros['portes'] as $porte)
+                            <option value="{{ strtolower($porte) }}">{{ ucfirst($porte) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-3 mt-2 mt-md-0">
+                    <label for="filtroGenero" class="form-label mb-0">Gênero</label>
+                    <select id="filtroGenero" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                        @foreach($filtros['generos'] as $genero)
+                            <option value="{{ strtolower($genero) }}">{{ ucfirst($genero) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- NOVO: filtro por idade --}}
+                <div class="col-6 col-md-3 mt-2 mt-md-0">
+                    <label for="filtroIdade" class="form-label mb-0">Idade</label>
+                    <select id="filtroIdade" class="form-select form-select-sm">
+                        <option value="">Todas</option>
+                        @foreach($filtros['idades'] as $idade)
+                            <option value="{{ $idade }}">{{ $idade }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-3 mt-2 mt-md-0 d-flex align-items-center justify-content-end">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="filtroDisponivel" checked>
+                        <label class="form-check-label" for="filtroDisponivel">Apenas disponíveis</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- FIM BARRA DE FILTRO --}}
+
+        @if(request('idade_min'))
+            <div class="alert alert-info py-2 px-3 small mb-3">
+                Mostrando pets com {{ request('idade_min') }} anos ou mais.
+            </div>
+        @endif
+
+        <h1>Gatos disponíveis</h1>
         <div class="row">
             @foreach ($gatos as $pet)
                 @php
-                    $nomeUsuario   = auth('adotante')->user()->nome_completo ?? 'Usuário';
+                    $nomeUsuario = auth('adotante')->user()->nome_completo ?? 'Usuário';
                     $cidadeUsuario = auth()->user()->cidade ?? 'sua cidade';
-                    $mensagem      = "Olá, meu nome é $nomeUsuario e tenho interesse no pet {$pet->nome}. Moro em $cidadeUsuario.";
-                    $mensagemUrl   = urlencode($mensagem);
-                    $numeroOng     = preg_replace('/\D/', '', $pet->ong->telefone ?? '');
-
+                    $mensagem = "Olá, meu nome é $nomeUsuario e tenho interesse no pet {$pet->nome}. Moro em $cidadeUsuario.";
+                    $mensagemUrl = urlencode($mensagem);
+                    $numeroOng = preg_replace('/\D/', '', $pet->ong->telefone ?? '');
                     $indisponivel = in_array($pet->status, ['reservado', 'adotado']);
                     $rotuloIndisponivel = $pet->status === 'adotado' ? 'Adotado' : 'Pet Reservado';
 
                     $generoLower = strtolower($pet->genero ?? '');
                 @endphp
 
-                <div class="col-md-3 col-sm-6 mb-4">
+                <div
+                    class="col-md-3 col-sm-6 mb-4 pet-card-wrapper"
+                    data-especie="{{ strtolower($pet->especie ?? '') }}"
+                    data-porte="{{ strtolower($pet->porte ?? '') }}"
+                    data-genero="{{ strtolower($pet->genero ?? '') }}"
+                    data-status="{{ strtolower($pet->status ?? '') }}"
+                    data-idade="{{ $pet->idade ?? '' }}"
+                >
                     <div class="card pet-card">
                         <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
                             alt="{{ $pet->nome }}">
@@ -198,7 +296,7 @@
                                         <img src="{{ secure_asset('storage/images/macho.png') }}" alt="Macho"
                                             class="pet-gender-icon pet-gender-macho">
                                     @elseif($generoLower === 'femea')
-                                        <img src="{{secure_asset('storage/images/femea.png') }}" alt="Fêmea"
+                                        <img src="{{ secure_asset('storage/images/femea.png') }}" alt="Fêmea"
                                             class="pet-gender-icon pet-gender-femea">
                                     @endif
                                 </div>
@@ -223,8 +321,9 @@
                     </div>
                 </div>
 
-                <!-- Modal ONG -->
-                <div class="modal fade" id="modalOng{{ $pet->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $pet->id }}" aria-hidden="true">
+                <!-- Modal -->
+                <div class="modal fade" id="modalOng{{ $pet->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $pet->id }}"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -245,18 +344,58 @@
                                 </p>
                             </div>
                             <div class="modal-footer">
-                                @if(!empty($numeroOng))
-                                    <a href="https://wa.me/{{ $numeroOng }}?text={{ $mensagemUrl }}" target="_blank" class="btn btn-success">
-                                        Entrar em contato pelo WhatsApp
-                                    </a>
-                                @endif
+                                <a href="https://wa.me/{{ $numeroOng }}?text={{ $mensagemUrl }}" target="_blank"
+                                    class="btn btn-success">
+                                    Entrar em contato pelo WhatsApp
+                                </a>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
-        </div> <!-- .row -->
-    </div> <!-- .container -->
+        </div>
+    </div>
 
+    {{-- script do filtro horizontal, agora com idade --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filtroPorte      = document.getElementById('filtroPorte');
+            const filtroGenero     = document.getElementById('filtroGenero');
+            const filtroIdade      = document.getElementById('filtroIdade');
+            const filtroDisponivel = document.getElementById('filtroDisponivel');
+
+            const cards = document.querySelectorAll('.pet-card-wrapper');
+
+            const aplicaFiltros = () => {
+                const porte   = filtroPorte.value;
+                const genero  = filtroGenero.value;
+                const idade   = filtroIdade.value;
+                const apenasDisponiveis = filtroDisponivel.checked;
+
+                cards.forEach((card) => {
+                    const cardPorte   = card.dataset.porte;
+                    const cardGenero  = card.dataset.genero;
+                    const cardIdade   = card.dataset.idade;
+                    const cardStatus  = card.dataset.status;
+                    const cardEspecie = card.dataset.especie;
+
+                    const coincideEspecie = cardEspecie === 'gato';
+                    const coincidePorte   = !porte  || cardPorte === porte;
+                    const coincideGenero  = !genero || cardGenero === genero;
+                    const coincideIdade   = !idade  || cardIdade === idade;
+                    const coincideStatus  = !apenasDisponiveis || cardStatus === 'disponivel';
+
+                    const visivel = coincideEspecie && coincidePorte && coincideGenero && coincideIdade && coincideStatus;
+                    card.classList.toggle('d-none', !visivel);
+                });
+            };
+
+            [filtroPorte, filtroGenero, filtroIdade, filtroDisponivel].forEach((elemento) => {
+                elemento.addEventListener('change', aplicaFiltros);
+            });
+
+            aplicaFiltros();
+        });
+    </script>
 @endsection
