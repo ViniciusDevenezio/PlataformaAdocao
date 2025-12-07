@@ -18,7 +18,7 @@
         }
 
         .pet-card {
-            height: 380px;
+            height: 500px;
             display: flex;
             flex-direction: column;
             border-radius: 14px;
@@ -30,7 +30,7 @@
         }
 
         .pet-card .card-img-top {
-            height: 12rem;
+            height: 18rem;
             width: 100%;
             object-fit: cover;
             object-position: center;
@@ -40,7 +40,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 1rem 1.25rem 1.75rem;
+            padding: 1.5rem 1.5rem 1.75rem;
             /* mais espaço embaixo pro botão respirar */
         }
 
