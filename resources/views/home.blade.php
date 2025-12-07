@@ -1,99 +1,127 @@
 @extends ('layouts.main')
 
 @section('head')
-<style>
-    /* ===== SEÇÃO DO CARROSSEL ===== */
+    <style>
+        /* ===== SEÇÃO DO CARROSSEL ===== */
 
-    .home-section {
-        padding: 1.5rem 0 2.5rem;
-    }
+        .home-section {
+            padding: 1.5rem 0 2.5rem;
+        }
 
-    .campaign-carousel .carousel-item img {
-        width: 100%;
-        height: 420px;         /* altura do banner */
-        object-fit: cover;
-        border-radius: 18px;
-    }
+        .carousel-control-prev {
+            left: 1.25rem;
+           
+        }
 
-    .campaign-carousel .carousel-inner {
-        border-radius: 18px;
-        overflow: hidden;
-        box-shadow: 0 18px 45px rgba(0, 0, 0, .12);
-    }
+        .carousel-control-next {
+            right: 1.25rem;
+         
+        }
 
-    .campaign-carousel .carousel-caption {
-        left: 0;
-        right: 0;
-        bottom: 0;
-        text-align: left;
-        padding: 1.5rem 2rem 1.8rem;
-        background: linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,.0));
-    }
-
-    .campaign-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: .4rem;
-        font-size: .8rem;
-        padding: .25rem .8rem;
-        border-radius: 999px;
-        background-color: rgba(255, 255, 255, .12);
-        margin-bottom: .6rem;
-    }
-
-    .campaign-badge span {
-        font-size: .75rem;
-        text-transform: uppercase;
-        letter-spacing: .06em;
-    }
-
-    .campaign-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: .25rem;
-    }
-
-    .campaign-text {
-        font-size: .9rem;
-        margin-bottom: .8rem;
-        max-width: 460px;
-    }
-
-    .campaign-btn {
-        border-radius: 999px;
-        padding: .4rem 1.3rem;
-        font-size: .85rem;
-        font-weight: 500;
-    }
-
-    @media (max-width: 768px) {
         .campaign-carousel .carousel-item img {
-            height: 320px;
+            width: 100%;
+            height: 420px;
+         
+            object-fit: cover;
+            border-radius: 18px;
+        }
+
+        .campaign-carousel .carousel-inner {
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, .12);
         }
 
         .campaign-carousel .carousel-caption {
-            padding: 1.1rem 1.2rem 1.4rem;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            text-align: left;
+            padding: 1.5rem 2rem 1.8rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, .75), rgba(0, 0, 0, .0));
         }
-    }
 
-    /* ===== NÚMEROS / INDICADORES ===== */
+        .campaign-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-size: .8rem;
+            padding: .25rem .8rem;
+            border-radius: 999px;
+            background-color: rgba(255, 255, 255, .12);
+            margin-bottom: .6rem;
+        }
 
-    .home-stats {
-        padding: 1.5rem 0 3rem;
-    }
+        .campaign-badge span {
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
 
-    .stat-item h3 {
-        font-weight: 700;
-        margin-bottom: .15rem;
-        color: #ff7a3c;
-    }
+        .campaign-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: .25rem;
+        }
 
-    .stat-item p {
-        margin: 0;
-        font-size: .9rem;
-        color: #6c757d;
-    }
-</style>
+        .campaign-text {
+            font-size: .9rem;
+            margin-bottom: .8rem;
+            max-width: 460px;
+        }
+
+        .campaign-btn {
+            border-radius: 999px;
+            padding: .4rem 1.3rem;
+            font-size: .85rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .campaign-carousel .carousel-item img {
+                height: 320px;
+            }
+
+            .campaign-carousel .carousel-caption {
+                padding: 1.1rem 1.2rem 1.4rem;
+            }
+        }
+
+
+        .home-stats {
+            padding: 1.5rem 0 3rem;
+        }
+
+        .stat-item h3 {
+            font-weight: 700;
+            margin-bottom: .15rem;
+            color: #ff7a3c;
+        }
+
+        .stat-item p {
+            margin: 0;
+            font-size: .9rem;
+            color: #6c757d;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 3rem;
+            height: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            backdrop-filter: blur(6px);
+            background: rgba(255, 255, 255, .15);
+            transition: all .25s ease;
+        }
+
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            background: rgba(255, 255, 255, .35);
+            transform: translateY(-50%) scale(1.1);
+        }
+    </style>
 @endsection
 
 @section('content')
