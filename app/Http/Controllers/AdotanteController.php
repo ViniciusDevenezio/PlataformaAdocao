@@ -67,6 +67,8 @@ class AdotanteController extends Controller
         // Salvar adotante
         Adotante::create($dados);
 
-        return back()->with('success', 'Adotante cadastrado com sucesso!');
+        return redirect()
+            ->route('login')
+            ->with('success', 'Cadastro realizado com sucesso! Faça login para continuar.');
     }
 }
