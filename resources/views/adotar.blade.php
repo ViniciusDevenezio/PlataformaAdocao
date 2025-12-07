@@ -247,6 +247,12 @@
         </div>
         {{-- FIM BARRA DE FILTRO --}}
 
+        @if(request('idade_min'))
+            <div class="alert alert-info py-2 px-3 small mb-3">
+                Mostrando pets com {{ request('idade_min') }} anos ou mais.
+            </div>
+        @endif
+
         <h1>Pets disponíveis</h1>
         <div class="row">
             @foreach ($pets as $pet)

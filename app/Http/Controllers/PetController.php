@@ -8,9 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
-    public function adotar()
+    public function adotar(Request $request)
     {
-        $pets = Pet::with('ong')->get();
+        $query = Pet::with('ong');
+
+        if ($request->filled('idade_min')) {
+            $query->where('idade', '>=', (int) $request->idade_min);
+        }
+
+        $pets = $query->get();
+
         return view('adotar', compact('pets')); // sem 'pets.' antes
     }
 

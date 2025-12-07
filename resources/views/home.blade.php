@@ -122,7 +122,7 @@
                             <div class="campaign-text">
                                 Animais adultos esperam há meses por uma chance. Veja os pets dessa campanha e mude uma vida hoje.
                             </div>
-                            <a href="{{ url('/adotar') }}" class="btn btn-light campaign-btn">
+                            <a href="{{ route('adotar', ['idade_min' => 4]) }}" class="btn btn-light campaign-btn">
                                 Ver pets da campanha
                             </a>
                         </div>
