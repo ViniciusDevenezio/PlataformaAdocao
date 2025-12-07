@@ -69,6 +69,6 @@ class AdotanteController extends Controller
 
         return redirect()
             ->route('login')
-            ->with('success', 'Cadastro realizado com sucesso! Faça login para continuar.');
+            ->with('success', 'Cadastro realizado com sucesso!');
     }
 }
