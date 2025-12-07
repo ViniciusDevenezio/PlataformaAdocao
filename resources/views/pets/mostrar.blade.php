@@ -42,6 +42,23 @@
             background: #f8d7da;
             color: #721c24;
         }
+
+
+                 .pet-image-wrapper {
+                position: relative;
+                width: 100%;
+                aspect-ratio: 4 / 3;
+                background: #f8f9fa;
+                overflow: hidden;
+            }
+    
+            .pet-image-wrapper img,
+            .pet-image-wrapper .placeholder-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
     </style>
 @endsection
 
