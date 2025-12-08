@@ -63,23 +63,39 @@ class MatchController extends Controller
             $pythonPath = env('PYTHON_BIN', 'python3');
             $pythonScript = base_path('scripts/match.py');
 
+            $apiKey = env('OPENAI_API_KEY');
+            if (empty($apiKey)) {
+                \Log::error('OPENAI_API_KEY não configurada no ambiente.');
+                return view('resultado_match', [
+                    'sugestao' => null,
+                    'pet' => null,
+                    'adotante' => $adotante,
+                    'erro' => 'Chave da IA não configurada no ambiente (OPENAI_API_KEY).',
+                ]);
+            }
+
             // 4. Executa Python
             $process = new Process([$pythonPath, $pythonScript]);
             $process->setInput($payload);
             $process->setTimeout(30);
             $process->setEnv(array_merge(getenv(), [
                 'PATH' => getenv('PATH'),
-                'OPENAI_API_KEY' => env('OPENAI_API_KEY'),
+                'OPENAI_API_KEY' => $apiKey,
             ]));
             $process->run();
 
             if (!$process->isSuccessful()) {
-                \Log::error('Erro ao executar IA: ' . $process->getErrorOutput());
+                $erroProcesso = trim($process->getErrorOutput());
+                if (empty($erroProcesso)) {
+                    $erroProcesso = 'Processo finalizado com erro, mas sem logs. Verifique o runtime Python no Railway.';
+                }
+
+                \Log::error('Erro ao executar IA: ' . $erroProcesso);
                 return view('resultado_match', [
                     'sugestao' => null,
                     'pet' => null,
                     'adotante' => $adotante,
-                    'erro' => 'Erro ao executar IA: ' . $process->getErrorOutput(),
+                    'erro' => 'Erro ao executar IA: ' . $erroProcesso,
                 ]);
             }
 
