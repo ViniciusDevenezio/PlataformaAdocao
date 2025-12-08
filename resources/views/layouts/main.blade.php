@@ -107,7 +107,7 @@
                         <a class="nav-link btn-menu" id="btn-login" href="{{ route('login') }}">Entrar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn-menu" id="btn-parceiro" href="#">Seja um parceiro</a>
+                        <a class="nav-link btn-menu" id="btn-parceiro" href="{{ route('parceiro') }}">Seja um parceiro</a>
                     </li>
                 @endauth
             </ul>

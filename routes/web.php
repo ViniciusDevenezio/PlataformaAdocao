@@ -147,6 +147,9 @@ Route::get('/storage/images/{file}', function (string $file) {
 // Política de privacidade ---------------------------------------
 Route::view('/politica-de-privacidade', 'politica-privacidade')->name('politica');
 
+// Parcerias -----------------------------------------------------
+Route::view('/seja-um-parceiro', 'parceiro')->name('parceiro');
+
 
 Route::get('/teste-make3', function () {
     $url = 'https://hook.us2.make.com/rg9i0wmm0su9dvzwlggirg4p6jn4ye56';
