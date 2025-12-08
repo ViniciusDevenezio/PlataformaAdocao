@@ -59,8 +59,8 @@ class MatchController extends Controller
                 'pets' => $petsForAI,
             ]);
 
-            // 3. Caminho fixo do Python
-            $pythonPath = 'C:\Users\Surfi\AppData\Local\Programs\Python\Python311\python.exe';
+            // 3. Caminho do Python definido via ambiente (compatível com deploy)
+            $pythonPath = env('PYTHON_BIN', 'python3');
             $pythonScript = base_path('scripts/match.py');
 
             // 4. Executa Python
@@ -69,6 +69,7 @@ class MatchController extends Controller
             $process->setTimeout(30);
             $process->setEnv(array_merge(getenv(), [
                 'PATH' => getenv('PATH'),
+                'OPENAI_API_KEY' => env('OPENAI_API_KEY'),
             ]));
             $process->run();
 
