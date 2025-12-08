@@ -12,15 +12,8 @@
 
     /* Só controla espaçamento vertical. Fundo vem do layout/body. */
     .match-page {
-        padding-top: 6rem;  /* compensa navbar */
+        padding-top: 7rem;  /* compensa navbar */
         padding-bottom: 3rem;
-    }
-
-    .match-wrapper {
-        min-height: calc(100vh - 7rem);
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
     .match-card {
@@ -342,184 +335,181 @@
         .match-card {
             padding: 1.5rem !important;
         }
-        .match-actions { flex-direction: column-reverse; align-items: stretch; }
-        #btnPrev, #btnNext { width: 100%; justify-content: center; }
-    }
-
-    @media (min-width: 768px) {
-        .match-card { padding: 2.5rem !important; }
+        .match-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+        #btnPrev, #btnNext {
+            width: 100%;
+            justify-content: center;
+        }
     }
 </style>
 @endsection
 
 @section('content')
 <div class="match-page">
-    <div class="container match-wrapper">
-        <div class="row justify-content-center w-100">
-            <div class="col-12 col-md-11 col-lg-9">
-                <div class="card shadow-sm p-4 p-md-5 match-card mx-auto">
-                    <div class="match-loading d-none" id="matchLoading">
-                        <div class="match-loader">
-                            <div class="gemini-orb">
-                                <div class="gemini-ring"></div>
-                                <div class="gemini-star"><i class="bi bi-stars"></i></div>
-                                <span class="gemini-dot"></span>
-                                <span class="gemini-dot"></span>
-                                <span class="gemini-dot"></span>
-                            </div>
-                            <div class="match-loading-text">
-                                <div class="fw-semibold">Buscando o melhor match com a IA...</div>
-                                <div class="text-secondary small">Aguarde enquanto personalizamos a recomendação</div>
-                            </div>
-                        </div>
+    <div class="container d-flex justify-content-center align-items-center" style="min-height:60vh;">
+        <div class="card shadow-sm p-4 match-card">
+            <div class="match-loading d-none" id="matchLoading">
+                <div class="match-loader">
+                    <div class="gemini-orb">
+                        <div class="gemini-ring"></div>
+                        <div class="gemini-star"><i class="bi bi-stars"></i></div>
+                        <span class="gemini-dot"></span>
+                        <span class="gemini-dot"></span>
+                        <span class="gemini-dot"></span>
                     </div>
-
-                    <div class="text-center mb-3 match-header">
-                        <div class="match-icon mb-3">
-                            <i class="bi bi-stars fs-3"></i>
-                        </div>
-                        <h2 class="fw-bold">Encontre seu Match</h2>
-                        <p>
-                            Responda o questionário por etapas e descubra o pet ideal para o seu estilo de vida.
-                        </p>
-                        <div class="match-step-indicator mt-2">
-                            <span class="badge">
-                                Etapa <span id="matchStepNumber">1</span> de <span id="matchStepTotal">3</span>
-                            </span>
-                        </div>
+                    <div class="match-loading-text">
+                        <div class="fw-semibold">Buscando o melhor match com a IA...</div>
+                        <div class="text-secondary small">Aguarde enquanto personalizamos a recomendação</div>
                     </div>
-
-                    <div class="match-divider"></div>
-
-                    <form method="POST" action="{{ route('match') }}" class="match-form" id="matchForm">
-                        @csrf
-
-                        <div class="match-steps-wrapper">
-                            {{-- ETAPA 1 --}}
-                            <div class="match-step active" data-step="1">
-                                <div class="mb-3">
-                                    <label class="form-label">Como é sua rotina de trabalho?</label>
-                                    <select class="form-select" name="trabalho" required>
-                                        <option value="" selected disabled>Selecione uma opção</option>
-                                        <option value="home_office">Home office</option>
-                                        <option value="hibrido">Híbrido / Misto</option>
-                                        <option value="presencial">Presencial</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Quanto tempo você passa em casa por dia?</label>
-                                    <select class="form-select" name="tempo_em_casa" required>
-                                        <option value="" selected disabled>Selecione uma opção</option>
-                                        <option value="baixo">Menos de 2h</option>
-                                        <option value="medio">2 a 4 horas</option>
-                                        <option value="alto">4 a 8 horas</option>
-                                        <option value="quase_todo">Quase o dia todo</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-2">
-                                    <label class="form-label">Qual a área aproximada do espaço disponível na sua casa?</label>
-                                    <select class="form-select" name="espaco" required>
-                                        <option value="" selected disabled>Selecione uma opção</option>
-                                        <option value="apto_pequeno">Apartamento pequeno (até 60 m²)</option>
-                                        <option value="apto_grande">Apartamento grande (61 a 100 m²)</option>
-                                        <option value="casa_pequena">Casa com quintal pequeno (até 200 m²)</option>
-                                        <option value="casa_grande">Casa com quintal grande (acima de 200 m²)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            {{-- ETAPA 2 --}}
-                            <div class="match-step" data-step="2">
-                                <div class="mb-3">
-                                    <label class="form-label">Quais atividades de lazer mais combinam com você?</label>
-                                    <select class="form-select" name="lazer" required>
-                                        <option value="" selected disabled>Selecione uma opção</option>
-                                        <option value="casa">Prefiro ficar em casa, ambiente tranquilo</option>
-                                        <option value="moderado">Gosto de sair de vez em quando, passeios moderados</option>
-                                        <option value="ativo">Sou bem ativo, pratico esportes e gosto de movimento</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Com quem você mora?</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="moradia[]" value="sozinho" id="moradiaSozinho">
-                                        <label class="form-check-label" for="moradiaSozinho">Moro sozinho</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="moradia[]" value="adultos" id="moradiaAdultos">
-                                        <label class="form-check-label" for="moradiaAdultos">Moro com adultos</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="moradia[]" value="criancas" id="moradiaCriancas">
-                                        <label class="form-check-label" for="moradiaCriancas">Moro com crianças</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="moradia[]" value="idosos" id="moradiaIdosos">
-                                        <label class="form-check-label" for="moradiaIdosos">Moro com idosos</label>
-                                    </div>
-                                </div>
-
-                                <div class="mb-2">
-                                    <label class="form-label">Qual sua experiência com pets?</label>
-                                    <select class="form-select" name="experiencia" required>
-                                        <option value="" selected disabled>Selecione uma opção</option>
-                                        <option value="nenhuma">Nunca tive pets</option>
-                                        <option value="alguma">Já tive alguns pets</option>
-                                        <option value="muita">Tenho bastante experiência</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            {{-- ETAPA 3 --}}
-                            <div class="match-step" data-step="3">
-                                <div class="mb-3">
-                                    <label class="form-label">Como você enxerga os cuidados veterinários do seu futuro pet?</label>
-                                    <select class="form-select" name="tolerancia" required>
-                                        <option value="" selected disabled>Selecione uma opção</option>
-                                        <option value="minimo">Apenas em emergências</option>
-                                        <option value="preventivo">Sempre que necessário, incluindo cuidados preventivos</option>
-                                        <option value="especial">Estou disposto(a) a acompanhar tratamentos contínuos ou necessidades especiais</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-2">
-                                    <label class="form-label">Qual sua renda familiar aproximada?</label>
-                                    <select class="form-select" name="renda" required>
-                                        <option value="" selected disabled>Selecione uma opção</option>
-                                        <option value="baixa">Até 2 salários mínimos</option>
-                                        <option value="media">Entre 2 e 5 salários mínimos</option>
-                                        <option value="alta">Acima de 5 salários mínimos</option>
-                                    </select>
-                                </div>
-
-                                <p class="text-muted small mt-3">
-                                    Ao continuar, você concorda em utilizar seus dados apenas para recomendação de pets
-                                    e contato com as ONGs participantes.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="match-actions">
-                            <button type="button" class="btn" id="btnPrev" disabled>
-                                Voltar
-                            </button>
-
-                            <div class="ms-auto d-flex gap-2">
-                                <button type="button" class="btn" id="btnNext">
-                                    Próximo
-                                </button>
-                                <button type="submit" class="btn match-btn w-100 d-none" id="btnSubmit">
-                                    <i class="bi bi-stars"></i>
-                                    Encontrar meu Match
-                                </button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
+            <div class="text-center mb-3 match-header">
+                <div class="match-icon mb-3">
+                    <i class="bi bi-stars fs-3"></i>
+                </div>
+                <h2 class="fw-bold">Encontre seu Match</h2>
+                <p>
+                    Responda o questionário por etapas e descubra o pet ideal para o seu estilo de vida.
+                </p>
+                <div class="match-step-indicator mt-2">
+                    <span class="badge">
+                        Etapa <span id="matchStepNumber">1</span> de <span id="matchStepTotal">3</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="match-divider"></div>
+
+            <form method="POST" action="{{ route('match') }}" class="match-form" id="matchForm">
+                @csrf
+
+                <div class="match-steps-wrapper">
+                    {{-- ETAPA 1 --}}
+                    <div class="match-step active" data-step="1">
+                        <div class="mb-3">
+                            <label class="form-label">Como é sua rotina de trabalho?</label>
+                            <select class="form-select" name="trabalho" required>
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="home_office">Home office</option>
+                                <option value="hibrido">Híbrido / Misto</option>
+                                <option value="presencial">Presencial</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Quanto tempo você passa em casa por dia?</label>
+                            <select class="form-select" name="tempo_em_casa" required>
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="baixo">Menos de 2h</option>
+                                <option value="medio">2 a 4 horas</option>
+                                <option value="alto">4 a 8 horas</option>
+                                <option value="quase_todo">Quase o dia todo</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">Qual a área aproximada do espaço disponível na sua casa?</label>
+                            <select class="form-select" name="espaco" required>
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="apto_pequeno">Apartamento pequeno (até 60 m²)</option>
+                                <option value="apto_grande">Apartamento grande (61 a 100 m²)</option>
+                                <option value="casa_pequena">Casa com quintal pequeno (até 200 m²)</option>
+                                <option value="casa_grande">Casa com quintal grande (acima de 200 m²)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- ETAPA 2 --}}
+                    <div class="match-step" data-step="2">
+                        <div class="mb-3">
+                            <label class="form-label">Quais atividades de lazer mais combinam com você?</label>
+                            <select class="form-select" name="lazer" required>
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="casa">Prefiro ficar em casa, ambiente tranquilo</option>
+                                <option value="moderado">Gosto de sair de vez em quando, passeios moderados</option>
+                                <option value="ativo">Sou bem ativo, pratico esportes e gosto de movimento</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Com quem você mora?</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="moradia[]" value="sozinho" id="moradiaSozinho">
+                                <label class="form-check-label" for="moradiaSozinho">Moro sozinho</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="moradia[]" value="adultos" id="moradiaAdultos">
+                                <label class="form-check-label" for="moradiaAdultos">Moro com adultos</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="moradia[]" value="criancas" id="moradiaCriancas">
+                                <label class="form-check-label" for="moradiaCriancas">Moro com crianças</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="moradia[]" value="idosos" id="moradiaIdosos">
+                                <label class="form-check-label" for="moradiaIdosos">Moro com idosos</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">Qual sua experiência com pets?</label>
+                            <select class="form-select" name="experiencia" required>
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="nenhuma">Nunca tive pets</option>
+                                <option value="alguma">Já tive alguns pets</option>
+                                <option value="muita">Tenho bastante experiência</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- ETAPA 3 --}}
+                    <div class="match-step" data-step="3">
+                        <div class="mb-3">
+                            <label class="form-label">Como você enxerga os cuidados veterinários do seu futuro pet?</label>
+                            <select class="form-select" name="tolerancia" required>
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="minimo">Apenas em emergências</option>
+                                <option value="preventivo">Sempre que necessário, incluindo cuidados preventivos</option>
+                                <option value="especial">Estou disposto(a) a acompanhar tratamentos contínuos ou necessidades especiais</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">Qual sua renda familiar aproximada?</label>
+                            <select class="form-select" name="renda" required>
+                                <option value="" selected disabled>Selecione uma opção</option>
+                                <option value="baixa">Até 2 salários mínimos</option>
+                                <option value="media">Entre 2 e 5 salários mínimos</option>
+                                <option value="alta">Acima de 5 salários mínimos</option>
+                            </select>
+                        </div>
+
+                        <p class="text-muted small mt-3">
+                            Ao continuar, você concorda em utilizar seus dados apenas para recomendação de pets
+                            e contato com as ONGs participantes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="match-actions">
+                    <button type="button" class="btn" id="btnPrev" disabled>
+                        Voltar
+                    </button>
+
+                    <div class="ms-auto d-flex gap-2">
+                        <button type="button" class="btn" id="btnNext">
+                            Próximo
+                        </button>
+                        <button type="submit" class="btn match-btn w-100 d-none" id="btnSubmit">
+                            <i class="bi bi-stars"></i>
+                            Encontrar meu Match
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
