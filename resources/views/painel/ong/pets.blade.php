@@ -95,9 +95,13 @@
                                         <i class="bi bi-trash3 fs-5"></i>
                                     </button>
                                 </form>
-                                <button class="btn btn-sm btn-primary" title="Enviar ao Facebook">
-                                    <i class="bi bi-send fs-5"></i>
-                                </button>
+                                <form action="{{ route('ong.pets.facebook', $pet->id) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    <button class="btn btn-sm btn-primary" title="Enviar ao Facebook">
+                                        <i class="bi bi-send fs-5"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
