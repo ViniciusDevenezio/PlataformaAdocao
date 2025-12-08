@@ -98,6 +98,7 @@ Route::middleware(['auth:ong'])->group(function () {
     Route::get('/painel-ong/pets/{id}/editar', [OngPainelController::class, 'editarPet'])->name('ong.pets.editar');
     Route::put('/painel-ong/pets/{id}', [OngPainelController::class, 'atualizarPet'])->name('ong.pets.atualizar');
     Route::delete('/painel-ong/pets/{id}', [OngPainelController::class, 'excluirPet'])->name('ong.pets.excluir');
+    Route::post('/painel-ong/pets/{id}/facebook', [OngPainelController::class, 'enviarPetParaFacebook'])->name('ong.pets.facebook');
 
     Route::get('/painel-ong/interesses', [OngPainelController::class, 'interesses'])->name('ong.interesses');
 });

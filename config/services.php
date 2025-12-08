@@ -35,7 +35,11 @@ return [
         ],
     ],
     'openai' => [
-    'key' => env('OPENAI_API_KEY'),
-],
+        'key' => env('OPENAI_API_KEY'),
+    ],
+
+    'make' => [
+        'facebook_webhook' => env('MAKE_FACEBOOK_WEBHOOK'),
+    ],
 
 ];
