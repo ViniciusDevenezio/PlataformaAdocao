@@ -64,3 +64,12 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Configurando a IA de Match
+
+Para que o recurso de sugestão automática de pets funcione em produção (por exemplo, no Railway), configure as seguintes variáveis de ambiente:
+
+- `OPENAI_API_KEY`: chave da API usada pelo `scripts/match.py` para chamar o modelo da OpenAI.
+- `PYTHON_BIN` (opcional): caminho do executável Python disponível no container. Se não definir, será usado `python3`.
+
+No Railway, defina essas variáveis em **Project Settings → Variables**. O Laravel passa esses valores para o script Python sempre que o match é solicitado, portanto não é necessário editar o código ou commitar a chave no repositório.

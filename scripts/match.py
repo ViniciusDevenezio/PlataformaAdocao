@@ -1,7 +1,12 @@
-import json, sys, requests
+import json, os, sys, requests
 
-# Chave fixa aqui
-#API_KEY =""
+
+def obter_api_key() -> str:
+    """Recupera a chave da API de uma variável de ambiente segura."""
+    chave = os.getenv("OPENAI_API_KEY")
+    if not chave:
+        raise EnvironmentError("Variável de ambiente OPENAI_API_KEY não definida.")
+    return chave
 
 INSTRUCOES = """
 Você é um especialista em adoção responsável de animais.
@@ -29,11 +34,12 @@ Dados do adotante: {adotante}
 Pets disponíveis: {pets}
 """
     try:
+        api_key = obter_api_key()
         resp = requests.post(
             "https://api.openai.com/v1/chat/completions",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {API_KEY}"
+                "Authorization": f"Bearer {api_key}"
             },
             json={
                 "model": "gpt-4.1-mini",
