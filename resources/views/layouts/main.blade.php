@@ -74,7 +74,6 @@
                             Olá, {{ Auth::guard('adotante')->user()->nome_completo }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="menuAdotante">
-                            <li><a class="dropdown-item" href="#">Perfil</a></li>
                             <li><a class="dropdown-item" href="/painelAdotante">Meus Pets</a></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="dropdown-item m-0 p-0">
