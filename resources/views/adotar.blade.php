@@ -305,7 +305,7 @@
                                 </div>
 
                                 <div class="card-desc-scroll">
-                                    {{ $pet->descricao ?? "Conheça este pet adorável, dócil e brincalhão, perfeito para qualquer lar. Está pronto para encontrar uma nova família." }}
+                                    {{ $pet->descricao ?? "Conheça este adoravel pet" }}
                                 </div>
                             </div>
 
