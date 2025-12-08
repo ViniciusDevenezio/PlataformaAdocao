@@ -7,6 +7,7 @@ use App\Models\Pet;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -262,11 +263,13 @@ class OngPainelController extends Controller
 
         $descricao = $this->montarDescricaoFacebook($pet);
         $urlFoto = $this->gerarUrlFotoPet($pet);
+        $urlPet = $this->gerarLinkPet($pet);
 
         try {
             $response = Http::post($this->facebookWebhookUrl(), [
                 'descricao' => $descricao,
                 'url_foto' => $urlFoto,
+                'url_pet' => $urlPet,
             ]);
 
             if ($response->failed()) {
@@ -316,11 +319,14 @@ class OngPainelController extends Controller
         $localizacao = $pet->localizacao ? 'Localização: ' . $pet->localizacao . '.' : '';
         $descricao = $pet->descricao ?: '';
 
+        $linkPet = $this->gerarLinkPet($pet);
+
         return trim(implode(' ', [
             "{$pet->nome} ({$especie}) - {$genero}, porte {$porte}, {$idade}.",
             $descricao,
             $temperamento,
             $localizacao,
+            "Adote aqui: {$linkPet}",
         ]));
     }
 
@@ -345,6 +351,11 @@ class OngPainelController extends Controller
         }
 
         return Storage::disk('public')->url($caminho);
+    }
+
+    private function gerarLinkPet(Pet $pet): string
+    {
+        return URL::route('pet.mostrar', $pet);
     }
 
     private function faixaEtariaPorMeses(?int $m): ?string
