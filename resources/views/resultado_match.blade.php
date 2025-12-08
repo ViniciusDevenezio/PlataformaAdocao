@@ -3,7 +3,7 @@
 @section('title', 'Resultado do Match')
 
 @section('content')
-<div class="container py-5" style="max-width: 800px;">
+<div class="container py-5" style="max-width: 800px; margin-top:45vh;">
 
   <div class="text-center mb-4">
     <i class="bi bi-stars fs-1" style="color:#ff8a00;"></i>
