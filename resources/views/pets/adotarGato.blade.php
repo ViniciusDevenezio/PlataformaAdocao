@@ -7,16 +7,6 @@
             font-weight: 450;
         }
 
-        .pet-gender-femea {
-            width: 18px !important;
-            /* mesma largura do macho */
-            height: auto !important;
-            /* deixa a altura proporcional */
-            transform: scale(0.75);
-            /* aumenta sem distorcer */
-            transform-origin: center;
-        }
-
         .pet-card {
             height: 500px;
             display: flex;
@@ -65,20 +55,19 @@
             margin: 0;
         }
 
-        /* Ícone de gênero (SVG do storage) */
+        /* Ícone de gênero (Bootstrap Icons) */
         .pet-gender-icon {
-            width: 1.1rem;
-            height: 1.1rem;
+            font-size: 1.3rem;
+            line-height: 1;
             flex-shrink: 0;
         }
 
         .pet-gender-macho {
-            /* se o SVG tiver fill="currentColor", pode usar color aqui */
-            /* color: #4f8fff; */
+            color: #0d6efd;
         }
 
         .pet-gender-femea {
-            /* color: #ff4f7b; */
+            color: #d63384;
         }
 
         /* Descrição com rolagem interna (a partir de ~3 linhas) */
@@ -293,11 +282,9 @@
                                         @endif
                                     </p>
                                     @if($generoLower === 'macho')
-                                        <img src="{{ secure_asset('storage/images/macho.png') }}" alt="Macho"
-                                            class="pet-gender-icon pet-gender-macho">
+                                        <i class="bi bi-gender-male pet-gender-icon pet-gender-macho" aria-label="Macho" role="img"></i>
                                     @elseif($generoLower === 'femea')
-                                        <img src="{{ secure_asset('storage/images/femea.png') }}" alt="Fêmea"
-                                            class="pet-gender-icon pet-gender-femea">
+                                        <i class="bi bi-gender-female pet-gender-icon pet-gender-femea" aria-label="Fêmea" role="img"></i>
                                     @endif
                                 </div>
 
