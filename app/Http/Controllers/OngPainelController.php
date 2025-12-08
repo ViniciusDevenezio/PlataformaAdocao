@@ -317,12 +317,20 @@ class OngPainelController extends Controller
         $idade = $pet->idade ?: 'Idade não informada';
         $temperamento = $pet->temperamento ? 'Temperamento: ' . str_replace(',', ', ', $pet->temperamento) . '.' : '';
         $localizacao = $pet->localizacao ? 'Localização: ' . $pet->localizacao . '.' : '';
-        $descricao = $pet->descricao ?: '';
 
         $linkPet = $this->gerarLinkPet($pet);
 
+        $generoNormalizado = strtolower($pet->genero ?? '');
+        $pronome = in_array($generoNormalizado, ['femea', 'fêmea']) ? 'Ela' : 'Ele';
+        $artigo = in_array($generoNormalizado, ['femea', 'fêmea']) ? 'uma' : 'um';
+
+        $temperamentos = array_filter(array_map('trim', explode(',', (string) $pet->temperamento)));
+        $temperamentosTexto = $temperamentos
+            ? implode(' e ', array_map('mb_strtolower', $temperamentos))
+            : null;
+
         $caracteristicas = trim(implode(' ', array_filter([
-            "O pet {$pet->nome} é um {$especie}",
+            "O pet {$pet->nome} é {$artigo} {$especie}",
             $genero ? strtolower($genero) : null,
             $porte ? 'de porte ' . strtolower($porte) : null,
             $idade ? 'com ' . $idade : null,
@@ -330,8 +338,7 @@ class OngPainelController extends Controller
 
         $detalhes = array_filter([
             $caracteristicas,
-            $descricao,
-            $temperamento ? 'Ele é um pet ' . str_replace(',', ' e', strtolower($pet->temperamento)) . '.' : null,
+            $temperamentosTexto ? "{$pronome} é {$artigo} pet {$temperamentosTexto}." : null,
             $localizacao ? 'Está esperando por uma família em ' . $pet->localizacao . '.' : null,
             'Adote aqui: ' . $linkPet,
         ]);
