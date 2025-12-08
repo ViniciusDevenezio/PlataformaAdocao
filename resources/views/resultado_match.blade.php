@@ -49,7 +49,7 @@
           @endif
         </ul>
 
-        <a href="{{ route('pet.mostrar', $pet->id) }}" class="btn btn-success mt-3">
+        <a href="{{ route('pet.mostrar', $pet->slug) }}" class="btn btn-success mt-3" target="_blank" rel="noopener">
           <i class="bi bi-heart-fill me-2"></i> Quero Adotar
         </a>
       </div>

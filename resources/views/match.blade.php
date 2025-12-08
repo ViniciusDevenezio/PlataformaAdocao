@@ -33,9 +33,90 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(255, 255, 255, 0.85);
+        background: radial-gradient(circle at 30% 20%, rgba(127, 76, 165, 0.08), transparent 40%),
+            radial-gradient(circle at 75% 80%, rgba(45, 156, 219, 0.1), transparent 45%),
+            rgba(255, 255, 255, 0.9);
         border-radius: 1.2rem;
         z-index: 5;
+    }
+
+    .match-loader {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.9rem;
+        color: #4e4561;
+    }
+
+    .match-loader .gemini-orb {
+        width: 120px;
+        height: 120px;
+        position: relative;
+        display: grid;
+        place-items: center;
+    }
+
+    .gemini-orb .gemini-ring {
+        width: 100%;
+        height: 100%;
+        border-radius: 999px;
+        background: conic-gradient(from 0deg, #ff8a00, #e52e71, #9b51e0, #2d9cdb, #ff8a00);
+        filter: drop-shadow(0 8px 18px rgba(127, 76, 165, 0.25));
+        animation: spin 6s linear infinite;
+        mask: radial-gradient(circle at center, transparent 52%, black 52%);
+        -webkit-mask: radial-gradient(circle at center, transparent 52%, black 52%);
+    }
+
+    .gemini-orb .gemini-star {
+        position: absolute;
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #fff8f0, #f4e8ff);
+        display: grid;
+        place-items: center;
+        color: #7f4ca5;
+        font-size: 2rem;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .gemini-orb .gemini-dot {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        animation: orbit 4s ease-in-out infinite;
+    }
+
+    .gemini-orb .gemini-dot:nth-of-type(2) {
+        animation-delay: -0.6s;
+    }
+
+    .gemini-orb .gemini-dot:nth-of-type(3) {
+        animation-delay: -1.2s;
+    }
+
+    .match-loading-text {
+        text-align: center;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+
+    @keyframes orbit {
+        0%   { transform: rotate(0deg) translateX(46px) rotate(0deg); opacity: 0.9; }
+        50%  { transform: rotate(180deg) translateX(46px) rotate(-180deg); opacity: 0.4; }
+        100% { transform: rotate(360deg) translateX(46px) rotate(-360deg); opacity: 0.9; }
     }
 
     .match-header h2 {
@@ -271,9 +352,18 @@
     <div class="container d-flex justify-content-center align-items-center" style="min-height:60vh;">
         <div class="card shadow-sm p-4 match-card">
             <div class="match-loading d-none" id="matchLoading">
-                <div class="d-flex align-items-center gap-2 text-secondary">
-                    <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
-                    <span class="fw-semibold">Buscando o melhor match com a IA...</span>
+                <div class="match-loader">
+                    <div class="gemini-orb">
+                        <div class="gemini-ring"></div>
+                        <div class="gemini-star"><i class="bi bi-stars"></i></div>
+                        <span class="gemini-dot"></span>
+                        <span class="gemini-dot"></span>
+                        <span class="gemini-dot"></span>
+                    </div>
+                    <div class="match-loading-text">
+                        <div class="fw-semibold">Buscando o melhor match com a IA...</div>
+                        <div class="text-secondary small">Aguarde enquanto personalizamos a recomendação</div>
+                    </div>
                 </div>
             </div>
             <div class="text-center mb-3 match-header">
