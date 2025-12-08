@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 
 
 class OngPainelController extends Controller
@@ -255,6 +256,32 @@ class OngPainelController extends Controller
     }
 
 
+    public function enviarPetParaFacebook($id)
+    {
+        $pet = Pet::where('ong_id', Auth::guard('ong')->id())->findOrFail($id);
+
+        $descricao = $this->montarDescricaoFacebook($pet);
+        $urlFoto = $this->gerarUrlFotoPet($pet);
+
+        try {
+            $response = Http::post($this->facebookWebhookUrl(), [
+                'descricao' => $descricao,
+                'url_foto' => $urlFoto,
+            ]);
+
+            if ($response->failed()) {
+                return back()->with('error', 'Não foi possível enviar o pet para o Facebook. Tente novamente mais tarde.');
+            }
+
+            return back()->with('success', 'Pet enviado ao Facebook com sucesso!');
+        } catch (\Exception $exception) {
+            report($exception);
+
+            return back()->with('error', 'Ocorreu um erro ao enviar o pet ao Facebook.');
+        }
+    }
+
+
 
     // ❌ Excluir pet
     public function excluirPet($id)
@@ -271,6 +298,60 @@ class OngPainelController extends Controller
         // aqui você pode buscar pets com algum relacionamento "interesses"
         $pets = Pet::where('ong_id', Auth::guard('ong')->id())->get();
         return view('painel.ong.solicitacoes', compact('pets'));
+    }
+
+    private function facebookWebhookUrl(): string
+    {
+        return config('services.make.facebook_webhook')
+            ?? env('MAKE_FACEBOOK_WEBHOOK', 'https://hook.us2.make.com/rg9i0wmm0su9dvzwlggirg4p6jn4ye56');
+    }
+
+    private function montarDescricaoFacebook(Pet $pet): string
+    {
+        $especie = $pet->especie ? ucfirst($pet->especie) : 'Pet';
+        $genero = $pet->genero ? ucfirst($pet->genero) : 'Gênero não informado';
+        $porte = $pet->porte ? ucfirst($pet->porte) : 'Porte não informado';
+        $idade = $pet->idade ?: 'Idade não informada';
+        $temperamento = $pet->temperamento ? 'Temperamento: ' . str_replace(',', ', ', $pet->temperamento) . '.' : '';
+        $localizacao = $pet->localizacao ? 'Localização: ' . $pet->localizacao . '.' : '';
+        $descricao = $pet->descricao ?: '';
+        $linkPet = 'Venha conhecer mais deste pet: ' . $this->gerarLinkPet($pet);
+
+        return trim(implode(' ', [
+            "{$pet->nome} ({$especie}) - {$genero}, porte {$porte}, {$idade}.",
+            $descricao,
+            $temperamento,
+            $localizacao,
+            $linkPet,
+        ]));
+    }
+
+    private function gerarUrlFotoPet(Pet $pet): ?string
+    {
+        if (!$pet->imagem_url) {
+            return null;
+        }
+
+        if (Str::startsWith($pet->imagem_url, ['http://', 'https://'])) {
+            return $pet->imagem_url;
+        }
+
+        $caminho = ltrim($pet->imagem_url, '/');
+
+        if (Str::startsWith($caminho, 'storage/')) {
+            $caminho = Str::after($caminho, 'storage/');
+        }
+
+        if (!Str::startsWith($caminho, 'images/')) {
+            $caminho = 'images/' . $caminho;
+        }
+
+        return Storage::disk('public')->url($caminho);
+    }
+
+    private function gerarLinkPet(Pet $pet): string
+    {
+        return route('pet.mostrar', $pet);
     }
 
     private function faixaEtariaPorMeses(?int $m): ?string
