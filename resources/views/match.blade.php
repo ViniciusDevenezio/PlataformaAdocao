@@ -24,6 +24,18 @@
         background: #ffffff;
         box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
         color: #2f2440;
+        position: relative;
+    }
+
+    .match-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 1.2rem;
+        z-index: 5;
     }
 
     .match-header h2 {
@@ -258,6 +270,12 @@
 <div class="match-page">
     <div class="container d-flex justify-content-center align-items-center" style="min-height:60vh;">
         <div class="card shadow-sm p-4 match-card">
+            <div class="match-loading d-none" id="matchLoading">
+                <div class="d-flex align-items-center gap-2 text-secondary">
+                    <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+                    <span class="fw-semibold">Buscando o melhor match com a IA...</span>
+                </div>
+            </div>
             <div class="text-center mb-3 match-header">
                 <div class="match-icon mb-3">
                     <i class="bi bi-stars fs-3"></i>
@@ -474,9 +492,21 @@ document.addEventListener('DOMContentLoaded', function () {
         showStep(currentStep - 1, 'backward');
     });
 
+    const loadingOverlay = document.getElementById('matchLoading');
+
     form.addEventListener('submit', function (e) {
         if (!validateCurrentStep()) {
             e.preventDefault();
+            return;
+        }
+
+        btnPrev.disabled = true;
+        btnNext.disabled = true;
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Buscando...';
+
+        if (loadingOverlay) {
+            loadingOverlay.classList.remove('d-none');
         }
     });
 
