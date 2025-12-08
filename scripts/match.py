@@ -1,4 +1,8 @@
-import json, os, sys, requests
+import json
+import os
+import sys
+import urllib.request
+import urllib.error
 
 
 def obter_api_key() -> str:
@@ -35,28 +39,32 @@ Pets disponíveis: {pets}
 """
     try:
         api_key = obter_api_key()
-        resp = requests.post(
-            "https://api.openai.com/v1/chat/completions",
+
+        payload = json.dumps({
+            "model": "gpt-4.1-mini",
+            "temperature": 0.2,
+            "messages": [
+                {"role": "user", "content": prompt}
+            ],
+        }).encode("utf-8")
+
+        req = urllib.request.Request(
+            url="https://api.openai.com/v1/chat/completions",
+            data=payload,
             headers={
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {api_key}"
+                "Authorization": f"Bearer {api_key}",
             },
-            json={
-                "model": "gpt-4.1-mini",
-                "temperature": 0.2,
-                "messages": [
-                    {"role": "user", "content": prompt}
-                ]
-            },
-            timeout=30
+            method="POST",
         )
 
-        # log pro laravel
-        sys.stderr.write(">>> DEBUG: resposta bruta da API:\n" + resp.text + "\n")
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            raw_body = resp.read().decode("utf-8", errors="replace")
 
-        resp.raise_for_status()
+        # log pro laravel (stderr)
+        sys.stderr.write(">>> DEBUG: resposta bruta da API:\n" + raw_body + "\n")
 
-        content = resp.json()["choices"][0]["message"]["content"]
+        content = json.loads(raw_body)["choices"][0]["message"]["content"]
 
         # confirma se foi json
         if "{" in content:
@@ -65,6 +73,14 @@ Pets disponíveis: {pets}
             content = content[start:end]
 
         return json.loads(content)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace") if hasattr(e, "read") else str(e)
+        sys.stderr.write(f">>> ERRO HTTP: {e.code} {e.reason}\n{body}\n")
+        return {
+            "id": None,
+            "nome": "Indefinido",
+            "motivo": f"Erro HTTP ao falar com a IA: {e.code}"
+        }
     except Exception as e:
         return {
             "id": None,
