@@ -1,0 +1,7 @@
+[phases.setup]
+nixPkgs = ["python3"]
+
+[phases.install]
+cmds = [
+  "python3 --version || echo 'python3 não encontrado'"
+]
