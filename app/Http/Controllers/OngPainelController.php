@@ -321,22 +321,13 @@ class OngPainelController extends Controller
 
         $linkPet = $this->gerarLinkPet($pet);
 
-        $caracteristicas = trim(implode(' ', array_filter([
-            "O pet {$pet->nome} é um {$especie}",
-            $genero ? strtolower($genero) : null,
-            $porte ? 'de porte ' . strtolower($porte) : null,
-            $idade ? 'com ' . $idade : null,
-        ])) . '.';
-
-        $detalhes = array_filter([
-            $caracteristicas,
+        return trim(implode(' ', [
+            "{$pet->nome} ({$especie}) - {$genero}, porte {$porte}, {$idade}.",
             $descricao,
-            $temperamento ? 'Ele é um pet ' . str_replace(',', ' e', strtolower($pet->temperamento)) . '.' : null,
-            $localizacao ? 'Está esperando por uma família em ' . $pet->localizacao . '.' : null,
-            'Adote aqui: ' . $linkPet,
-        ]);
-
-        return trim(implode(' ', $detalhes));
+            $temperamento,
+            $localizacao,
+            "Adote aqui: {$linkPet}",
+        ]));
     }
 
     private function gerarUrlFotoPet(Pet $pet): ?string
