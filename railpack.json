@@ -2,7 +2,7 @@
   "$schema": "https://schema.railpack.com",
   "provider": "php",
   "steps": {
-    "install": {
+    "install:composer": {
       "commands": [
         {
           "cmd": "composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-ansi --no-scripts",
