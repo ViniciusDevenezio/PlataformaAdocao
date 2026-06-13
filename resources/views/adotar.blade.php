@@ -133,8 +133,10 @@
             border: 1px solid rgba(15, 23, 42, .08);
             box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
             margin-bottom: 1.25rem;
-            margin-top: 0;
+            margin-top: -2.75rem;
             padding: 1rem;
+            position: relative;
+            z-index: 2;
         }
 
         .filter-bar label {
@@ -156,6 +158,12 @@
         .filter-bar .form-check-label {
             font-size: 0.85rem;
             font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .filter-bar {
+                margin-top: -1.5rem;
+            }
         }
     </style>
 @endsection
