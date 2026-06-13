@@ -1,0 +1,14 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "provider": "php",
+  "steps": {
+    "install": {
+      "commands": [
+        {
+          "cmd": "composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-ansi --no-scripts",
+          "customName": "Install Composer production dependencies"
+        }
+      ]
+    }
+  }
+}
