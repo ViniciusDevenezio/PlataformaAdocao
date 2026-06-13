@@ -168,10 +168,14 @@
         ];
 
         // agora também montamos a lista de idades disponíveis
+        $petCollection = $pets instanceof \Illuminate\Contracts\Pagination\Paginator
+            ? $pets->getCollection()
+            : collect($pets);
+
         $filtros = [
-            'portes'   => $pets->pluck('porte')->filter()->unique()->sort()->values(),
-            'generos'  => $pets->pluck('genero')->filter()->unique()->sort()->values(),
-            'idades'   => $pets->pluck('idade')->filter()->unique()->sort()->values(),
+            'portes'   => $petCollection->pluck('porte')->filter()->unique()->sort()->values(),
+            'generos'  => $petCollection->pluck('genero')->filter()->unique()->sort()->values(),
+            'idades'   => $petCollection->pluck('idade')->filter()->unique()->sort()->values(),
         ];
     @endphp
 
@@ -267,8 +271,8 @@
                     data-idade="{{ $pet->idade ?? '' }}"
                 >
                     <div class="card pet-card">
-                        <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
-                            alt="{{ $pet->nome }}">
+                        <img src="{{ asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
+                            alt="{{ $pet->nome }}" width="320" height="288" loading="{{ $loop->iteration <= 4 ? 'eager' : 'lazy' }}" decoding="async">
 
                         <div class="card-body text-start">
                             <div class="pet-info">
@@ -345,6 +349,12 @@
                 </div>
             @endforeach
         </div>
+
+        @if(method_exists($pets, 'links'))
+            <div class="d-flex justify-content-center mt-3">
+                {{ $pets->links() }}
+            </div>
+        @endif
     </div>
 
     {{-- script do filtro horizontal, agora com idade --}}
