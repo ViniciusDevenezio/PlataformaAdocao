@@ -162,9 +162,11 @@
     @php
         use Illuminate\Support\Str;
 
-        $cachorros = $pets->filter(function ($p) {
-            return isset($p->especie) && Str::lower($p->especie) === 'cachorro';
-        });
+        $cachorros = $pets instanceof \Illuminate\Contracts\Pagination\Paginator
+            ? $pets->getCollection()
+            : collect($pets)->filter(function ($p) {
+                return isset($p->especie) && Str::lower($p->especie) === 'cachorro';
+            });
 
         $filtros = [
             'portes'  => $cachorros->pluck('porte')->filter()->unique()->sort()->values(),
@@ -264,8 +266,8 @@
                     data-idade="{{ $pet->idade ?? '' }}"
                 >
                     <div class="card pet-card">
-                        <img src="{{ secure_asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
-                            alt="{{ $pet->nome }}">
+                        <img src="{{ asset('storage/images/' . $pet->imagem_url) }}" class="card-img-top"
+                            alt="{{ $pet->nome }}" width="320" height="288" loading="{{ $loop->iteration <= 4 ? 'eager' : 'lazy' }}" decoding="async">
 
                         <div class="card-body text-start">
                             <div class="pet-info">
@@ -342,6 +344,12 @@
                 </div>
             @endforeach
         </div>
+
+        @if(method_exists($pets, 'links'))
+            <div class="d-flex justify-content-center mt-3">
+                {{ $pets->links() }}
+            </div>
+        @endif
     </div>
 
     {{-- script do filtro horizontal, agora com idade --}}

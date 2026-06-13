@@ -141,7 +141,10 @@
                 <div class="carousel-inner">
                     {{-- Campanha 1 --}}
                     <div class="carousel-item active">
-                        <img src="/img/carrossel 1.png" class="d-block w-100" alt="Campanha de adoção especial">
+                        <picture>
+                            <source srcset="/img/carrossel-1.webp" type="image/webp">
+                            <img src="/img/carrossel 1.png" class="d-block w-100" alt="Campanha de adoção especial" width="1435" height="600" fetchpriority="high" decoding="async">
+                        </picture>
                         <div class="carousel-caption">
                             <div class="campaign-badge">
                                 <span>Campanha ativa</span>
@@ -158,7 +161,10 @@
 
                     {{-- Campanha 2 --}}
                     <div class="carousel-item">
-                        <img src="/img/carrossel 2.png" class="d-block w-100" alt="Campanha de doação de ração">
+                        <picture>
+                            <source srcset="/img/carrossel-2.webp" type="image/webp">
+                            <img src="/img/carrossel 2.png" class="d-block w-100" alt="Campanha de doação de ração" width="785" height="435" loading="lazy" decoding="async">
+                        </picture>
                         <div class="carousel-caption">
                             <div class="campaign-badge">
                                 <span>Apoie as ONGs</span>
@@ -175,7 +181,10 @@
 
                     {{-- Campanha 3 --}}
                     <div class="carousel-item">
-                        <img src="/img/carrossel3.png" class="d-block w-100" alt="Campanha de castração">
+                        <picture>
+                            <source srcset="/img/carrossel-3.webp" type="image/webp">
+                            <img src="/img/carrossel3.png" class="d-block w-100" alt="Campanha de castração" width="2000" height="1194" loading="lazy" decoding="async">
+                        </picture>
                         <div class="carousel-caption">
                             <div class="campaign-badge">
                                 <span>Prevenção</span>

@@ -12,15 +12,20 @@ use App\Http\Controllers\SolicitacaoController;
 use App\Http\Controllers\MatchController;
 use App\Models\Ong;
 use App\Models\Pet;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 // Home ---------------------------------------------------------
 Route::get('/', function () {
-    $petsAdotados = Pet::where('status', 'adotado')->count();
-    $ongsParceiras = Ong::count();
-    $cidadesAtendidas = Ong::distinct('cidade')->count('cidade');
+    $stats = Cache::remember('home.stats', now()->addMinutes(30), function () {
+        return [
+            'petsAdotados' => Pet::where('status', 'adotado')->count(),
+            'ongsParceiras' => Ong::count(),
+            'cidadesAtendidas' => Ong::whereNotNull('cidade')->distinct('cidade')->count('cidade'),
+        ];
+    });
 
-    return view('home', compact('petsAdotados', 'ongsParceiras', 'cidadesAtendidas'));
+    return view('home', $stats);
 })->name('home');
 
 // Login / Logout ------------------------------------------------
