@@ -11,17 +11,12 @@
             height: 500px;
             display: flex;
             flex-direction: column;
-            border-radius: 8px;
+            border-radius: 14px;
             overflow: hidden;
             background: #fff;
-            border: 1px solid rgba(15, 23, 42, .08);
-            box-shadow: 0 14px 32px rgba(15, 23, 42, .1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.22);
             transition: transform .2s ease, box-shadow .2s ease;
-        }
-
-        .pet-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 44px rgba(15, 23, 42, .14);
+            border: none;
         }
 
         .pet-card .card-img-top {
@@ -129,12 +124,11 @@
         {{-- NOVO: estilo da barra de filtros horizontal --}}
         .filter-bar {
             background: #ffffff;
-            border-radius: 8px;
-            border: 1px solid rgba(15, 23, 42, .08);
-            box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             margin-bottom: 1.25rem;
-            margin-top: 0;
-            padding: 1rem;
+            margin-top:-3rem;
+            padding-bottom: 1px;
         }
 
         .filter-bar label {
