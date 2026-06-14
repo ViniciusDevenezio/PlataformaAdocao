@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('head')
-    <link rel="stylesheet" href="{{ secure_asset('css/styleCadastro.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styleCadastro.css') }}">
     <style>
         #container-principal-mostrar {
             padding-top: 6rem;
@@ -78,7 +78,7 @@
             <div class="col-md-6">
                 @php
                     $src = $pet->imagem_url
-                        ? secure_asset('storage/images/' . ltrim($pet->imagem_url, '/'))
+                        ? asset('storage/images/' . ltrim($pet->imagem_url, '/'))
                         : null;
                 @endphp
 

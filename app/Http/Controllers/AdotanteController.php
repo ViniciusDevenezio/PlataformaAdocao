@@ -53,12 +53,16 @@ class AdotanteController extends Controller
         $dateErrors = DateTimeImmutable::getLastErrors();
 
         if (!$data || ($dateErrors && ($dateErrors['warning_count'] > 0 || $dateErrors['error_count'] > 0))) {
-            return back()->withErrors(['nascimento' => 'Data de nascimento invalida.'])->withInput();
+            return back()
+                ->withErrors(['nascimento' => 'Data de nascimento invalida.'])
+                ->withInput($request->except('senha'));
         }
 
         $idade = $data->diff(new DateTimeImmutable('now'))->y;
         if ($idade < 18 || $idade > 80) {
-            return back()->withErrors(['nascimento' => 'A idade deve estar entre 18 e 80 anos.'])->withInput();
+            return back()
+                ->withErrors(['nascimento' => 'A idade deve estar entre 18 e 80 anos.'])
+                ->withInput($request->except('senha'));
         }
 
         $dados = $validated;
