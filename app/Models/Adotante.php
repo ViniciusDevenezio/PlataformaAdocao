@@ -9,6 +9,8 @@ class Adotante extends Authenticatable
 {
     use Notifiable;
 
+    protected $authPasswordName = 'senha';
+
     protected $fillable = [
         'nome_completo',
         'cpf',

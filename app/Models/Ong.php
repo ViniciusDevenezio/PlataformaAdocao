@@ -10,6 +10,7 @@ class Ong extends Authenticatable
     use Notifiable;
 
     protected $table = 'ongs';
+    protected $authPasswordName = 'senha';
 
     protected $fillable = [
         'nome',
