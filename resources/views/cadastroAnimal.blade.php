@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('head')
-<link rel="stylesheet" href="{{ secure_asset('css/styleCadastro.css') }}">
+<link rel="stylesheet" href="{{ asset('css/styleCadastro.css') }}">
 @endsection
 
 @section('menu')

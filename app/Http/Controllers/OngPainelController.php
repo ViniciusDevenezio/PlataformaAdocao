@@ -264,9 +264,14 @@ class OngPainelController extends Controller
         $descricao = $this->montarDescricaoFacebook($pet);
         $urlFoto = $this->gerarUrlFotoPet($pet);
         $urlPet = $this->gerarLinkPet($pet);
+        $webhookUrl = $this->facebookWebhookUrl();
+
+        if (!$webhookUrl) {
+            return back()->with('error', 'Webhook do Facebook nao configurado. Defina MAKE_FACEBOOK_WEBHOOK no ambiente.');
+        }
 
         try {
-            $response = Http::post($this->facebookWebhookUrl(), [
+            $response = Http::timeout(8)->post($webhookUrl, [
                 'descricao' => $descricao,
                 'url_foto' => $urlFoto,
                 'url_pet' => $urlPet,
@@ -303,10 +308,9 @@ class OngPainelController extends Controller
         return view('painel.ong.solicitacoes', compact('pets'));
     }
 
-    private function facebookWebhookUrl(): string
+    private function facebookWebhookUrl(): ?string
     {
-        return config('services.make.facebook_webhook')
-            ?? env('MAKE_FACEBOOK_WEBHOOK', 'https://hook.us2.make.com/rg9i0wmm0su9dvzwlggirg4p6jn4ye56');
+        return config('services.make.facebook_webhook') ?: env('MAKE_FACEBOOK_WEBHOOK');
     }
 
     private function montarDescricaoFacebook(Pet $pet): string

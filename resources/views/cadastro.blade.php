@@ -190,7 +190,7 @@
                         <div class="col-md-6">
                             <label for="senha">Senha</label>
                             <input type="password" id="senha" name="senha"
-                                   class="form-control" placeholder="Digite sua senha" required>
+                                   class="form-control" placeholder="Digite sua senha" minlength="8" maxlength="72" autocomplete="new-password" required>
                         </div>
                     </div>
 
@@ -260,9 +260,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-<script src="{{ secure_asset('js/validarCpf.js') }}"></script>
-<script src="{{ secure_asset('js/cepAutoComplete.js') }}"></script>
-<script src="{{ secure_asset('js/cidadesEstados.js') }}"></script>
+<script src="{{ asset('js/validarCpf.js') }}"></script>
+<script src="{{ asset('js/cidadesEstados.js') }}"></script>
+<script src="{{ asset('js/cepAutoComplete.js') }}"></script>
 
 <script>
     $(function () {
