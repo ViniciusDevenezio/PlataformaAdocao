@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tutor;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class TutorController extends Controller
 {
@@ -14,17 +15,17 @@ class TutorController extends Controller
         $request->validate(
             [
                 'nome' => 'required|string|max:255',
-                'cpf' => 'required|string|unique:tutors,cpf',
+                'cpf' => 'required|string|unique:tutor,cpf',
                 'nascimento' => 'required|date',
-                'email' => 'required|email|unique:tutors,email',
-                'celular' => 'required|string|unique:tutors,celular',
+                'email' => 'required|email|unique:tutor,email',
+                'celular' => 'required|string|unique:tutor,celular',
                 'endereco' => 'required|string|max:255',
                 'bairro' => 'required|string|max:255',
                 'estado' => 'nullable|string|max:255',
                 'cidade' => 'nullable|string|max:255',
                 'numero' => 'nullable|string|max:255',
                 'complemento' => 'nullable|string|max:255',
-                'senha' => 'required|string|min:8',
+                'senha' => 'required|string|min:8|max:72',
             ],
             [
                 'required' => 'O campo :attribute é obrigatório.',
@@ -50,7 +51,7 @@ class TutorController extends Controller
             'bairro' => $request->input('bairro'),
             'estado' => $request->input('estado'),
             'cidade' => $request->input('cidade'),
-            'senha' => bcrypt($request->input('senha')),  // Certifique-se de criptografar a senha
+            'senha' => Hash::make($request->input('senha')),
         ]);
 
         // Redireciona de volta com uma mensagem de sucesso

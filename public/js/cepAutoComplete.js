@@ -7,50 +7,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!cepInput) return;
 
-    cepInput.addEventListener('blur', function () {
+    let cepAbortController = null;
+
+    cepInput.addEventListener('blur', async function () {
         const cep = cepInput.value.replace(/\D/g, '');
 
         if (cep.length !== 8) return;
 
-        fetch(`https://viacep.com.br/ws/${cep}/json/`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.erro) {
-                    alert('CEP não encontrado');
-                    return;
-                }
+        if (cepAbortController) {
+            cepAbortController.abort();
+        }
 
-                // Preencher os campos imediatamente disponíveis
-                enderecoInput.value = data.logradouro || '';
-                bairroInput.value = data.bairro || '';
+        cepAbortController = new AbortController();
 
-                // Selecionar o estado (sigla)
-                const estado = data.uf;
-                const cidade = data.localidade;
-
-                // Espera até os estados estarem carregados
-                const tryFillCidade = setInterval(() => {
-                    const estadoOptions = [...estadoSelect.options].map(o => o.value);
-                    if (estadoOptions.includes(estado)) {
-                        estadoSelect.value = estado;
-                        estadoSelect.dispatchEvent(new Event('change')); // dispara para carregar cidades
-
-                        // Espera as cidades carregarem
-                        const waitCidade = setInterval(() => {
-                            const cidadeOptions = [...cidadeSelect.options].map(o => o.textContent);
-                            if (cidadeOptions.includes(cidade)) {
-                                cidadeSelect.value = cidade;
-                                cidadeSelect.disabled = false;
-                                clearInterval(waitCidade);
-                            }
-                        }, 300);
-
-                        clearInterval(tryFillCidade);
-                    }
-                }, 300);
-            })
-            .catch(() => {
-                alert('Erro ao buscar o CEP');
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`, {
+                signal: cepAbortController.signal,
             });
+            const data = await response.json();
+
+            if (data.erro) {
+                alert('CEP nao encontrado');
+                return;
+            }
+
+            if (enderecoInput) enderecoInput.value = data.logradouro || '';
+            if (bairroInput) bairroInput.value = data.bairro || '';
+
+            const estado = data.uf;
+            const cidade = data.localidade;
+
+            if (estadoSelect && typeof window.carregarEstadosCadastro === 'function') {
+                await window.carregarEstadosCadastro();
+                estadoSelect.value = estado;
+            }
+
+            if (cidadeSelect && typeof window.carregarCidadesCadastro === 'function') {
+                await window.carregarCidadesCadastro(estado);
+
+                const cidadeOption = [...cidadeSelect.options].find((option) => option.value === cidade || option.textContent === cidade);
+
+                if (cidadeOption) {
+                    cidadeSelect.value = cidadeOption.value;
+                    cidadeSelect.disabled = false;
+                }
+            }
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                alert('Erro ao buscar o CEP');
+            }
+        }
     });
 });

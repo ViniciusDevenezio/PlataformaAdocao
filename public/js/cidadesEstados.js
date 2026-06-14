@@ -3,20 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const cidadeSelect = document.getElementById('cidade');
 
     if (!estadoSelect || !cidadeSelect) {
-        console.warn('Campos de estado ou cidade não encontrados no DOM.');
         return;
     }
 
-    let estadosCarregados = false;
+    let estadosPromise = null;
 
     const carregarEstados = () => {
-        if (estadosCarregados) return;
+        if (estadosPromise) {
+            return estadosPromise;
+        }
 
-        estadosCarregados = true;
         estadoSelect.innerHTML = '<option value="">Carregando estados...</option>';
         estadoSelect.disabled = true;
 
-        fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+        estadosPromise = fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
             .then((res) => res.json())
             .then((estados) => {
                 estadoSelect.innerHTML = '<option value="">Selecione um estado</option>';
@@ -29,30 +29,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 estadoSelect.disabled = false;
+
+                return estados;
             })
             .catch((err) => {
                 estadoSelect.innerHTML = '<option value="">Erro ao carregar estados</option>';
+                estadoSelect.disabled = false;
+                estadosPromise = null;
                 console.error('Erro ao carregar estados:', err);
+
+                throw err;
             });
+
+        return estadosPromise;
     };
 
-    estadoSelect.addEventListener('focus', carregarEstados, { once: true });
-    estadoSelect.addEventListener('click', carregarEstados, { once: true });
-    estadoSelect.addEventListener('touchstart', carregarEstados, { once: true, passive: true });
-
-    estadoSelect.addEventListener('change', function () {
-        const sigla = this.value;
-
+    const carregarCidades = (sigla) => {
         if (!sigla) {
             cidadeSelect.innerHTML = '<option value="">Selecione uma cidade</option>';
             cidadeSelect.disabled = true;
-            return;
+
+            return Promise.resolve([]);
         }
 
         cidadeSelect.innerHTML = '<option value="">Carregando cidades...</option>';
         cidadeSelect.disabled = true;
 
-        fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${sigla}/municipios`)
+        return fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${sigla}/municipios`)
             .then((res) => res.json())
             .then((cidades) => {
                 cidadeSelect.innerHTML = '<option value="">Selecione uma cidade</option>';
@@ -65,11 +68,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 cidadeSelect.disabled = false;
+
+                return cidades;
             })
             .catch((err) => {
                 cidadeSelect.innerHTML = '<option value="">Erro ao carregar cidades</option>';
                 cidadeSelect.disabled = true;
                 console.error('Erro ao carregar cidades:', err);
+
+                throw err;
             });
+    };
+
+    window.carregarEstadosCadastro = carregarEstados;
+    window.carregarCidadesCadastro = carregarCidades;
+
+    estadoSelect.addEventListener('focus', carregarEstados, { once: true });
+    estadoSelect.addEventListener('click', carregarEstados, { once: true });
+    estadoSelect.addEventListener('touchstart', carregarEstados, { once: true, passive: true });
+    estadoSelect.addEventListener('change', function () {
+        carregarCidades(this.value).catch(() => {});
     });
 });

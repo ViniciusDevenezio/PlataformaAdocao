@@ -29,7 +29,9 @@ Route::get('/', function () {
 })->name('home');
 
 // Login / Logout ------------------------------------------------
-Route::post('/login', [AdotanteAuthController::class, 'login'])->name('adotante.login');
+Route::post('/login', [AdotanteAuthController::class, 'login'])
+    ->name('adotante.login')
+    ->middleware('throttle:6,1');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])
     ->name('login')
@@ -43,14 +45,19 @@ Route::get('/cadastro', function () {
 })->name('cadastro');
 
 // rota de POST principal do cadastro (name único tutor.store)
-Route::post('/cadastro', [TutorController::class, 'store'])->name('tutor.store');
+Route::post('/cadastro', [TutorController::class, 'store'])
+    ->name('tutor.store')
+    ->middleware('throttle:5,1');
 
 // rota alternativa, sem name (não conflita com tutor.store)
-Route::post('/tutor/store', [TutorController::class, 'store']);
+Route::post('/tutor/store', [TutorController::class, 'store'])
+    ->middleware('throttle:5,1');
 
 // Cadastro de ONG ------------------------------------------------
 Route::get('/cadastro-ong-AssddkOWDOK099dplds', [OngController::class, 'create'])->name('ong.cadastro');
-Route::post('/cadastro-ong-AssddkOWDOK099dplds', [OngController::class, 'store'])->name('ong.store');
+Route::post('/cadastro-ong-AssddkOWDOK099dplds', [OngController::class, 'store'])
+    ->name('ong.store')
+    ->middleware('throttle:3,1');
 
 // Dashboard protegida -------------------------------------------
 Route::get('/dashboard', function () {
@@ -72,7 +79,12 @@ Route::get('/painelAdotante', [AdotanteAuthController::class, 'painelAdotante'])
     ->middleware('auth:adotante');
 
 // CRUD de adotantes ---------------------------------------------
-Route::resource('adotantes', AdotanteController::class);
+Route::resource('adotantes', AdotanteController::class)
+    ->only(['index', 'create']);
+
+Route::post('/adotantes', [AdotanteController::class, 'store'])
+    ->name('adotantes.store')
+    ->middleware('throttle:5,1');
 
 // Adoção / Pets -------------------------------------------------
 Route::get('/adotar', [PetController::class, 'adotar'])->name('adotar');
@@ -103,14 +115,17 @@ Route::middleware(['auth:ong'])->group(function () {
     Route::get('/painel-ong/pets/{id}/editar', [OngPainelController::class, 'editarPet'])->name('ong.pets.editar');
     Route::put('/painel-ong/pets/{id}', [OngPainelController::class, 'atualizarPet'])->name('ong.pets.atualizar');
     Route::delete('/painel-ong/pets/{id}', [OngPainelController::class, 'excluirPet'])->name('ong.pets.excluir');
-    Route::post('/painel-ong/pets/{id}/facebook', [OngPainelController::class, 'enviarPetParaFacebook'])->name('ong.pets.facebook');
+    Route::post('/painel-ong/pets/{id}/facebook', [OngPainelController::class, 'enviarPetParaFacebook'])
+        ->name('ong.pets.facebook')
+        ->middleware('throttle:3,1');
 
     Route::get('/painel-ong/interesses', [OngPainelController::class, 'interesses'])->name('ong.interesses');
 });
 
 // Solicitações de adoção (adotante) -----------------------------
 Route::post('/solicitacoes', [SolicitacaoController::class, 'store'])
-    ->name('solicitacoes.store');
+    ->name('solicitacoes.store')
+    ->middleware('throttle:10,1');
 
 // Painel da ONG - Solicitações ----------------------------------
 Route::middleware('auth:ong')
@@ -154,14 +169,3 @@ Route::view('/politica-de-privacidade', 'politica-privacidade')->name('politica'
 
 // Parcerias -----------------------------------------------------
 Route::view('/seja-um-parceiro', 'parceiro')->name('parceiro');
-
-
-Route::get('/teste-make3', function () {
-    $url = 'https://hook.us2.make.com/rg9i0wmm0su9dvzwlggirg4p6jn4ye56';
-    $response = Http::post($url, [
-        'descricao' => 'Teste 2 de cachorro fofo',
-        'url_foto' => 'https://petprojeto.com.br/storage/images/pet_691b7b04653da.jpg'
-    ]);
-
-    return $response->body();
-});

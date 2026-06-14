@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Adotante;
+use DateTimeImmutable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 class AdotanteController extends Controller
 {
     public function index()
     {
         $adotantes = Adotante::all();
+
         return view('adotantes.index', compact('adotantes'));
     }
 
@@ -18,53 +22,50 @@ class AdotanteController extends Controller
     }
 
     public function store(Request $request)
-{
-        // Etapa 1: Validação inicial dos outros campos (sem nascimento ainda convertido)
-        $request->validate(
+    {
+        $validated = $request->validate(
             [
-                'nome_completo' => 'required',
-                'cpf' => 'required|unique:adotantes,cpf',
-                'nascimento' => 'required',
-                'email' => 'required|email|unique:adotantes,email',
-                'celular' => 'required',
-                'senha' => 'required|min:6',
-                'endereco' => 'required',
+                'nome_completo' => ['required', 'string', 'max:255'],
+                'cpf' => ['required', 'string', 'max:14', 'unique:adotantes,cpf'],
+                'nascimento' => ['required', 'string'],
+                'email' => ['required', 'email', 'max:255', 'unique:adotantes,email'],
+                'celular' => ['required', 'string', 'max:20'],
+                'senha' => ['required', 'string', 'min:8', 'max:72'],
+                'endereco' => ['required', 'string', 'max:255'],
                 'cep' => ['required', 'regex:/^\d{5}-?\d{3}$/'],
-                'numero' => 'required',
-                'bairro' => 'required',
-                'estado' => 'required',
-                'cidade' => 'required',
+                'numero' => ['required', 'string', 'max:50'],
+                'bairro' => ['required', 'string', 'max:255'],
+                'estado' => ['required', 'string', 'max:2'],
+                'cidade' => ['required', 'string', 'max:255'],
                 'lgpd_aceite' => ['accepted'],
             ],
             [
-                'required' => 'O campo :attribute é obrigatório.',
-                'unique' => 'O valor informado para :attribute já está em uso.',
-                'email' => 'Informe um e-mail válido.',
+                'required' => 'O campo :attribute e obrigatorio.',
+                'unique' => 'O valor informado para :attribute ja esta em uso.',
+                'email' => 'Informe um e-mail valido.',
                 'min' => 'O campo :attribute deve ter pelo menos :min caracteres.',
-                'accepted' => 'É necessário aceitar :attribute.',
-                'regex' => 'O campo :attribute não está em um formato válido.',
+                'accepted' => 'E necessario aceitar :attribute.',
+                'regex' => 'O campo :attribute nao esta em um formato valido.',
             ]
         );
 
-        // Etapa 2: Converter nascimento de d/m/Y para Y-m-d
-        $data = \DateTime::createFromFormat('d/m/Y', $request->nascimento);
+        $data = DateTimeImmutable::createFromFormat('d/m/Y', $validated['nascimento']);
+        $dateErrors = DateTimeImmutable::getLastErrors();
 
-        if (!$data) {
-            return back()->withErrors(['nascimento' => 'Data de nascimento inválida.'])->withInput();
+        if (!$data || ($dateErrors && ($dateErrors['warning_count'] > 0 || $dateErrors['error_count'] > 0))) {
+            return back()->withErrors(['nascimento' => 'Data de nascimento invalida.'])->withInput();
         }
 
-        // Etapa 3: Validar idade entre 18 e 80 anos
-        $idade = $data->diff(new \DateTime('now'))->y;
+        $idade = $data->diff(new DateTimeImmutable('now'))->y;
         if ($idade < 18 || $idade > 80) {
             return back()->withErrors(['nascimento' => 'A idade deve estar entre 18 e 80 anos.'])->withInput();
         }
 
-        // Etapa 4: Preparar dados para salvar
-        $dados = $request->all();
+        $dados = $validated;
         $dados['nascimento'] = $data->format('Y-m-d');
-        $dados['senha'] = bcrypt($dados['senha']);
+        $dados['senha'] = Hash::make($validated['senha']);
+        unset($dados['lgpd_aceite']);
 
-        // Salvar adotante
         Adotante::create($dados);
 
         return redirect()

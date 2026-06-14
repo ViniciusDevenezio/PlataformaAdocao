@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ong;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class OngController extends Controller
 {
@@ -17,7 +18,7 @@ class OngController extends Controller
         $validated = $request->validate([
             'nome' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:ongs,email'],
-            'senha' => ['required', 'string', 'min:6'],
+            'senha' => ['required', 'string', 'min:8', 'max:72'],
             'telefone' => ['nullable', 'string', 'max:20'],
             'cnpj' => ['required', 'string', 'max:18', 'unique:ongs,cnpj'],
             'cep' => ['required', 'regex:/^\d{5}-?\d{3}$/'],
@@ -28,7 +29,7 @@ class OngController extends Controller
             'estado' => ['required', 'string', 'max:2'],
         ]);
 
-        $validated['senha'] = bcrypt($validated['senha']);
+        $validated['senha'] = Hash::make($validated['senha']);
 
         Ong::create($validated);
 
