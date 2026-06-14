@@ -1,5 +1,5 @@
 @extends('layouts.sidebarpainelong')
-<script>
+<script nonce="{{ $cspNonce ?? '' }}">
     (function () {
         const nav = document.querySelector('.navbar');
         const setNavH = () => {

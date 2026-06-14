@@ -700,7 +700,7 @@
         --}}
     </div>
 
-    <script>
+    <script nonce="{{ $cspNonce ?? '' }}">
         document.addEventListener('DOMContentLoaded', function () {
             const steps = Array.from(document.querySelectorAll('.match-step'));
             const totalSteps = steps.length;

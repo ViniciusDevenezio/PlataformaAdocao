@@ -65,7 +65,7 @@
                             <td>{{ ucfirst($pet->porte) }}</td>
                             <td>
                                 <form action="{{ route('ong.pets.atualizar.status', $pet->id) }}" method="POST"
-                                    onsubmit="return confirm('Tem certeza que deseja alterar o status do pet?')"
+                                    data-confirm="Tem certeza que deseja alterar o status do pet?"
                                     class="d-flex justify-content-center align-items-center gap-2">
                                     @csrf
                                     @method('PUT')
@@ -91,7 +91,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger"
-                                        onclick="return confirm('Deseja mesmo excluir este pet?')" title="Excluir">
+                                        data-confirm="Deseja mesmo excluir este pet?" title="Excluir">
                                         <i class="bi bi-trash3 fs-5"></i>
                                     </button>
                                 </form>
@@ -110,3 +110,21 @@
         </div>
     @endif
 </div>
+
+<script nonce="{{ $cspNonce ?? '' }}">
+    document.querySelectorAll('form[data-confirm]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            if (!confirm(form.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    document.querySelectorAll('button[data-confirm]').forEach((button) => {
+        button.addEventListener('click', (event) => {
+            if (!confirm(button.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>

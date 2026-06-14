@@ -33,10 +33,10 @@
       <h2><i class="bi bi-clipboard-heart text-success me-2"></i> Solicitações de Adoção</h2>
       <div class="filters">
         <div class="btn-group" role="group" aria-label="Filtro status">
-          <button type="button" class="btn btn-outline-secondary btn-sm" data-status="todos" onclick="filtrarStatus('todos')">Todos</button>
-          <button type="button" class="btn btn-outline-warning  btn-sm" data-status="novo" onclick="filtrarStatus('novo')">Novos</button>
-          <button type="button" class="btn btn-outline-success  btn-sm" data-status="aprovado" onclick="filtrarStatus('aprovado')">Aprovados</button>
-          <button type="button" class="btn btn-outline-danger   btn-sm" data-status="recusado" onclick="filtrarStatus('recusado')">Recusados</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-status="todos" data-filter-status="todos">Todos</button>
+          <button type="button" class="btn btn-outline-warning  btn-sm" data-status="novo" data-filter-status="novo">Novos</button>
+          <button type="button" class="btn btn-outline-success  btn-sm" data-status="aprovado" data-filter-status="aprovado">Aprovados</button>
+          <button type="button" class="btn btn-outline-danger   btn-sm" data-status="recusado" data-filter-status="recusado">Recusados</button>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
       <table class="table table-sm table-hover align-middle sol-table mb-0" id="tabelaSolicitacoes">
         <thead class="table-dark">
           <tr>
-            <th class="table-check"><input class="form-check-input" type="checkbox" id="checkAll" onclick="toggleAll(this)"></th>
+            <th class="table-check"><input class="form-check-input" type="checkbox" id="checkAll"></th>
             <th>Pet</th>
             <th>Adotante</th>
             <th>Telefone</th>
@@ -98,8 +98,7 @@
                   <form action="{{ url("/painel/ong/solicitacoes/{$s->id}/aceitar") }}" method="POST" style="display:inline">
                     @csrf
                     <button type="submit" class="btn btn-success px-2 py-1"
-                            data-id="{{ $s->id }}"
-                            onclick="return confirm('Confirmar aprovação desta solicitação?')">
+                            data-id="{{ $s->id }}" data-confirm="Confirmar esta a��o?">
                       <i class="bi bi-check2-circle"></i>
                     </button>
                   </form>
@@ -125,7 +124,7 @@
                     @csrf
                     @method('PATCH')
                     <input type="hidden" name="status" value="recusado">
-                    <button type="submit" class="btn btn-outline-danger px-2 py-1" data-id="{{ $s->id }}" onclick="return confirm('Confirmar recusa desta solicitação?')">
+                    <button type="submit" class="btn btn-outline-danger px-2 py-1" data-id="{{ $s->id }}" data-confirm="Confirmar esta a��o?">
                       <i class="bi bi-x-circle-fill"></i>
                     </button>
                   </form>
@@ -139,7 +138,7 @@
                     <li>
                       <form action="{{ url("/painel/ong/solicitacoes/{$s->id}/aceitar") }}" method="POST" style="display:inline">
                         @csrf
-                        <button type="submit" class="dropdown-item" onclick="return confirm('Confirmar aprovação desta solicitação?')">
+                        <button type="submit" class="dropdown-item" data-confirm="Confirmar esta a��o?">
                           <i class="bi bi-check2-circle me-2"></i> Aceitar
                         </button>
                       </form>
@@ -168,7 +167,7 @@
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="recusado">
-                        <button type="submit" class="dropdown-item text-danger" data-id="{{ $s->id }}" onclick="return confirm('Confirmar recusa desta solicitação?')">
+                        <button type="submit" class="dropdown-item text-danger" data-id="{{ $s->id }}" data-confirm="Confirmar esta a��o?">
                           <i class="bi bi-x-circle-fill me-2"></i> Recusar
                         </button>
                       </form>
@@ -183,10 +182,10 @@
     </div>
 
     <div class="d-flex gap-2 mt-3 flex-wrap">
-      <button type="button" class="btn btn-success btn-sm px-2 py-1" onclick="aceitarSelecionados()">
+      <button type="button" class="btn btn-success btn-sm px-2 py-1" id="aceitarSelecionados">
         <i class="bi bi-check2-square me-1"></i> Aceitar Selecionados
       </button>
-      <button type="button" class="btn btn-outline-danger btn-sm px-2 py-1" onclick="recusarSelecionados()">
+      <button type="button" class="btn btn-outline-danger btn-sm px-2 py-1" id="recusarSelecionados">
         <i class="bi bi-x-square me-1"></i> Recusar Selecionados
       </button>
     </div>
@@ -220,7 +219,7 @@
   </div>
 
   {{-- ===== JS (inline — ajustado para manter suas funções e sem interferir nos novos forms) ===== --}}
-  <script>
+  <script nonce="{{ $cspNonce ?? '' }}">
     const CSRF = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
     function filtrarStatus(status){
@@ -331,5 +330,20 @@
     window.marcarRecusado     = (btn)=>{ const id=btn.dataset.id; if(!id)return; if(confirm('Confirmar recusa desta solicitação?')) atualizarStatus(id,'recusado'); }
     window.aceitarSelecionados= ()=>{ const ids=getSelecionados(); if(!ids.length) return alert('Nenhuma linha selecionada.'); if(confirm(`Aprovar ${ids.length} solicitação(ões)?`)){ ids.forEach(id=>atualizarStatus(id,'aprovado')); document.getElementById('checkAll').checked=false; toggleAll({checked:false}); } }
     window.recusarSelecionados= ()=>{ const ids=getSelecionados(); if(!ids.length) return alert('Nenhuma linha selecionada.'); if(confirm(`Recusar ${ids.length} solicitação(ões)?`)){ ids.forEach(id=>atualizarStatus(id,'recusado')); document.getElementById('checkAll').checked=false; toggleAll({checked:false}); } }
+    document.querySelectorAll('[data-filter-status]').forEach((button) => {
+      button.addEventListener('click', () => filtrarStatus(button.dataset.filterStatus));
+    });
+
+    document.getElementById('checkAll')?.addEventListener('change', (event) => toggleAll(event.target));
+    document.getElementById('aceitarSelecionados')?.addEventListener('click', window.aceitarSelecionados);
+    document.getElementById('recusarSelecionados')?.addEventListener('click', window.recusarSelecionados);
+
+    document.querySelectorAll('[data-confirm]').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        if (!confirm(button.dataset.confirm)) {
+          event.preventDefault();
+        }
+      });
+    });
   </script>
 @endsection

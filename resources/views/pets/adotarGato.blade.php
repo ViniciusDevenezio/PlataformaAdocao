@@ -367,7 +367,7 @@
     </div>
 
     {{-- script do filtro horizontal, agora com idade --}}
-    <script>
+    <script nonce="{{ $cspNonce ?? '' }}">
         document.addEventListener('DOMContentLoaded', () => {
             const filtroPorte      = document.getElementById('filtroPorte');
             const filtroGenero     = document.getElementById('filtroGenero');

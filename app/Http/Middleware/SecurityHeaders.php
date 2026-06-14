@@ -10,6 +10,10 @@ class SecurityHeaders
 {
     public function handle(Request $request, Closure $next): Response
     {
+        $nonce = bin2hex(random_bytes(16));
+        $request->attributes->set('csp_nonce', $nonce);
+        view()->share('cspNonce', $nonce);
+
         /** @var Response $response */
         $response = $next($request);
 
@@ -20,9 +24,9 @@ class SecurityHeaders
             "frame-ancestors 'none'",
             "form-action 'self'",
             "img-src 'self' data: https:",
-            "font-src 'self' data:",
+            "font-src 'self'",
             "style-src 'self' 'unsafe-inline'",
-            "script-src 'self' 'unsafe-inline'",
+            "script-src 'self' 'nonce-{$nonce}'",
             "connect-src 'self' https://viacep.com.br https://servicodados.ibge.gov.br",
         ];
 
