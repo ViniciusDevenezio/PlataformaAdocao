@@ -169,7 +169,9 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE', env('APP_ENV') === 'production'),
+    'secure' => env('APP_ENV') === 'production'
+        ? true
+        : env('SESSION_SECURE_COOKIE', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -182,7 +184,9 @@ return [
     |
     */
 
-    'http_only' => env('SESSION_HTTP_ONLY', true),
+    'http_only' => env('APP_ENV') === 'production'
+        ? true
+        : env('SESSION_HTTP_ONLY', true),
 
     /*
     |--------------------------------------------------------------------------
