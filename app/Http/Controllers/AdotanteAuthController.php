@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
 use App\Models\Solicitacao;
 
 
@@ -21,16 +22,24 @@ class AdotanteAuthController extends Controller
             'password' => $request->password
         ];
 
-        // Tenta como Adotante
-        if (Auth::guard('adotante')->attempt($credenciais)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
-        }
+        try {
+            // Tenta como Adotante
+            if (Auth::guard('adotante')->attempt($credenciais)) {
+                $request->session()->regenerate();
+                return redirect()->intended('/');
+            }
 
-        // Tenta como ONG
-        if (Auth::guard('ong')->attempt($credenciais)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
+            // Tenta como ONG
+            if (Auth::guard('ong')->attempt($credenciais)) {
+                $request->session()->regenerate();
+                return redirect()->intended('/');
+            }
+        } catch (QueryException $exception) {
+            report($exception);
+
+            return back()->withErrors([
+                'email' => 'Nao foi possivel conectar ao banco de dados. Verifique se o MySQL esta ligado e tente novamente.',
+            ])->onlyInput('email');
         }
 
         return back()->withErrors([
