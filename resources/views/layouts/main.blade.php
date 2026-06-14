@@ -23,13 +23,9 @@
 
 <body class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
-
-    <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+  <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
         <a class="navbar-brand" href="{{ route('home') }}">
-            <picture>
-                <source srcset="/img/logo2.webp" type="image/webp">
-                <img src="/img/logo2.png" alt="Logo" class="logo-navbar" width="68" height="60" decoding="async">
-            </picture>
+            <img src="/img/logo2.png" alt="Logo" class="logo-navbar">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +63,7 @@
                             Olá, {{ Auth::guard('adotante')->user()->nome_completo }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="menuAdotante">
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
                             <li><a class="dropdown-item" href="/painelAdotante">Meus Pets</a></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="dropdown-item m-0 p-0">
@@ -99,7 +96,7 @@
                         <a class="nav-link btn-menu" id="btn-login" href="{{ route('login') }}">Entrar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn-menu" id="btn-parceiro" href="{{ route('parceiro') }}">Seja um parceiro</a>
+                        <a class="nav-link btn-menu" id="btn-parceiro" href="#">Seja um parceiro</a>
                     </li>
                 @endauth
             </ul>
