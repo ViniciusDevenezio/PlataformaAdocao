@@ -126,7 +126,7 @@
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
 
 </body>
-<script defer>
+<script nonce="{{ $cspNonce ?? '' }}" defer>
     document.addEventListener('DOMContentLoaded', () => {
         const buttons = document.querySelectorAll('#btn-login, #btn-logout, #btn-parceiro');
 

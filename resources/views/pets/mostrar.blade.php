@@ -221,7 +221,7 @@
             </div>
         </div>
 
-        <script>
+        <script nonce="{{ $cspNonce ?? '' }}">
             document.addEventListener('DOMContentLoaded', function () {
                 var botaoConfirmar = document.getElementById('confirmarEnvioSolicitacao');
                 var formularioSolicitacao = document.getElementById('formSolicitacaoAdocao');
@@ -250,7 +250,7 @@
       </div>
     </div>
   </div>
-  <script>
+  <script nonce="{{ $cspNonce ?? '' }}">
     document.addEventListener('DOMContentLoaded', function () {
       var el = document.getElementById('toastSolic');
       if (el && window.bootstrap && bootstrap.Toast) {

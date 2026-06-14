@@ -252,7 +252,7 @@
             </a>
         </div>
 
-        <script>
+        <script nonce="{{ $cspNonce ?? '' }}">
             // Atualiza a string "idade" (compatibilidade)
             function atualizarIdadeStr() {
                 const n = document.getElementById('idade_num').value;

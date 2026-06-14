@@ -265,7 +265,7 @@
 <script src="{{ asset('js/cidadesEstados.js') }}"></script>
 <script src="{{ asset('js/cepAutoComplete.js') }}"></script>
 
-<script>
+<script nonce="{{ $cspNonce ?? '' }}">
     $(function () {
         $('#telefone').mask('(00) 00000-0000');
         $('#cep').mask('00000-000');

@@ -264,7 +264,7 @@
 <script src="{{ asset('js/cidadesEstados.js') }}"></script>
 <script src="{{ asset('js/cepAutoComplete.js') }}"></script>
 
-<script>
+<script nonce="{{ $cspNonce ?? '' }}">
     $(function () {
         $('#nascimento').mask('00/00/0000');
         $('#celular').mask('(00) 00000-0000');

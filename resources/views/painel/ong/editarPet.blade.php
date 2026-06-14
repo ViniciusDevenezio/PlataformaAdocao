@@ -314,7 +314,7 @@
 
 
 
-<script>
+<script nonce="{{ $cspNonce ?? '' }}">
     // Atualiza a string "idade" (compatibilidade com o controller)
     function atualizarIdadeStr() {
         const n = document.getElementById('idade_num').value;

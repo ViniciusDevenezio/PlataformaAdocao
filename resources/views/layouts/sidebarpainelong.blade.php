@@ -220,7 +220,7 @@
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
   @auth('ong')
-    <script>
+    <script nonce="{{ $cspNonce ?? '' }}">
       (function () {
         const btn = document.getElementById('btn-toggle-sidebar');
         const sidebar = document.getElementById('sidebar-lateral-ong');
