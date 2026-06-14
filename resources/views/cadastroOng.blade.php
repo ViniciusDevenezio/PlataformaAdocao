@@ -260,8 +260,8 @@
 </div>
 
 {{-- Scripts iguais (máscaras + CEP), adaptados pros campos da ONG --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('vendor/jquery-mask/jquery.mask.min.js') }}"></script>
 <script src="{{ asset('js/cidadesEstados.js') }}"></script>
 <script src="{{ asset('js/cepAutoComplete.js') }}"></script>
 
